@@ -30,35 +30,47 @@ For further config details please refer to the official documentation:
 Use `SessionProvider` to manage SessionId. You have three methods available:
 
 *   `getById($externalReferenceId)` - get the SessionId by your external userId reference
-*   `getByCredentials($externalReferenceId, $username, $password)` -  get the SessionId by credentials. Login is performed and user data is persisted 
+*   `createByCredentials($externalReferenceId, $username, $password)` -  get the SessionId by credentials. Login is performed and user data is persisted 
 *   `destroy($externalReferenceId)` - destroy the SessionId and performs logout
+
+If you want to login as a generic user you can use:
+
+*   `createAnonymous($email, $genericUsername, $genericPassword)` - get the SessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
+*   `getByGenericEmail($email)` -  get the SessionId by credentials. Login is performed and user data is persisted 
+*   `destroyAnonymous($email)` - destroy the SessionId and performs logout
 
 ## Methods
 
 Here is the list of Client's public methods:
 
- * `addMasterProjectFile` -
- * `addSourceSegmentsInBatchToMasterProject` -
- * `addTargetLanguageToChildProject` -
- * `addTargetLanguageToMasterProject` -
- * `createMasterProject` -
- * `createChildProject` -
- * `deleteChildProject` -
- * `deleteMasterProject` -
- * `deleteMasterProjectFile` -
- * `deleteTargetLanguageForChildProject` -
- * `deleteTargetLanguageForMasterProject` -
- * `getChildProject` -
- * `getChildProjectFile` -
- * `getChildProjectFiles` -
- * `getMasterProject` -
- * `getMasterProjectFile` -
- * `getTargetLanguageForChildProject` -
- * `getTargetLanguageForMasterProject` -
- * `getTargetLanguageForChildProjectByLang` -
- * `getTargetLanguageForMasterProjectByLang` -
- * `login` -
- * `logout` -
+* `addMasterProjectFile`
+* `addSourceSegmentsInBatchToMasterProject` - 
+* `addTargetLanguageToChildProject` - 
+* `addTargetLanguageToMasterProject` - 
+* `anonymousLogin` - 
+* `anonymousLogout` - 
+* `createMasterProject` - 
+* `createChildProject` - 
+* `deleteChildProject` - 
+* `deleteMasterProject` - 
+* `deleteMasterProjectFile` - 
+* `deleteTargetLanguageForChildProject` - 
+* `deleteTargetLanguageForMasterProject` - 
+* `getChildProject` - 
+* `getChildProjectFile` - 
+* `getChildProjectFiles` - 
+* `getMasterProject` - 
+* `getMasterProjectFile` - 
+* `getTargetLanguageForChildProject` - 
+* `getTargetLanguageForMasterProject` - 
+* `getTargetLanguageForChildProjectByLang` - 
+* `getTargetLanguageForMasterProjectByLang` - 
+* `getUser` - 
+* `login` - 
+* `logout` - 
+* `updateChildProject` - 
+* `updateMasterProject` - 
+* `updateMasterProjectFile` - 
 
 ## Support
 

@@ -6,28 +6,40 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
-class AddTargetLanguageToMasterProject extends CommandHandler
+class UpdateMasterProjectFile extends CommandHandler
 {
     protected $rules = [
-            'sessionId'          => [
+            'sessionId'        => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
             ],
-            'projectKey'         => [
+            'projectKey'       => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
             ],
-            'projectId'          => [
+            'projectId'        => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_INTEGER,
             ],
-            'fileId'             => [
+            'fileId'           => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_INTEGER,
             ],
-            'targetLanguageCode' => [
-                    'required' => true,
+            'name'             => [
+                    'required' => false,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'numberOfSegments' => [
+                    'required' => false,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+            ],
+            'clientId'         => [
+                    'required' => false,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'tmsFileId'        => [
+                    'required' => false,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -39,20 +51,20 @@ class AddTargetLanguageToMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri(
-            'project/master/{projectId}/file/{fileId}/targetLang',
-            [
-                        'projectId' => $params[ 'projectId' ],
-                        'fileId'    => $params[ 'fileId' ],
-                ]
-        ), [
+        $response = $this->httpClient->request('PUT', $this->buildUri('project/master/{projectId}/file/{fileId}', [
+                'projectId' => $params[ 'projectId' ],
+                'fileId'    => $params[ 'fileId' ],
+        ]), [
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
-                        'targetLanguageCode' => $params[ 'body' ]
+                        'name'             => isset($params[ 'name' ]) ? $params[ 'name' ] : null,
+                        'numberOfSegments' => isset($params[ 'numberOfSegments' ]) ? $params[ 'numberOfSegments' ] : null,
+                        'clientId'         => isset($params[ 'clientId' ]) ? $params[ 'clientId' ] : null,
+                        'tmsFileId'        => isset($params[ 'tmsFileId' ]) ? $params[ 'tmsFileId' ] : null,
                 ],
         ]);
 

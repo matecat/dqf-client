@@ -4,18 +4,20 @@ namespace Matecat\Dqf\Commands;
 
 use GuzzleHttp\Client as HttpClient;
 use Matecat\Dqf\Constants;
+use Matecat\Dqf\Utils\ParamsValidator;
 use Psr\Http\Message\MessageInterface;
 
 abstract class CommandHandler implements CommandHandlerInterface
 {
-
     /**
-     * Required parameters
+     * @see ParamsValidatorTest for implementation
+     *
+     * Parameters rules
      * Overrided by child classes
      *
      * @var array
      */
-    protected $required = [];
+    protected $rules = [];
 
     /**
      * @var HttpClient
@@ -47,7 +49,7 @@ abstract class CommandHandler implements CommandHandlerInterface
      */
     protected function buildUri($path, array $params = [])
     {
-        foreach ($params as $key => $param){
+        foreach ($params as $key => $param) {
             $path = str_replace('{'.$key.'}', $param, $path);
         }
 
@@ -71,14 +73,15 @@ abstract class CommandHandler implements CommandHandlerInterface
      */
     public function validate($params = [])
     {
-        $missing = [];
+        // allow all commands to handle generic sessions
+        $genericEmail = [
+            'generic_email' => [
+                    'required' => false,
+                    'type' => 'string',
+            ]
+        ];
+        $this->rules = array_merge($this->rules, $genericEmail);
 
-        foreach ($this->required as $key) {
-            if (false === isset($params[ $key ])) {
-                $missing[] = $key;
-            }
-        }
-
-        return $missing;
+        return ParamsValidator::validate($params, $this->rules);
     }
 }

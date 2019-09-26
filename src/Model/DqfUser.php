@@ -4,11 +4,40 @@ namespace Matecat\Dqf\Model;
 
 class DqfUser
 {
+    /**
+     * @var int
+     */
     private $externalReferenceId;
+
+    /**
+     * @var string
+     */
     private $username;
+
+    /**
+     * @var string
+     */
     private $password;
+
+    /**
+     * @var string
+     */
     private $sessionId;
+
+    /**
+     * @var int
+     */
     private $sessionExpiresAt;
+
+    /**
+     * @var bool
+     */
+    private $isGeneric;
+
+    /**
+     * @var string
+     */
+    private $genericEmail;
 
     /**
      * @return mixed
@@ -88,5 +117,37 @@ class DqfUser
     public function setSessionExpiresAt($sessionExpiresAt)
     {
         $this->sessionExpiresAt = $sessionExpiresAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGeneric()
+    {
+        return $this->isGeneric;
+    }
+
+    /**
+     * @param bool $isGeneric
+     */
+    public function setIsGeneric($isGeneric)
+    {
+        $this->isGeneric = $isGeneric;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGenericEmail()
+    {
+        return $this->genericEmail;
+    }
+
+    /**
+     * @param string $genericEmail
+     */
+    public function setGenericEmail($genericEmail)
+    {
+        $this->genericEmail = $genericEmail;
     }
 }

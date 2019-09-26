@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Repository;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\DqfUser;
 use Matecat\Dqf\Model\DqfUserRepositoryInterface;
 
@@ -61,41 +62,76 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
+     * @param $genericEmail
+     *
+     * @return DqfUser|mixed
+     */
+    public function getByGenericEmail($genericEmail)
+    {
+        $sql  = "SELECT * FROM " . self::TABLE_NAME . " WHERE 
+            externalReferenceId = :externalReferenceId AND 
+            genericEmail = :genericEmail AND 
+            isGeneric = :isGeneric";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+                'genericEmail'        => $genericEmail,
+                'isGeneric'           => true,
+                'externalReferenceId' => Constants::ANONYMOUS_SESSION_ID,
+        ]);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, DqfUser::class);
+
+        return $stmt->fetch();
+    }
+
+    /**
      * @param DqfUser $dqfUser
      *
      * @return int|mixed
      */
     public function save(DqfUser $dqfUser)
     {
-        $sql = "INSERT INTO " . self::TABLE_NAME . " (
+        $sql = "INSERT IGNORE INTO " . self::TABLE_NAME . " (
                 `externalReferenceId`,
                 `username`,
                 `password`,
                 `sessionId`,
-                `sessionExpiresAt`
+                `sessionExpiresAt`,
+                `isGeneric`,
+                `genericEmail`
             ) VALUES (
                 :externalReferenceId,
                 :username,
                 :password,
                 :sessionId,
-                :sessionExpiresAt
+                :sessionExpiresAt,
+                :isGeneric,
+                :genericEmail
         )
         ON DUPLICATE KEY UPDATE 
             externalReferenceId = :externalReferenceId,
             username = :username,
             password = :password,
             sessionId = :sessionId,
-            sessionExpiresAt = :sessionExpiresAt
+            sessionExpiresAt = :sessionExpiresAt,
+            isGeneric = :isGeneric,
+            genericEmail = :genericEmail
         ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-                'externalReferenceId' => $dqfUser->getExternalReferenceId(),
-                'username'            => $dqfUser->getUsername(),
-                'password'            => $dqfUser->getPassword(),
-                'sessionId'           => $dqfUser->getSessionId(),
-                'sessionExpiresAt'    => $dqfUser->getSessionExpiresAt()
-        ]);
+
+        try {
+            $stmt->execute([
+                    'externalReferenceId' => $dqfUser->getExternalReferenceId(),
+                    'username'            => $dqfUser->getUsername(),
+                    'password'            => $dqfUser->getPassword(),
+                    'sessionId'           => $dqfUser->getSessionId(),
+                    'sessionExpiresAt'    => $dqfUser->getSessionExpiresAt(),
+                    'isGeneric'           => $dqfUser->isGeneric(),
+                    'genericEmail'        => $dqfUser->getGenericEmail()
+            ]);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
 
         return $stmt->rowCount();
     }

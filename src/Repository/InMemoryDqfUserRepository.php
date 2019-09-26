@@ -22,6 +22,11 @@ class InMemoryDqfUserRepository implements DqfUserRepositoryInterface
         // TODO: Implement getByCredentials() method.
     }
 
+    public function getByGenericEmail($genericEmail)
+    {
+        // TODO: Implement getByGenericEmail() method.
+    }
+
     public function save(DqfUser $dqfUser)
     {
         // TODO: Implement save() method.

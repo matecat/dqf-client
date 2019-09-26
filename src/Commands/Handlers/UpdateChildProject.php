@@ -6,19 +6,27 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
-class CreateChildProject extends CommandHandler
+class UpdateChildProject extends CommandHandler
 {
     protected $rules = [
             'sessionId'       => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
             ],
-            'parentKey'      => [
+            'projectKey'      => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'projectId'       => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+            ],
+            'parentKey'       => [
                     'required' => true,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
             ],
             'type'            => [
-                    'required' => true,
+                    'required' => false,
                     'type'     => ParamsValidator::DATA_TYPE_STRING,
             ],
             'clientId'        => [
@@ -55,14 +63,15 @@ class CreateChildProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri('project/child'), [
+        $response = $this->httpClient->request('PUT', $this->buildUri('project/child/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers'     => [
-                        'sessionId' => $params[ 'sessionId' ],
-                        'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
+                        'projectKey' => $params[ 'projectKey' ],
+                        'sessionId'  => $params[ 'sessionId' ],
+                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
-                        'parentKey'       => $params[ 'parentKey'],
-                        'type'            => $params[ 'type' ],
+                        'parentKey'       => $params[ 'parentKey' ],
+                        'type'            => isset($params[ 'type' ]) ? $params[ 'type' ] : null,
                         'clientId'        => isset($params[ 'clientId' ]) ? $params[ 'clientId' ] : null,
                         'name'            => isset($params[ 'name' ]) ? $params[ 'name' ] : null,
                         'assignee'        => isset($params[ 'assignee' ]) ? $params[ 'assignee' ] : null,
@@ -72,7 +81,7 @@ class CreateChildProject extends CommandHandler
                 ]
         ]);
 
-        if ($response->getStatusCode() === StatusCode::CREATED) {
+        if ($response->getStatusCode() === StatusCode::OK) {
             return $this->decodeResponse($response);
         }
     }

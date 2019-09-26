@@ -27,6 +27,13 @@ interface DqfUserRepositoryInterface
     public function getByCredentials($username, $password);
 
     /**
+     * @param $genericEmail
+     *
+     * @return DqfUser
+     */
+    public function getByGenericEmail($genericEmail);
+
+    /**
      * @param DqfUser $dqfUser
      *
      * @return mixed

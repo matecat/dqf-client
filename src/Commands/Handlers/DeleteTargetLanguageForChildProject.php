@@ -3,16 +3,32 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
+use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
-class DeleteTargetLanguageForChildProject extends CommandHandler {
-
-    protected $required = [
-            'sessionId',
-            'projectKey',
-            'projectId',
-            'fileId',
-            'targetLangCode',
+class DeleteTargetLanguageForChildProject extends CommandHandler
+{
+    protected $rules = [
+            'sessionId'      => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'projectKey'     => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'projectId'      => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+            ],
+            'fileId'         => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+            ],
+            'targetLangCode' => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
     ];
 
     /**
@@ -21,9 +37,11 @@ class DeleteTargetLanguageForChildProject extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-
-        $response = $this->httpClient->request( 'DELETE', $this->buildUri( 'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}', [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request('DELETE', $this->buildUri(
+            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
+            [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],
                         'targetLangCode' => $params[ 'targetLangCode' ],
@@ -32,11 +50,12 @@ class DeleteTargetLanguageForChildProject extends CommandHandler {
                 'headers' => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
+                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

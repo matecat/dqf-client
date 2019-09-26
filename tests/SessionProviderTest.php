@@ -40,16 +40,35 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
      */
-    public function can_create_update_and_destroy_sessions()
+    public function can_create_update_and_destroy_anonymous_sessions()
     {
-        $sessionId = $this->sessionProvider->getByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+        $email = 'mauro@translated.net';
+
+        $sessionId = $this->sessionProvider->createAnonymous($email, $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
         $this->assertInternalType('string', $sessionId);
 
-        $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+        $sessionId = $this->sessionProvider->getByGenericEmail($email);
         $this->assertInternalType('string', $sessionId);
 
-        $destroy = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+        $destroy = $this->sessionProvider->destroyAnonymous($email);
         $this->assertEquals($destroy, 1);
     }
+
+//    /**
+//     * @test
+//     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
+//     */
+//    public function can_create_update_and_destroy_sessions()
+//    {
+//        $sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+//        $this->assertInternalType('string', $sessionId);
+//
+//        $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+//        $this->assertInternalType('string', $sessionId);
+//
+//        $destroy = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+//        $this->assertEquals($destroy, 1);
+//    }
 }

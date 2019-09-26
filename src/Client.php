@@ -8,6 +8,8 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Exceptions\MissingParamsException;
+use Matecat\Dqf\Exceptions\ParamsValidatorException;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
@@ -43,8 +45,12 @@ use Monolog\Logger;
  * @method mixed getTargetLanguageForMasterProject( array $input )
  * @method mixed getTargetLanguageForChildProjectByLang( array $input )
  * @method mixed getTargetLanguageForMasterProjectByLang( array $input )
+ * @method mixed getUser( array $input )
  * @method mixed login( array $input )
  * @method mixed logout( array $input )
+ * @method mixed updateChildProject( array $input )
+ * @method mixed updateMasterProject( array $input )
+ * @method mixed updateMasterProjectFile( array $input )
  *
  * @package Matecat\Dqf
  */
@@ -104,9 +110,9 @@ class Client
         $stack = HandlerStack::create();
         $stack->push(
             Middleware::log(
-                    $this->getLogger($logStoragePath),
-                    new MessageFormatter('{req_body} - {res_body}')
-                )
+                $this->getLogger($logStoragePath),
+                new MessageFormatter('{req_body} - {res_body}')
+            )
         );
 
         return new HttpClient([
@@ -125,7 +131,12 @@ class Client
      */
     private function getLogger($logStoragePath = null)
     {
-        return ( new Logger('dqf-api-consumer') )->pushHandler(new RotatingFileHandler(($logStoragePath) ? $logStoragePath : __DIR__ . '/../log'));
+        $logger = new Logger('dqf-api-consumer');
+        $streamHandler = new RotatingFileHandler(($logStoragePath) ? $logStoragePath : __DIR__ . '/../log');
+        $streamHandler->setFormatter(new JsonFormatter());
+        $logger->pushHandler($streamHandler);
+
+        return $logger;
     }
 
     /**
@@ -135,7 +146,7 @@ class Client
      * @param $args
      *
      * @return mixed|void
-     * @throws MissingParamsException
+     * @throws ParamsValidatorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function __call($name, $args)
@@ -150,9 +161,9 @@ class Client
         /** @var CommandHandler $commandHandler */
         $commandHandler = new $commandHandler($this->httpClient, $this->clientParams);
 
-        $missingParams = $commandHandler->validate($params);
-        if (count($missingParams)) {
-            throw new MissingParamsException($name . ' cannot be executed, wrong or missing params. Required params are: ['.implode($missingParams).']');
+        $validate = $commandHandler->validate($params);
+        if (count($validate)) {
+            throw new ParamsValidatorException($name . ' cannot be executed. '.implode(',', $validate).'.');
         }
 
         return $commandHandler->handle($params);

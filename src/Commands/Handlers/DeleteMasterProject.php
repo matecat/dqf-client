@@ -3,13 +3,24 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
+use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
-class DeleteMasterProject extends CommandHandler {
-    protected $required = [
-            'sessionId',
-            'projectKey',
-            'projectId',
+class DeleteMasterProject extends CommandHandler
+{
+    protected $rules = [
+            'sessionId'  => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'projectKey' => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+            ],
+            'projectId'  => [
+                    'required' => true,
+                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+            ],
     ];
 
     /**
@@ -18,16 +29,18 @@ class DeleteMasterProject extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( 'DELETE', $this->buildUri( 'project/master/{projectId}', [ 'projectId' => $params[ 'projectId' ] ] ), [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request('DELETE', $this->buildUri('project/master/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers' => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
+                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::OK ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::OK) {
+            return $this->decodeResponse($response);
         }
     }
 }
