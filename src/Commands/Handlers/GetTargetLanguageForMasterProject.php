@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class GetTargetLanguageForMasterProject extends CommandHandler
@@ -11,19 +11,19 @@ class GetTargetLanguageForMasterProject extends CommandHandler
     protected $rules = [
             'sessionId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'fileId'     => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -35,7 +35,7 @@ class GetTargetLanguageForMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('GET', $this->buildUri(
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
             'project/master/{projectId}/file/{fileId}/targetLang',
             [
                         'projectId' => $params[ 'projectId' ],

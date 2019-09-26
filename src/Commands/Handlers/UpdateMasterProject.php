@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class UpdateMasterProject extends CommandHandler
@@ -11,51 +11,51 @@ class UpdateMasterProject extends CommandHandler
     protected $rules = [
             'sessionId'          => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey'         => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'          => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'name'               => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'sourceLanguageCode' => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'contentTypeId'      => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'industryId'         => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'processId'          => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'qualityLevelId'     => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'clientId'           => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'templateName'       => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'tmsProjectKey'      => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
     ];
 
@@ -67,7 +67,7 @@ class UpdateMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('PUT', $this->buildUri('project/master/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_UPDATE, $this->buildUri('project/master/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],

@@ -29,6 +29,8 @@ use Monolog\Logger;
  * @method mixed addSourceSegmentsInBatchToMasterProject( array $input )
  * @method mixed addTargetLanguageToChildProject( array $input )
  * @method mixed addTargetLanguageToMasterProject( array $input )
+ * @method mixed checkLanguageCode( array $input )
+ * @method mixed checkUserExistence( array $input )
  * @method mixed createMasterProject( array $input )
  * @method mixed createChildProject( array $input )
  * @method mixed deleteChildProject( array $input )
@@ -39,18 +41,23 @@ use Monolog\Logger;
  * @method mixed getChildProject( array $input )
  * @method mixed getChildProjectFile( array $input )
  * @method mixed getChildProjectFiles( array $input )
+ * @method mixed getFileId( array $input )
+ * @method mixed getProjectId( array $input )
  * @method mixed getMasterProject( array $input )
  * @method mixed getMasterProjectFile( array $input )
+ * @method mixed getSegmentId( array $input )
  * @method mixed getTargetLanguageForChildProject( array $input )
  * @method mixed getTargetLanguageForMasterProject( array $input )
  * @method mixed getTargetLanguageForChildProjectByLang( array $input )
  * @method mixed getTargetLanguageForMasterProjectByLang( array $input )
+ * @method mixed getTranslationId( array $input )
  * @method mixed getUser( array $input )
  * @method mixed login( array $input )
  * @method mixed logout( array $input )
  * @method mixed updateChildProject( array $input )
  * @method mixed updateMasterProject( array $input )
  * @method mixed updateMasterProjectFile( array $input )
+ * @method mixed updateSegmentTranslationReviewInChildProject( array $input )
  *
  * @package Matecat\Dqf
  */
@@ -110,9 +117,9 @@ class Client
         $stack = HandlerStack::create();
         $stack->push(
             Middleware::log(
-                $this->getLogger($logStoragePath),
-                new MessageFormatter('{req_body} - {res_body}')
-            )
+                    $this->getLogger($logStoragePath),
+                    new MessageFormatter('{req_body} - {res_body}')
+                )
         );
 
         return new HttpClient([
@@ -131,7 +138,7 @@ class Client
      */
     private function getLogger($logStoragePath = null)
     {
-        $logger = new Logger('dqf-api-consumer');
+        $logger        = new Logger('dqf-api-consumer');
         $streamHandler = new RotatingFileHandler(($logStoragePath) ? $logStoragePath : __DIR__ . '/../log');
         $streamHandler->setFormatter(new JsonFormatter());
         $logger->pushHandler($streamHandler);
@@ -163,7 +170,7 @@ class Client
 
         $validate = $commandHandler->validate($params);
         if (count($validate)) {
-            throw new ParamsValidatorException($name . ' cannot be executed. '.implode(',', $validate).'.');
+            throw new ParamsValidatorException($name . ' cannot be executed. ' . implode(',', $validate) . '.');
         }
 
         return $commandHandler->handle($params);

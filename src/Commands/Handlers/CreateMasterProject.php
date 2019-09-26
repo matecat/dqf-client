@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class CreateMasterProject extends CommandHandler
@@ -11,43 +11,43 @@ class CreateMasterProject extends CommandHandler
     protected $rules = [
             'sessionId'          => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'name'               => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'sourceLanguageCode' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'contentTypeId'      => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'industryId'         => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'processId'          => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'qualityLevelId'     => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'clientId'           => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'templateName'       => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'tmsProjectKey'      => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
     ];
 
@@ -59,7 +59,7 @@ class CreateMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri('project/master'), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/master'), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
                         'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,

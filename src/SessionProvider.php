@@ -116,9 +116,9 @@ class SessionProvider
         try {
             $login = $this->client->login(
                 [
-                        'username' => $username,
-                        'password' => $password,
-                ]
+                            'username' => $username,
+                            'password' => $password,
+                    ]
             );
         } catch (\Exception $e) {
             throw new SessionProviderException('Login to DQF failed.' . $e->getMessage());

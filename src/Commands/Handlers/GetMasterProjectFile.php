@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class GetMasterProjectFile extends CommandHandler
@@ -11,15 +11,15 @@ class GetMasterProjectFile extends CommandHandler
     protected $rules = [
             'sessionId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -31,7 +31,7 @@ class GetMasterProjectFile extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('GET', $this->buildUri('project/master/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/master/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers' => [
                         'sessionId'  => $params[ 'sessionId' ],
                         'projectKey' => $params[ 'projectKey' ],

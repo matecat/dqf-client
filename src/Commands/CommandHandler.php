@@ -50,7 +50,7 @@ abstract class CommandHandler implements CommandHandlerInterface
     protected function buildUri($path, array $params = [])
     {
         foreach ($params as $key => $param) {
-            $path = str_replace('{'.$key.'}', $param, $path);
+            $path = str_replace('{' . $key . '}', $param, $path);
         }
 
         return Constants::API_VERSION . DIRECTORY_SEPARATOR . $path;
@@ -75,13 +75,12 @@ abstract class CommandHandler implements CommandHandlerInterface
     {
         // allow all commands to handle generic sessions
         $genericEmail = [
-            'generic_email' => [
-                    'required' => false,
-                    'type' => 'string',
-            ]
+                'generic_email' => [
+                        'required' => false,
+                        'type'     => 'string',
+                ]
         ];
-        $this->rules = array_merge($this->rules, $genericEmail);
 
-        return ParamsValidator::validate($params, $this->rules);
+        return ParamsValidator::validate($params, array_merge($this->rules, $genericEmail));
     }
 }

@@ -4,15 +4,6 @@ namespace Matecat\Dqf\Utils;
 
 class ParamsValidator
 {
-    const DATA_TYPE_BOOLEAN  = 'boolean';
-    const DATA_TYPE_INTEGER  = 'integer';
-    const DATA_TYPE_DOUBLE   = 'double';
-    const DATA_TYPE_STRING   = 'string';
-    const DATA_TYPE_ARRAY    = 'array';
-    const DATA_TYPE_OBJECT   = 'object';
-    const DATA_TYPE_RESOURCE = 'resource';
-    const DATA_TYPE_NULL     = 'NULL';
-
     /**
      * @param array $params
      * @param array $rules
@@ -37,7 +28,7 @@ class ParamsValidator
 
             // execute callbacks
             if (isset($rule[ 'callback' ]) and isset($params[ $key ])) {
-                if(false === call_user_func($rule[ 'callback' ], $params[ $key ], $params)){
+                if (false === call_user_func($rule[ 'callback' ], $params[ $key ], $params)) {
                     $errors[] = self::createCallbackErrorText($key);
                 }
             }

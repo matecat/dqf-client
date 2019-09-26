@@ -3,8 +3,8 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Utils\DataEncryptor;
-use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
 class Login extends CommandHandler
@@ -12,11 +12,11 @@ class Login extends CommandHandler
     protected $rules = [
             'username' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'password' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
     ];
 
@@ -29,7 +29,7 @@ class Login extends CommandHandler
     public function handle($params = [])
     {
         $dataEncryptor = new DataEncryptor($this->params[ 'encryptionKey' ], $this->params[ 'encryptionIV' ]);
-        $response      = $this->httpClient->request('POST', $this->buildUri('login'), [
+        $response      = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('login'), [
                 'headers'     => [
                         'email' => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],

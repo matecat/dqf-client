@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class AddMasterProjectFile extends CommandHandler
@@ -11,31 +11,31 @@ class AddMasterProjectFile extends CommandHandler
     protected $rules = [
             'sessionId'        => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey'       => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'        => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'name'             => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'numberOfSegments' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'clientId'         => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'tmsFileId'        => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -47,7 +47,7 @@ class AddMasterProjectFile extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri('project/master/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/master/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],

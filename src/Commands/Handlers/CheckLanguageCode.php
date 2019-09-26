@@ -6,10 +6,10 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetUser extends CommandHandler
+class CheckLanguageCode extends CommandHandler
 {
     protected $rules = [
-            'sessionId' => [
+            'languageCode'          => [
                     'required' => true,
                     'type'     => Constants::DATA_TYPE_STRING,
             ],
@@ -23,11 +23,8 @@ class GetUser extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('user', []), [
-                'headers' => [
-                        'sessionId' => $params[ 'sessionId' ],
-                        'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
-                ],
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
+                'check/language/{languageCode}', [ 'languageCode' => $params[ 'languageCode' ], ] ), [
         ]);
 
         if ($response->getStatusCode() === StatusCode::OK) {

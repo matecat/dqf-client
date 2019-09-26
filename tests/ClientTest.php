@@ -76,6 +76,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function can_check_a_LanguageCode()
+    {
+        $languageCode = $this->client->checkLanguageCode([
+                'languageCode'     => 'fr-FR',
+        ]);
+
+        $this->assertInstanceOf(\stdClass::class, $languageCode);
+        $this->assertEquals('OK', $languageCode->status);
+        $this->assertEquals('Valid Language Code', $languageCode->message);
+    }
+
+    /**
+     * @test
+     */
     public function can_login_and_logout()
     {
         $login = $this->client->login([
@@ -95,10 +109,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
+     * throws \Matecat\Dqf\Exceptions\SessionProviderException
      */
     public function can_create_retrieve_and_delete_a_master_project()
     {
+        $clientId = Uuid::uuid4()->toString();
+
         // create
         $masterProject = $this->client->createMasterProject([
                 'sessionId'          => $this->sessionId,
@@ -108,11 +124,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 'industryId'         => 1,
                 'processId'          => 1,
                 'qualityLevelId'     => 1,
+                'clientId'           => $clientId,
         ]);
 
         $this->assertInstanceOf(\stdClass::class, $masterProject);
         $this->assertInternalType('int', $masterProject->dqfId);
         $this->assertInternalType('string', $masterProject->dqfUUID);
+
+        // check for DQF ProjectId
+        $check = $this->client->getProjectId([
+                'sessionId'  => $this->sessionId,
+                'clientId' => $clientId,
+        ]);
+        $this->assertInstanceOf(\stdClass::class, $check);
+        $this->assertInternalType('int', $check->dqfId);
+        $this->assertInternalType('string', $check->dqfUUID);
+        $this->assertEquals('DQF id successfully fetched', $check->message);
 
         // retrieve
         $retrievedMasterProject = $this->client->getMasterProject([
@@ -136,7 +163,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $deleteMasterProject->status);
         $this->assertEquals('OK', $deleteMasterProject->status);
         $this->assertInternalType('string', $deleteMasterProject->message);
-        $this->assertEquals('Project successfully deleted. Also removed 0 segment mappings, 0 source segments, 0 file/targetLang associations, 0 file mappings, 0 files, 0 target languages, 0 project mappings, 0 review settings, 0 review cycle headers.', $deleteMasterProject->message);
+        $this->assertEquals('Project successfully deleted. Also removed 0 segment mappings, 0 source segments, 0 file/targetLang associations, 0 file mappings, 0 files, 0 target languages, 1 project mappings, 0 review settings, 0 review cycle headers.', $deleteMasterProject->message);
     }
 
     /**
@@ -156,18 +183,29 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // add a file
+        $clientId = Uuid::uuid4()->toString();
         $masterProjectFile = $this->client->addMasterProjectFile([
                 'sessionId'        => $this->sessionId,
                 'projectKey'       => $masterProject->dqfUUID,
                 'projectId'        => $masterProject->dqfId,
                 'name'             => 'test-file',
                 'numberOfSegments' => 2,
+                'clientId'         => $clientId,
         ]);
 
         $this->assertInstanceOf(\stdClass::class, $masterProjectFile);
         $this->assertInternalType('int', $masterProjectFile->dqfId);
         $this->assertInternalType('string', $masterProjectFile->message);
         $this->assertEquals('File successfully created', $masterProjectFile->message);
+
+        // check for DQF FileId
+        $check = $this->client->getFileId([
+                'sessionId'  => $this->sessionId,
+                'clientId' => $clientId,
+        ]);
+        $this->assertInstanceOf(\stdClass::class, $check);
+        $this->assertInternalType('int', $check->dqfId);
+        $this->assertEquals('DQF id successfully fetched', $check->message);
 
         // retrieve a file
         $retrieveMasterProjectFile = $this->client->getMasterProjectFile([
@@ -190,12 +228,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                         [
                                 "sourceSegment" => "Aenean fermentum.",
                                 "index"         => 1,
-                                "clientId"      => Uuid::getFactory()->uuid4()
+                                "clientId"      => Uuid::uuid4()->toString()
                         ],
                         [
                                 "sourceSegment" => "Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.",
                                 "index"         => 2,
-                                "clientId"      => Uuid::getFactory()->uuid4()
+                                "clientId"      => Uuid::uuid4()->toString()
                         ]
                 ]
         ]);

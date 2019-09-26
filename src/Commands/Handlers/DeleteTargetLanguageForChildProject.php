@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class DeleteTargetLanguageForChildProject extends CommandHandler
@@ -11,23 +11,23 @@ class DeleteTargetLanguageForChildProject extends CommandHandler
     protected $rules = [
             'sessionId'      => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey'     => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'      => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'fileId'         => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'targetLangCode' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
     ];
 
@@ -39,7 +39,7 @@ class DeleteTargetLanguageForChildProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('DELETE', $this->buildUri(
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_DELETE, $this->buildUri(
             'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
             [
                         'projectId'      => $params[ 'projectId' ],

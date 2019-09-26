@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class UpdateMasterProjectFile extends CommandHandler
@@ -11,35 +11,35 @@ class UpdateMasterProjectFile extends CommandHandler
     protected $rules = [
             'sessionId'        => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey'       => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'        => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'fileId'           => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'name'             => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'numberOfSegments' => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'clientId'         => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'tmsFileId'        => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -51,7 +51,7 @@ class UpdateMasterProjectFile extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('PUT', $this->buildUri('project/master/{projectId}/file/{fileId}', [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_UPDATE, $this->buildUri('project/master/{projectId}/file/{fileId}', [
                 'projectId' => $params[ 'projectId' ],
                 'fileId'    => $params[ 'fileId' ],
         ]), [

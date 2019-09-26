@@ -6,20 +6,16 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetChildProject extends CommandHandler
+class CheckUserExistence extends CommandHandler
 {
     protected $rules = [
-            'sessionId'  => [
+            'sessionId'          => [
                     'required' => true,
                     'type'     => Constants::DATA_TYPE_STRING,
             ],
-            'projectKey' => [
+            'email'         => [
                     'required' => true,
                     'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'  => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -31,9 +27,9 @@ class GetChildProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/child/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
-                'headers' => [
-                        'projectKey' => $params[ 'projectKey' ],
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
+                'check/user/{email}', [ 'email' => $params[ 'email' ], ] ), [
+                'headers'     => [
                         'sessionId'  => $params[ 'sessionId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],

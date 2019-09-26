@@ -3,8 +3,8 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Utils\DataEncryptor;
-use Matecat\Dqf\Utils\ParamsValidator;
 use Teapot\StatusCode;
 
 class Logout extends CommandHandler
@@ -12,11 +12,11 @@ class Logout extends CommandHandler
     protected $rules = [
             'username'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'sessionId' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
     ];
 
@@ -29,7 +29,7 @@ class Logout extends CommandHandler
     public function handle($params = [])
     {
         $dataEncryptor = new DataEncryptor($this->params[ 'encryptionKey' ], $this->params[ 'encryptionIV' ]);
-        $response      = $this->httpClient->request('POST', $this->buildUri('logout'), [
+        $response      = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('logout'), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
                 ],

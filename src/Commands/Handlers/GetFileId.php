@@ -6,20 +6,16 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetChildProject extends CommandHandler
+class GetFileId extends CommandHandler
 {
     protected $rules = [
             'sessionId'  => [
                     'required' => true,
                     'type'     => Constants::DATA_TYPE_STRING,
             ],
-            'projectKey' => [
+            'clientId' => [
                     'required' => true,
                     'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'  => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
     ];
 
@@ -31,10 +27,10 @@ class GetChildProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/child/{projectId}', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('DQFFileId'), [
                 'headers' => [
-                        'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
+                        'clientId'   => $params[ 'clientId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
         ]);

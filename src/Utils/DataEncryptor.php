@@ -76,7 +76,7 @@ class DataEncryptor
 
     /**
      * @param string $text
-     * @param int $blocksize
+     * @param int    $blocksize
      *
      * @return string
      */

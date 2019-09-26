@@ -2,11 +2,11 @@
 
 namespace Matecat\Dqf\Tests;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Utils\ParamsValidator;
 
 class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -15,15 +15,15 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
         $rules = [
                 'email'    => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'password' => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'isDummy'  => [
                         'required' => false,
-                        'type'     => ParamsValidator::DATA_TYPE_BOOLEAN,
+                        'type'     => Constants::DATA_TYPE_BOOLEAN,
                 ],
         ];
 
@@ -43,15 +43,15 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
         $rules = [
                 'email'    => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'password' => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'isDummy'  => [
                         'required' => false,
-                        'type'     => ParamsValidator::DATA_TYPE_BOOLEAN,
+                        'type'     => Constants::DATA_TYPE_BOOLEAN,
                 ],
         ];
 
@@ -73,15 +73,15 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
         $rules = [
                 'email'    => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'password' => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'isDummy'  => [
                         'required' => false,
-                        'type'     => ParamsValidator::DATA_TYPE_BOOLEAN,
+                        'type'     => Constants::DATA_TYPE_BOOLEAN,
                 ],
         ];
 
@@ -109,15 +109,15 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
         $rules = [
                 'max'  => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_INTEGER,
-                        'callback' => function($value, $params){
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                        'callback' => function ($value, $params) {
                             return $value >= $params['min'];
                         }
                 ],
                 'min'  => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_INTEGER,
-                        'callback' => function($value, $params){
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                        'callback' => function ($value, $params) {
                             return $value <= $params['max'];
                         }
                 ],
@@ -140,15 +140,15 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
         $rules = [
                 'email'    => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'password' => [
                         'required' => true,
-                        'type'     => ParamsValidator::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'isDummy'  => [
                         'required' => false,
-                        'type'     => ParamsValidator::DATA_TYPE_BOOLEAN,
+                        'type'     => Constants::DATA_TYPE_BOOLEAN,
                 ],
         ];
 

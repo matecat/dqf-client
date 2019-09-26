@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class AddSourceSegmentsInBatchToMasterProject extends CommandHandler
@@ -11,23 +11,23 @@ class AddSourceSegmentsInBatchToMasterProject extends CommandHandler
     protected $rules = [
             'sessionId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectKey' => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'projectId'  => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'fileId'     => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'body'       => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_ARRAY,
+                    'type'     => Constants::DATA_TYPE_ARRAY,
             ],
     ];
 
@@ -39,7 +39,7 @@ class AddSourceSegmentsInBatchToMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri(
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
             'project/master/{projectId}/file/{fileId}/sourceSegment/batch',
             [
                         'projectId' => $params[ 'projectId' ],
@@ -57,7 +57,6 @@ class AddSourceSegmentsInBatchToMasterProject extends CommandHandler
                         'sourceSegments' => $params[ 'body' ]
                 ],
         ]);
-
 
         if ($response->getStatusCode() === StatusCode::CREATED) {
             return $this->decodeResponse($response);

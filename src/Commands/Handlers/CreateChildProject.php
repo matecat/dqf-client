@@ -3,7 +3,7 @@
 namespace Matecat\Dqf\Commands\Handlers;
 
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Utils\ParamsValidator;
+use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
 class CreateChildProject extends CommandHandler
@@ -11,39 +11,39 @@ class CreateChildProject extends CommandHandler
     protected $rules = [
             'sessionId'       => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
-            'parentKey'      => [
+            'parentKey'       => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'type'            => [
                     'required' => true,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'clientId'        => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'name'            => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'assignee'        => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'assigner'        => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_STRING,
+                    'type'     => Constants::DATA_TYPE_STRING,
             ],
             'reviewSettingId' => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_INTEGER,
+                    'type'     => Constants::DATA_TYPE_INTEGER,
             ],
             'isDummy'         => [
                     'required' => false,
-                    'type'     => ParamsValidator::DATA_TYPE_BOOLEAN,
+                    'type'     => Constants::DATA_TYPE_BOOLEAN,
             ],
     ];
 
@@ -55,13 +55,13 @@ class CreateChildProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request('POST', $this->buildUri('project/child'), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/child'), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
                         'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
-                        'parentKey'       => $params[ 'parentKey'],
+                        'parentKey'       => $params[ 'parentKey' ],
                         'type'            => $params[ 'type' ],
                         'clientId'        => isset($params[ 'clientId' ]) ? $params[ 'clientId' ] : null,
                         'name'            => isset($params[ 'name' ]) ? $params[ 'name' ] : null,
