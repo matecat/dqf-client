@@ -8,6 +8,10 @@ use Teapot\StatusCode;
 
 class GetBasicAttributesAggregate extends CommandHandler
 {
+    protected function setRules() {
+        $this->rules = [];
+    }
+
     public function handle($params = [])
     {
         $aggregate = [];

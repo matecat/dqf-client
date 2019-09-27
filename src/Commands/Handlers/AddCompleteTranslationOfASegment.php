@@ -8,76 +8,81 @@ use Teapot\StatusCode;
 
 class AddCompleteTranslationOfASegment extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'targetLangCode'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'fileId'              => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'sourceSegment'   => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'indexNo'   => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'targetSegment'   => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'editedSegment'   => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'time'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'segmentOriginId'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'matchRate'           => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_DOUBLE,
-            ],
-            'mtEngineId'          => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'mtEngineOtherName'   => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'mtEngineVersion'     => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'segmentOriginDetail' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'clientId'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetLangCode'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'fileId'              => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'sourceSegment'   => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'indexNo'   => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetSegment'   => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'editedSegment'   => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'time'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'segmentOriginId'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'matchRate'           => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_DOUBLE,
+                ],
+                'mtEngineId'          => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'mtEngineOtherName'   => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'mtEngineVersion'     => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'segmentOriginDetail' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'clientId'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
+
 
     /**
      * @param array $params

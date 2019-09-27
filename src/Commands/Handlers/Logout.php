@@ -9,16 +9,20 @@ use Teapot\StatusCode;
 
 class Logout extends CommandHandler
 {
-    protected $rules = [
-            'username'  => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'sessionId' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'username'  => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'sessionId' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

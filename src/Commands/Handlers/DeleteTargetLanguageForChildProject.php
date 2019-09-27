@@ -8,28 +8,32 @@ use Teapot\StatusCode;
 
 class DeleteTargetLanguageForChildProject extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'fileId'         => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'targetLangCode' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'fileId'         => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetLangCode' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

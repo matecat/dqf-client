@@ -9,16 +9,20 @@ use Teapot\StatusCode;
 
 class Login extends CommandHandler
 {
-    protected $rules = [
-            'username' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'password' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'username' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'password' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

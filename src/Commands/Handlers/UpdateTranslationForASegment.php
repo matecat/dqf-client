@@ -8,76 +8,80 @@ use Teapot\StatusCode;
 
 class UpdateTranslationForASegment extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'targetLangCode'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'fileId'              => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'sourceSegmentId'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'translationId'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'targetSegment'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'editedSegment'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'time'                => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'segmentOriginId'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'matchRate'           => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_DOUBLE,
-            ],
-            'mtEngineId'          => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'mtEngineOtherName'   => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'mtEngineVersion'     => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'segmentOriginDetail' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'clientId'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetLangCode'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'fileId'              => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'sourceSegmentId'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'translationId'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetSegment'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'editedSegment'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'time'                => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'segmentOriginId'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'matchRate'           => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_DOUBLE,
+                ],
+                'mtEngineId'          => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'mtEngineOtherName'   => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'mtEngineVersion'     => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'segmentOriginDetail' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'clientId'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params
@@ -106,7 +110,7 @@ class UpdateTranslationForASegment extends CommandHandler
                         'targetSegment'       => $params[ 'targetSegment' ],
                         'editedSegment'       => $params[ 'editedSegment' ],
                         'time'                => isset($params[ 'time' ]) ? $params[ 'time' ] : null,
-                        'segmentOriginId'     => $params[ 'segmentOriginId' ],
+                        'segmentOriginId'     => isset($params[ 'segmentOriginId' ]) ? $params[ 'segmentOriginId' ] : null,
                         'matchRate'           => isset($params[ 'matchRate' ]) ? $params[ 'matchRate' ] : null,
                         'mtEngineId'          => isset($params[ 'mtEngineId' ]) ? $params[ 'mtEngineId' ] : null,
                         'mtEngineOtherName'   => isset($params[ 'mtEngineOtherName' ]) ? $params[ 'mtEngineOtherName' ] : null,
@@ -116,7 +120,7 @@ class UpdateTranslationForASegment extends CommandHandler
                 ],
         ]);
 
-        if ($response->getStatusCode() === StatusCode::CREATED) {
+        if ($response->getStatusCode() === StatusCode::OK) {
             return $this->decodeResponse($response);
         }
     }

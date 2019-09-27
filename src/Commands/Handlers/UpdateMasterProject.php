@@ -8,56 +8,60 @@ use Teapot\StatusCode;
 
 class UpdateMasterProject extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'         => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'name'               => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'sourceLanguageCode' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'contentTypeId'      => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'industryId'         => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'processId'          => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'qualityLevelId'     => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'clientId'           => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'templateName'       => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'tmsProjectKey'      => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'         => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'name'               => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'sourceLanguageCode' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'contentTypeId'      => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'industryId'         => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'processId'          => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'qualityLevelId'     => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'clientId'           => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'templateName'       => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'tmsProjectKey'      => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

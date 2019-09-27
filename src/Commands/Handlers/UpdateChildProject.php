@@ -8,52 +8,56 @@ use Teapot\StatusCode;
 
 class UpdateChildProject extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'parentKey'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'type'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'clientId'        => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'name'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'assignee'        => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'assigner'        => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'reviewSettingId' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'isDummy'         => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_BOOLEAN,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'parentKey'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'type'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'clientId'        => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'name'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'assignee'        => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'assigner'        => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'reviewSettingId' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'isDummy'         => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_BOOLEAN,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

@@ -8,12 +8,16 @@ use Teapot\StatusCode;
 
 class CheckLanguageCode extends CommandHandler
 {
-    protected $rules = [
-            'languageCode'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'languageCode'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

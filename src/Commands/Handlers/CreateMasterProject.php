@@ -8,48 +8,52 @@ use Teapot\StatusCode;
 
 class CreateMasterProject extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'name'               => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'sourceLanguageCode' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'contentTypeId'      => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'industryId'         => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'processId'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'qualityLevelId'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'clientId'           => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'templateName'       => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'tmsProjectKey'      => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'name'               => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'sourceLanguageCode' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'contentTypeId'      => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'industryId'         => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'processId'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'qualityLevelId'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'clientId'           => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'templateName'       => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'tmsProjectKey'      => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

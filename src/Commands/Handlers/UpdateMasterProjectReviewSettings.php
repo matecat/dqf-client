@@ -8,53 +8,57 @@ use Teapot\StatusCode;
 
 class UpdateMasterProjectReviewSettings extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'           => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'templateName'        => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'reviewType'          => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-                    'values'   => 'correction|error_typology|combined'
-            ],
-            'severityWeights'     => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'errorCategoryIds[0]' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'errorCategoryIds[1]' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'errorCategoryIds[2]' => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'passFailThreshold'   => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_DOUBLE,
-            ],
-            'sampling'            => [
-                    'required' => false,
-                    'type'     => Constants::DATA_TYPE_DOUBLE,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'           => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'templateName'        => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'reviewType'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                        'values'   => 'correction|error_typology|combined'
+                ],
+                'severityWeights'     => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'errorCategoryIds[0]' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'errorCategoryIds[1]' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'errorCategoryIds[2]' => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'passFailThreshold'   => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_DOUBLE,
+                ],
+                'sampling'            => [
+                        'required' => false,
+                        'type'     => Constants::DATA_TYPE_DOUBLE,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params

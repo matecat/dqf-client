@@ -44,4 +44,12 @@ class Constants
     const HTTP_VERBS_CREATE = 'POST';
     const HTTP_VERBS_UPDATE = 'PUT';
     const HTTP_VERBS_DELETE = 'DELETE';
+
+    /**
+     * **********************************************
+     * LOGICAL OPERATORS
+     * **********************************************
+     */
+
+    const LOGICAL_OPERATOR_EQUALS = '===';
 }

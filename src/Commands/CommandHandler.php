@@ -41,6 +41,8 @@ abstract class CommandHandler implements CommandHandlerInterface
         $this->params     = $clientParams;
     }
 
+    abstract protected function setRules();
+
     /**
      * @param string $path
      * @param array  $params
@@ -73,6 +75,9 @@ abstract class CommandHandler implements CommandHandlerInterface
      */
     public function validate($params = [])
     {
+        // set the rules
+        $this->setRules();
+
         // allow all commands to handle generic sessions
         $genericEmail = [
                 'generic_email' => [

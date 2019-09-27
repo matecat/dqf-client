@@ -8,28 +8,32 @@ use Teapot\StatusCode;
 
 class AddSourceSegmentsInBatchToMasterProject extends CommandHandler
 {
-    protected $rules = [
-            'sessionId'  => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectKey' => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_STRING,
-            ],
-            'projectId'  => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'fileId'     => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_INTEGER,
-            ],
-            'body'       => [
-                    'required' => true,
-                    'type'     => Constants::DATA_TYPE_ARRAY,
-            ],
-    ];
+    protected function setRules() {
+        $rules = [
+                'sessionId'  => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectKey' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                ],
+                'projectId'  => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'fileId'     => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'body'       => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_ARRAY,
+                ],
+        ];
+
+        $this->rules = $rules;
+    }
 
     /**
      * @param array $params
