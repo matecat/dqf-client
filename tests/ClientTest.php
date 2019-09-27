@@ -76,6 +76,26 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function get_basic_attributes_aggregate()
+    {
+        //getBasicAttributesAggregate
+        $basicAttrs = $this->client->getBasicAttributesAggregate([]);
+
+        $this->assertArrayHasKey('language', $basicAttrs);
+        $this->assertArrayHasKey('severity', $basicAttrs);
+        $this->assertArrayHasKey('mtEngine', $basicAttrs);
+        $this->assertArrayHasKey('process', $basicAttrs);
+        $this->assertArrayHasKey('contentType', $basicAttrs);
+        $this->assertArrayHasKey('segmentOrigin', $basicAttrs);
+        $this->assertArrayHasKey('catTool', $basicAttrs);
+        $this->assertArrayHasKey('industry', $basicAttrs);
+        $this->assertArrayHasKey('errorCategory', $basicAttrs);
+        $this->assertArrayHasKey('qualitylevel', $basicAttrs);
+    }
+
+    /**
+     * @test
+     */
     public function can_check_a_LanguageCode()
     {
         $languageCode = $this->client->checkLanguageCode([
@@ -304,5 +324,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('OK', $deleteChildProject->status);
         $this->assertInternalType('string', $deleteChildProject->message);
         $this->assertEquals('Project successfully deleted. Also removed 0 file/targetLang associations, 0 file mappings, 0 target languages, 0 project mappings, 0 review cycle details, 0 review cycle headers 0 target segments, 0 edited segments, 0 review settings.', $deleteChildProject->message);
+    }
+
+    /**
+     * @test
+     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
+     */
+    public function can_destroy_the_session(){
+        $session = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+
+        $this->assertEquals(1, $session);
     }
 }
