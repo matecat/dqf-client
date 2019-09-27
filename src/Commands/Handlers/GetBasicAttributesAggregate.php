@@ -25,7 +25,7 @@ class GetBasicAttributesAggregate extends CommandHandler
             'qualitylevel',
         ];
 
-        foreach ($uris as $uri){
+        foreach ($uris as $uri) {
             $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri($uri), []);
 
             if ($response->getStatusCode() === StatusCode::OK) {

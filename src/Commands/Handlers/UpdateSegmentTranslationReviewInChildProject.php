@@ -6,7 +6,8 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class UpdateSegmentTranslationReviewInChildProject extends CommandHandler {
+class UpdateSegmentTranslationReviewInChildProject extends CommandHandler
+{
     protected $rules = [
             'sessionId'      => [
                     'required' => true,
@@ -44,10 +45,11 @@ class UpdateSegmentTranslationReviewInChildProject extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri(
-                'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/translation/{translationId}/batchReview',
-                [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
+            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/translation/{translationId}/batchReview',
+            [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],
                         'targetLangCode' => $params[ 'targetLangCode' ],
@@ -56,18 +58,18 @@ class UpdateSegmentTranslationReviewInChildProject extends CommandHandler {
         ), [
                 'headers' => [
                         'Content-Type'   => 'application/json',
-                        'Content-Length' => strlen( json_encode( $params[ 'body' ] ) ),
+                        'Content-Length' => strlen(json_encode($params[ 'body' ])),
                         'projectKey'     => $params[ 'projectKey' ],
                         'sessionId'      => $params[ 'sessionId' ],
-                        'email'          => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'          => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'json'    => [
                         'sourceSegments' => $params[ 'body' ]
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

@@ -6,7 +6,8 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class AddCompleteTranslationOfASegment extends CommandHandler {
+class AddCompleteTranslationOfASegment extends CommandHandler
+{
     protected $rules = [
             'sessionId'           => [
                     'required' => true,
@@ -84,10 +85,11 @@ class AddCompleteTranslationOfASegment extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri(
-                'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/segment',
-                [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
+            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/segment',
+            [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],
                         'targetLangCode' => $params[ 'targetLangCode' ],
@@ -96,27 +98,26 @@ class AddCompleteTranslationOfASegment extends CommandHandler {
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
-                        'email'      => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
                         'sourceSegment'       => $params[ 'sourceSegment' ],
                         'indexNo'             => $params[ 'indexNo' ],
                         'targetSegment'       => $params[ 'targetSegment' ],
                         'editedSegment'       => $params[ 'editedSegment' ],
-                        'time'                => isset( $params[ 'time' ] ) ? $params[ 'time' ] : null,
+                        'time'                => isset($params[ 'time' ]) ? $params[ 'time' ] : null,
                         'segmentOriginId'     => $params[ 'segmentOriginId' ],
-                        'matchRate'           => isset( $params[ 'matchRate' ] ) ? $params[ 'matchRate' ] : null,
-                        'mtEngineId'          => isset( $params[ 'mtEngineId' ] ) ? $params[ 'mtEngineId' ] : null,
-                        'mtEngineOtherName'   => isset( $params[ 'mtEngineOtherName' ] ) ? $params[ 'mtEngineOtherName' ] : null,
-                        'mtEngineVersion'     => isset( $params[ 'mtEngineVersion' ] ) ? $params[ 'mtEngineVersion' ] : null,
-                        'segmentOriginDetail' => isset( $params[ 'segmentOriginDetail' ] ) ? $params[ 'segmentOriginDetail' ] : null,
-                        'clientId'            => isset( $params[ 'clientId' ] ) ? $params[ 'clientId' ] : null,
+                        'matchRate'           => isset($params[ 'matchRate' ]) ? $params[ 'matchRate' ] : null,
+                        'mtEngineId'          => isset($params[ 'mtEngineId' ]) ? $params[ 'mtEngineId' ] : null,
+                        'mtEngineOtherName'   => isset($params[ 'mtEngineOtherName' ]) ? $params[ 'mtEngineOtherName' ] : null,
+                        'mtEngineVersion'     => isset($params[ 'mtEngineVersion' ]) ? $params[ 'mtEngineVersion' ] : null,
+                        'segmentOriginDetail' => isset($params[ 'segmentOriginDetail' ]) ? $params[ 'segmentOriginDetail' ] : null,
+                        'clientId'            => isset($params[ 'clientId' ]) ? $params[ 'clientId' ] : null,
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }
-

@@ -330,7 +330,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @test
      * @throws \Matecat\Dqf\Exceptions\SessionProviderException
      */
-    public function can_destroy_the_session(){
+    public function can_destroy_the_session()
+    {
         $session = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
 
         $this->assertEquals(1, $session);

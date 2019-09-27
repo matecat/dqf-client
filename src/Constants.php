@@ -2,7 +2,8 @@
 
 namespace Matecat\Dqf;
 
-class Constants {
+class Constants
+{
 
     /**
      * **********************************************

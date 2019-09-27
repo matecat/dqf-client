@@ -24,7 +24,7 @@ use Monolog\Logger;
  *
  * Method list:
  *
- * @method mixed AddCompleteTranslationOfASegment( array $input )
+ * @method mixed addCompleteTranslationOfASegment( array $input )
  * @method mixed addMasterProjectFile( array $input )
  * @method mixed addMasterProjectReviewSettings( array $input )
  * @method mixed addRemainingTargetSegmentsInBatch( array $input )
@@ -50,6 +50,7 @@ use Monolog\Logger;
  * @method mixed getProjectId( array $input )
  * @method mixed getMasterProject( array $input )
  * @method mixed getMasterProjectFile( array $input )
+ * @method mixed getChildProjectStatus( array $input )
  * @method mixed getMasterProjectReviewSettings( array $input )
  * @method mixed getSegmentId( array $input )
  * @method mixed getTargetLanguageForChildProject( array $input )
@@ -62,6 +63,7 @@ use Monolog\Logger;
  * @method mixed login( array $input )
  * @method mixed logout( array $input )
  * @method mixed updateChildProject( array $input )
+ * @method mixed updateChildProjectStatus( array $input )
  * @method mixed updateCompleteTranslatedSegment( array $input )
  * @method mixed updateMasterProject( array $input )
  * @method mixed updateMasterProjectFile( array $input )
@@ -127,9 +129,9 @@ class Client
         $stack = HandlerStack::create();
         $stack->push(
             Middleware::log(
-                    $this->getLogger($logStoragePath),
-                    new MessageFormatter('{req_body} - {res_body}')
-                )
+                $this->getLogger($logStoragePath),
+                new MessageFormatter('{req_body} - {res_body}')
+            )
         );
 
         return new HttpClient([

@@ -29,7 +29,7 @@ class ParamsValidator
             // values
             if (isset($rule[ 'values' ]) and isset($params[ $key ])) {
                 $values = explode('|', $rule[ 'values' ]);
-                if(false === in_array($params[ $key ], $values)){
+                if (false === in_array($params[ $key ], $values)) {
                     $errors[] = self::createNotAllowedParamsWithPossibleValuesErrorText($key, $rule[ 'values' ]);
                 }
             }

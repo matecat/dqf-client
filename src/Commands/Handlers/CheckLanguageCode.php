@@ -24,7 +24,9 @@ class CheckLanguageCode extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
-                'check/language/{languageCode}', [ 'languageCode' => $params[ 'languageCode' ], ] ), [
+            'check/language/{languageCode}',
+            [ 'languageCode' => $params[ 'languageCode' ], ]
+        ), [
         ]);
 
         if ($response->getStatusCode() === StatusCode::OK) {

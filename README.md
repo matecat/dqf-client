@@ -43,34 +43,61 @@ If you want to login as a generic user you can use:
 
 Here is the list of Client's public methods:
 
-* `addMasterProjectFile`
-* `addSourceSegmentsInBatchToMasterProject` - 
-* `addTargetLanguageToChildProject` - 
-* `addTargetLanguageToMasterProject` - 
-* `anonymousLogin` - 
-* `anonymousLogout` - 
-* `createMasterProject` - 
-* `createChildProject` - 
-* `deleteChildProject` - 
-* `deleteMasterProject` - 
-* `deleteMasterProjectFile` - 
-* `deleteTargetLanguageForChildProject` - 
-* `deleteTargetLanguageForMasterProject` - 
-* `getChildProject` - 
-* `getChildProjectFile` - 
-* `getChildProjectFiles` - 
-* `getMasterProject` - 
-* `getMasterProjectFile` - 
-* `getTargetLanguageForChildProject` - 
-* `getTargetLanguageForMasterProject` - 
-* `getTargetLanguageForChildProjectByLang` - 
-* `getTargetLanguageForMasterProjectByLang` - 
-* `getUser` - 
-* `login` - 
-* `logout` - 
-* `updateChildProject` - 
-* `updateMasterProject` - 
-* `updateMasterProjectFile` - 
+* `addCompleteTranslationOfASegment` -  
+* `addMasterProjectFile` -  
+* `addMasterProjectReviewSettings` -  
+* `addRemainingTargetSegmentsInBatch` -  
+* `addSourceSegmentsInBatchToMasterProject` -  
+* `addTargetLanguageToChildProject` -  
+* `addTargetLanguageToMasterProject` -  
+* `addTranslationOfASourceSegment` -  
+* `addTranslationsForSourceSegmentsInBatch` -  
+* `checkLanguageCode` -  
+* `checkUserExistence` -  
+* `createMasterProject` -  
+* `createChildProject` -  
+* `deleteChildProject` -  
+* `deleteMasterProject` -  
+* `deleteMasterProjectFile` -  
+* `deleteMasterProjectReviewSettings` -  
+* `deleteTargetLanguageForChildProject` -  
+* `deleteTargetLanguageForMasterProject` -  
+* `getBasicAttributesAggregate` -  
+* `getChildProjectFile` -  
+* `getChildProjectFiles` -  
+* `getChildProjectStatus` -  
+* `getFileId` -  
+* `getProjectId` -  
+* `getMasterProject` -  
+* `getMasterProjectFile` -  
+* `getMasterProjectReviewSettings` -  
+* `getSegmentId` -  
+* `getTargetLanguageForChildProject` -  
+* `getTargetLanguageForMasterProject` -  
+* `getTargetLanguageForChildProjectByLang` -  
+* `getTargetLanguageForMasterProjectByLang` -  
+* `getTranslationId` -  
+* `getTranslationsForSourceSegmentsInBatch` -  
+* `getUser` -  
+* `login` -  
+* `logout` -  
+* `updateChildProject` -  
+* `updateChildProjectStatus` -  
+* `updateCompleteTranslatedSegment` - 
+* `updateMasterProject` -  
+* `updateMasterProjectFile` -  
+* `updateMasterProjectReviewSettings` -  
+* `updateSegmentTranslationReviewInChildProject` -  
+* `updateTranslationForASegment` -  
+
+## Input validation
+
+The Client performs a validation when a command is invoked. Every command validates input data against an array map of required/expected type values.
+
+If validation fails, a `ParamsValidatorException` is raised and **the request is not sent** to DQF.
+
+## Submitting data to DQF: a complete workflow
+
 
 ## Support
 
