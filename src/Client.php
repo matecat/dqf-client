@@ -24,11 +24,14 @@ use Monolog\Logger;
  *
  * Method list:
  *
+ * @method mixed AddCompleteTranslationOfASegment( array $input )
  * @method mixed addMasterProjectFile( array $input )
  * @method mixed addMasterProjectReviewSettings( array $input )
  * @method mixed addSourceSegmentsInBatchToMasterProject( array $input )
  * @method mixed addTargetLanguageToChildProject( array $input )
  * @method mixed addTargetLanguageToMasterProject( array $input )
+ * @method mixed addTranslationOfASourceSegment( array $input )
+ * @method mixed addTranslationsForSourceSegmentsInBatch( array $input )
  * @method mixed checkLanguageCode( array $input )
  * @method mixed checkUserExistence( array $input )
  * @method mixed createMasterProject( array $input )
@@ -53,14 +56,17 @@ use Monolog\Logger;
  * @method mixed getTargetLanguageForChildProjectByLang( array $input )
  * @method mixed getTargetLanguageForMasterProjectByLang( array $input )
  * @method mixed getTranslationId( array $input )
+ * @method mixed getTranslationsForSourceSegmentsInBatch( array $input )
  * @method mixed getUser( array $input )
  * @method mixed login( array $input )
  * @method mixed logout( array $input )
  * @method mixed updateChildProject( array $input )
+ * @method mixed updateCompleteTranslatedSegment( array $input )
  * @method mixed updateMasterProject( array $input )
  * @method mixed updateMasterProjectFile( array $input )
  * @method mixed updateMasterProjectReviewSettings( array $input )
  * @method mixed updateSegmentTranslationReviewInChildProject( array $input )
+ * @method mixed updateTranslationForASegment( array $input )
  *
  * @package Matecat\Dqf
  */
