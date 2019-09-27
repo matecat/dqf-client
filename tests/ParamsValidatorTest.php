@@ -104,6 +104,30 @@ class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function throw_exception_with_possibile_values()
+    {
+        $rules = [
+                'review_type'    => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
+                        'values'   => 'correction|error_typology|combined'
+                ],
+        ];
+
+        $params = [
+                'review_type' => 'bar',
+        ];
+
+        $validate = ParamsValidator::validate($params, $rules);
+
+        $this->assertEquals(['\'review_type\' param is not allowed (only correction|error_typology|combined are permitted)'], $validate);
+    }
+
+
+
+    /**
+     * @test
+     */
     public function throw_exception_from_callback_validation()
     {
         $rules = [

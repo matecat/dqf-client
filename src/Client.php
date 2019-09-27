@@ -7,7 +7,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Matecat\Dqf\Commands\CommandHandler;
-use Matecat\Dqf\Exceptions\MissingParamsException;
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
@@ -26,6 +25,7 @@ use Monolog\Logger;
  * Method list:
  *
  * @method mixed addMasterProjectFile( array $input )
+ * @method mixed addMasterProjectReviewSettings( array $input )
  * @method mixed addSourceSegmentsInBatchToMasterProject( array $input )
  * @method mixed addTargetLanguageToChildProject( array $input )
  * @method mixed addTargetLanguageToMasterProject( array $input )
@@ -36,6 +36,7 @@ use Monolog\Logger;
  * @method mixed deleteChildProject( array $input )
  * @method mixed deleteMasterProject( array $input )
  * @method mixed deleteMasterProjectFile( array $input )
+ * @method mixed deleteMasterProjectReviewSettings( array $input )
  * @method mixed deleteTargetLanguageForChildProject( array $input )
  * @method mixed deleteTargetLanguageForMasterProject( array $input )
  * @method mixed getChildProject( array $input )
@@ -45,6 +46,7 @@ use Monolog\Logger;
  * @method mixed getProjectId( array $input )
  * @method mixed getMasterProject( array $input )
  * @method mixed getMasterProjectFile( array $input )
+ * @method mixed getMasterProjectReviewSettings( array $input )
  * @method mixed getSegmentId( array $input )
  * @method mixed getTargetLanguageForChildProject( array $input )
  * @method mixed getTargetLanguageForMasterProject( array $input )
@@ -57,6 +59,7 @@ use Monolog\Logger;
  * @method mixed updateChildProject( array $input )
  * @method mixed updateMasterProject( array $input )
  * @method mixed updateMasterProjectFile( array $input )
+ * @method mixed updateMasterProjectReviewSettings( array $input )
  * @method mixed updateSegmentTranslationReviewInChildProject( array $input )
  *
  * @package Matecat\Dqf

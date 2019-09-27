@@ -21,10 +21,19 @@ class ParamsValidator
                 $errors[] = self::createMissingParamsErrorText($key);
             }
 
-            // check for wrong types
+            // check for param types
             if (isset($params[ $key ]) and gettype($params[ $key ]) !== $rule[ 'type' ]) {
                 $errors[] = self::createWrongTypeParamsErrorText($key, $rule[ 'type' ]);
             }
+
+            // values
+            if (isset($rule[ 'values' ]) and isset($params[ $key ])) {
+                $values = explode('|', $rule[ 'values' ]);
+                if(false === in_array($params[ $key ], $values)){
+                    $errors[] = self::createNotAllowedParamsWithPossibleValuesErrorText($key, $rule[ 'values' ]);
+                }
+            }
+
 
             // execute callbacks
             if (isset($rule[ 'callback' ]) and isset($params[ $key ])) {
@@ -83,5 +92,16 @@ class ParamsValidator
     private static function createCallbackErrorText($key)
     {
         return "'{$key}' param did not pass callback validation";
+    }
+
+    /**
+     * @param string $key
+     * @param string $values
+     *
+     * @return string
+     */
+    protected static function createNotAllowedParamsWithPossibleValuesErrorText($key, $values)
+    {
+        return "'{$key}' param is not allowed (only {$values} are permitted)";
     }
 }
