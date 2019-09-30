@@ -96,9 +96,11 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 1. create a project (checking if the sourceLanguageCode is valid first)
+         * STEP 1. create a project
          ****************************************************************************
          */
+
+        // checking if the sourceLanguageCode is valid first
         $languageCode = $this->client->checkLanguageCode( [
                 'languageCode' => $sourceFile[ 'lang' ],
         ] );
@@ -115,7 +117,11 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'processId'          => 1,
                 'qualityLevelId'     => 1,
                 'clientId'           => $masterProjectClientId,
+                'templateName'       => 'master-workflow-test-template',
         ] );
+
+        // checking if the templateName was saved correctly
+
 
         /**
          ****************************************************************************
@@ -161,7 +167,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          */
         $this->assertNotEmpty( $masterProjectTargetLang->dqfId );
 
-        $masterProjectReview = $this->client->addMasterProjectReviewSettings( [
+        $projectReviewSettings = $this->client->specifyProjectReviewSettings( [
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $masterProject->dqfUUID,
                 'projectId'           => $masterProject->dqfId,
@@ -178,7 +184,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          * STEP 5. update source segments in batch
          ****************************************************************************
          */
-        $this->assertNotEmpty( $masterProjectReview->dqfId );
+        $this->assertNotEmpty( $projectReviewSettings->dqfId );
 
         $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject( [
                 'sessionId'  => $this->sessionId,
@@ -299,26 +305,46 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          * STEP 11. create a 'review' child node
          ****************************************************************************
          */
-        $childReview = $this->client->createChildProject( [
+        $childNodeReview = $this->client->createChildProject( [
                 'sessionId' => $this->sessionId,
                 'parentKey' => $masterProject->dqfUUID,
                 'type'      => 'review',
                 'name'      => 'child-revision-workflow-test',
-                'isDummy'   => false,
+                'isDummy'   => false, // for type = 'revise' isDummy = false is not allowed
         ] );
 
-        $this->assertNotEmpty( $childReview->dqfId );
-        $this->assertNotEmpty( $childReview->dqfUUID );
+        $this->assertNotEmpty( $childNodeReview->dqfId );
+        $this->assertNotEmpty( $childNodeReview->dqfUUID );
 
         /**
          ****************************************************************************
-         * STEP 12. update revisions in batch
+         * STEP 12. set review settings for the project
+         ****************************************************************************
+         */
+        $childNodeReviewSettings = $this->client->specifyProjectReviewSettings( [
+                'sessionId'           => $this->sessionId,
+                'projectKey'          => $childNodeReview->dqfUUID,
+                'projectId'           => $childNodeReview->dqfId,
+                'reviewType'          => 'combined',
+                'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
+                'errorCategoryIds[0]' => 9,
+                'errorCategoryIds[1]' => 10,
+                'errorCategoryIds[2]' => 11,
+                'passFailThreshold'   => 1.00,
+        ] );
+
+        var_dump($childNodeReviewSettings);
+
+        /**
+         ****************************************************************************
+         * STEP 13. update revisions in batch
          ****************************************************************************
          */
 
+
         /**
          ****************************************************************************
-         * STEP 13. update a single segment revision
+         * STEP 14. update a single segment revision
          ****************************************************************************
          */
 
@@ -329,8 +355,8 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          */
         $deleteChildReview = $this->client->deleteChildProject( [
                 'sessionId'  => $this->sessionId,
-                'projectKey' => $childReview->dqfUUID,
-                'projectId'  => $childReview->dqfId,
+                'projectKey' => $childNodeReview->dqfUUID,
+                'projectId'  => $childNodeReview->dqfId,
         ] );
 
         $this->assertEquals( 'OK', $deleteChildReview->status );
