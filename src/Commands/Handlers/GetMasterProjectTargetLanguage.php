@@ -6,7 +6,7 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetTargetLanguageForChildProjectByLang extends CommandHandler
+class GetMasterProjectTargetLanguage extends CommandHandler
 {
     protected function setRules()
     {
@@ -45,7 +45,7 @@ class GetTargetLanguageForChildProjectByLang extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
-            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
+            'project/master/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
             [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],

@@ -6,26 +6,30 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetTargetLanguageForChildProject extends CommandHandler
+class GetChildProjectTargetLanguage extends CommandHandler
 {
     protected function setRules()
     {
         $rules = [
-                'sessionId'  => [
+                'sessionId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectKey' => [
+                'projectKey'     => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectId'  => [
+                'projectId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'fileId'     => [
+                'fileId'         => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'targetLangCode' => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
         ];
 
@@ -41,10 +45,11 @@ class GetTargetLanguageForChildProject extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
-            'project/child/{projectId}/file/{fileId}/targetLang',
+            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
             [
-                        'projectId' => $params[ 'projectId' ],
-                        'fileId'    => $params[ 'fileId' ],
+                        'projectId'      => $params[ 'projectId' ],
+                        'fileId'         => $params[ 'fileId' ],
+                        'targetLangCode' => $params[ 'targetLangCode' ],
                 ]
         ), [
                 'headers' => [

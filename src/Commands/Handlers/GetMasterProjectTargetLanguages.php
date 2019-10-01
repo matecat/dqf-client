@@ -6,7 +6,7 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetTargetLanguageForMasterProject extends CommandHandler
+class GetMasterProjectTargetLanguages extends CommandHandler
 {
     protected function setRules()
     {

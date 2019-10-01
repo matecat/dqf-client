@@ -6,30 +6,26 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetTargetLanguageForMasterProjectByLang extends CommandHandler
+class GetChildProjectTargetLanguages extends CommandHandler
 {
     protected function setRules()
     {
         $rules = [
-                'sessionId'      => [
+                'sessionId'  => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectKey'     => [
+                'projectKey' => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectId'      => [
+                'projectId'  => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'fileId'         => [
+                'fileId'     => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
-                ],
-                'targetLangCode' => [
-                        'required' => true,
-                        'type'     => Constants::DATA_TYPE_STRING,
                 ],
         ];
 
@@ -45,11 +41,10 @@ class GetTargetLanguageForMasterProjectByLang extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
-            'project/master/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
+            'project/child/{projectId}/file/{fileId}/targetLang',
             [
-                        'projectId'      => $params[ 'projectId' ],
-                        'fileId'         => $params[ 'fileId' ],
-                        'targetLangCode' => $params[ 'targetLangCode' ],
+                        'projectId' => $params[ 'projectId' ],
+                        'fileId'    => $params[ 'fileId' ],
                 ]
         ), [
                 'headers' => [

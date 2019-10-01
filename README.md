@@ -122,10 +122,10 @@ Here is the list of Client's public methods:
 | `getReviewTemplates` | Return the review templates of a user |
 | `getSegmentId` | Return the DQF segment id |
 | `getSourceSegmentIdsForAFile` | Get all the source segment ids of a file |
-| `getTargetLanguageForChildProject` | Find the target languages of a child Project |
-| `getTargetLanguageForMasterProject` | Find the target languages of a master Project |
-| `getTargetLanguageForChildProjectByLang` | Find a target language of a child project |
-| `getTargetLanguageForMasterProjectByLang` | Find a target language of a master project |
+| `getChildProjectTargetLanguage` | Find a target language of a child project |
+| `getChildProjectTargetLanguages` | Find the target languages of a child Project |
+| `getMasterProjectTargetLanguage` | Find a target language of a master project |
+| `getMasterProjectTargetLanguages` | Find the target languages of a master Project |
 | `getTemplate` | Return the selected project template of the user |
 | `getTemplates` | Return the project templates of the user |
 | `getTranslationForASegment` | Get the translation of a source segment |
