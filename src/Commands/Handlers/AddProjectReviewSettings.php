@@ -6,7 +6,7 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class SpecifyProjectReviewSettings extends CommandHandler
+class AddProjectReviewSettings extends CommandHandler
 {
     protected function setRules()
     {

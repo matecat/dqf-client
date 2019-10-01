@@ -207,7 +207,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest
 
         $this->assertNotEmpty($masterProjectTargetLang->dqfId);
 
-        $projectReviewSettings = $this->client->specifyProjectReviewSettings([
+        $projectReviewSettings = $this->client->addProjectReviewSettings([
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $masterProject->dqfUUID,
                 'projectId'           => $masterProject->dqfId,
@@ -405,7 +405,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest
          ****************************************************************************
          */
 
-        $childNodeReviewSettings = $this->client->specifyProjectReviewSettings([
+        $childNodeReviewSettings = $this->client->addProjectReviewSettings([
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $childReview->dqfUUID,
                 'projectId'           => $childReview->dqfId,

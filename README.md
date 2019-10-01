@@ -85,36 +85,37 @@ Here is the list of Client's public methods:
 | `addCompleteTranslationOfASegment` | .... |
 | `addMasterProjectFile` | Add files to a master project |
 | `addProjectReviewCycle` | Convenient method to automatically create review children |
+| `addProjectReviewSettings` | Add review preferences on a project |
 | `addRemainingTargetSegmentsInBatch` | ... |
 | `addReviewTemplate` | Add a review template |
 | `addSourceSegmentsInBatchToMasterProject` | ... |
-| `addTargetLanguageToChildProject` | ... |
-| `addTargetLanguageToMasterProject` | ... |
+| `addTargetLanguageToChildProject` | Add a target language for a file of a child project |
+| `addTargetLanguageToMasterProject` | Add target languages for the translation of a file |
 | `addTemplate` | Add project templates |
 | `addTranslationOfASourceSegment` | ... |
 | `addTranslationsForSourceSegmentsInBatch` | ... |
-| `checkLanguageCode` | ... |
-| `checkUserExistence` | ... |
+| `checkLanguageCode` | Check language code |
+| `checkUserExistence` | Check the existence of a TAUS user |
 | `createMasterProject` | Add a new master project to DQF |
 | `createChildProject` | Add a new child Project to DQF |
 | `deleteChildProject` | Delete an initialized child Project |
 | `deleteMasterProject` | Delete an initialized master Project |
 | `deleteMasterProjectFile` | Delete a file of an initialized master Project |
-| `deleteMasterProjectReviewSettings` | ... |
+| `deleteProjectReviewSettings` | Delete the review preferences of an initialized project |
 | `deleteReviewTemplate` | Remove the review template of the user |
-| `deleteTargetLanguageForChildProject` | ... |
-| `deleteTargetLanguageForMasterProject` | ... |
+| `deleteTargetLanguageForChildProject` | Delete a target language of a child project's file |
+| `deleteTargetLanguageForMasterProject` | Delete a target language of a master project |
 | `deleteTemplate` | Remove the project template of the user |
 | `getBasicAttributesAggregate` | Return an aggregate of DQF basic attributes |
 | `getChildProject` | Find the properties of a child Project |
 | `getChildProjectFile` | Find the details of a file |
 | `getChildProjectFiles` | Find the files of a child Project |
-| `getChildProjectStatus` | ... |
+| `getChildProjectStatus` | Get the project status |
 | `getFileId` | Return the DQF file id |
 | `getMasterProject` | Find the properties of a master Project |
 | `getMasterProjectFile` | Find a file of a master Project |
 | `getMasterProjectFiles` | Find the files of a master Project |
-| `getMasterProjectReviewSettings` | ... |
+| `getProjectReviewSettings` | Return the review preferences of a project |
 | `getProjectId` | Return the DQF project id |
 | `getProjectReviewCycle` | Get review children projects |
 | `getReviewTemplate` | Return the selected review template of the user |
@@ -133,13 +134,12 @@ Here is the list of Client's public methods:
 | `getUser` | Get an existing TAUS user |
 | `login` | Login to the DQF APIv3 service  |
 | `logout` | Logout of the DQF APIv3 service |
-| `specifyProjectReviewSettings` | ... |
-| `updateChildProject` | ... |Update the properties of a child project.
-| `updateChildProjectStatus` | ... |
+| `updateChildProject` | Update the properties of a child project |
+| `updateChildProjectStatus` | Update project status |
 | `updateCompleteTranslatedSegment` | ... |
 | `updateMasterProject` | Update the master project |
 | `updateMasterProjectFile` | Update the file of a master project |
-| `updateMasterProjectReviewSettings` | ... |
+| `updateProjectReviewSettings` | Update the project's review preferences |
 | `updateReviewTemplate` | Update a review template of the user |
 | `updateReviewInBatch` | Add a review for a segment |
 | `updateTemplate` | Update a project template of the user |
