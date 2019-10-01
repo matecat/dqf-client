@@ -73,8 +73,8 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                         [
                                 "sourceSegmentId"   => 3,
                                 "clientId"          => Uuid::uuid4()->toString(),
-                                "targetSegment"     => "",
-                                "editedSegment"     => "This is just a tongue twister",
+                                "targetSegment"     => "This is just a tongue twister",
+                                "editedSegment"     => "",
                                 "time"              => 63455,
                                 "segmentOriginId"   => 3,
                                 "mtEngineId"        => 22,
@@ -96,7 +96,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 1. create a project
+         * create a project
          ****************************************************************************
          */
 
@@ -113,21 +113,56 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'name'               => 'master-workflow-test',
                 'sourceLanguageCode' => $sourceFile[ 'lang' ],
                 'contentTypeId'      => 1,
-                'industryId'         => 1,
+                'industryId'         => 2,
                 'processId'          => 1,
                 'qualityLevelId'     => 1,
                 'clientId'           => $masterProjectClientId,
-                'templateName'       => 'master-workflow-test-template',
         ] );
-
-        // checking if the templateName was saved correctly
-
 
         /**
          ****************************************************************************
-         * STEP 2. set a file for the project
+         * add a template, retrieve and delete it
          ****************************************************************************
          */
+
+        $this->client->addTemplate( [
+                'sessionId'      => $this->sessionId,
+                'name'           => 'test-template-' . Uuid::uuid4()->toString(),
+                'contentTypeId'  => rand( 1, 15 ),
+                'industryId'     => rand( 1, 24 ),
+                'processId'      => rand( 1, 4 ),
+                'qualityLevelId' => rand( 1, 2 ),
+                'isPublic'       => true,
+        ] );
+
+        $templates = $this->client->getTemplates( [
+                'sessionId' => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $templates->message, "ProjectTemplates successfully fetched" );
+
+        $projectTemplateId = $templates->modelList[ 0 ]->id;
+
+        $getTemplate = $this->client->getTemplate( [
+                'projectTemplateId' => $projectTemplateId,
+                'sessionId'         => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $getTemplate->message, "ProjectTemplate successfully fetched" );
+
+        $deleteTemplate = $this->client->deleteTemplate( [
+                'projectTemplateId' => $projectTemplateId,
+                'sessionId'         => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $deleteTemplate->message, "Project Template successfully deleted" );
+
+        /**
+         ****************************************************************************
+         * set a file for the project
+         ****************************************************************************
+         */
+
         $this->assertNotEmpty( $masterProject->dqfId );
         $this->assertNotEmpty( $masterProject->dqfUUID );
 
@@ -142,9 +177,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 3. set target language for the file (checking if the lang is valid first)
+         * set target language for the file (checking if the lang is valid first)
          ****************************************************************************
          */
+
         $languageCode = $this->client->checkLanguageCode( [
                 'languageCode' => $targetFile[ 'lang' ],
         ] );
@@ -162,9 +198,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 4. set review settings for the project
+         * set review settings for the project
          ****************************************************************************
          */
+
         $this->assertNotEmpty( $masterProjectTargetLang->dqfId );
 
         $projectReviewSettings = $this->client->specifyProjectReviewSettings( [
@@ -181,9 +218,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 5. update source segments in batch
+         * update source segments in batch
          ****************************************************************************
          */
+
         $this->assertNotEmpty( $projectReviewSettings->dqfId );
 
         $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject( [
@@ -196,9 +234,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 6. create a 'translation' child node
+         * create a 'translation' child node
          ****************************************************************************
          */
+
         $this->assertEquals( $updatedSourceSegments->message, "Source Segments successfully created (All segments uploaded)" );
 
         $childTranslation = $this->client->createChildProject( [
@@ -211,9 +250,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 7. set target language for the child node
+         * set target language for the child node
          ****************************************************************************
          */
+
         $this->assertNotEmpty( $childTranslation->dqfId );
         $this->assertNotEmpty( $childTranslation->dqfUUID );
 
@@ -227,9 +267,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 8. update translations in batch
+         * update translations in batch
          ****************************************************************************
          */
+
         $this->assertNotEmpty( $childTranslationTargetLang->dqfId );
         $this->assertEquals( $childTranslationTargetLang->message, "TargetLang successfully created" );
 
@@ -255,9 +296,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 9. update a single segment translation
+         * update a single segment translation
          ****************************************************************************
          */
+
         $firstSegmentId = $this->client->getSegmentId( [
                 'sessionId' => $this->sessionId,
                 'clientId'  => $sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
@@ -278,9 +320,9 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'targetLangCode'  => $targetFile[ 'lang' ],
                 'sourceSegmentId' => $firstSegmentId->dqfId,
                 'translationId'   => $firstTranslationId->dqfId,
-                'segmentOriginId' => $this->getSegmentOrigin('HT'),
-                'targetSegment'   => "",
-                'editedSegment'   => "The frog in Spain (Barcelona)",
+                'segmentOriginId' => $this->getSegmentOrigin( 'HT' ),
+                'targetSegment'   => "The frog in Spain",
+                'editedSegment'   => "The frog in Spain (from Barcelona)",
                 'time'            => 5435435,
         ] );
 
@@ -288,43 +330,82 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         /**
          ****************************************************************************
-         * STEP 10. check the status of child node
+         * get the complete translation object previously edited
          ****************************************************************************
          */
-        $childNodeStatus = $this->client->getChildProjectStatus([
+
+        $translationForASegment = $this->client->getTranslationForASegment( [
                 'sessionId'       => $this->sessionId,
                 'projectKey'      => $childTranslation->dqfUUID,
                 'projectId'       => $childTranslation->dqfId,
-        ]);
+                'fileId'          => $masterProjectFile->dqfId,
+                'targetLangCode'  => $targetFile[ 'lang' ],
+                'sourceSegmentId' => $firstSegmentId->dqfId,
+                'translationId'   => $firstTranslationId->dqfId,
+        ] );
+
+        $this->assertEquals( $translationForASegment->message, "Translation successfully fetched" );
+
+        /**
+         ****************************************************************************
+         * check the status of child node
+         ****************************************************************************
+         */
+
+        $childNodeStatus = $this->client->getChildProjectStatus( [
+                'sessionId'  => $this->sessionId,
+                'projectKey' => $childTranslation->dqfUUID,
+                'projectId'  => $childTranslation->dqfId,
+        ] );
 
         $this->assertEquals( $childNodeStatus->status, "OK" );
         $this->assertEquals( $childNodeStatus->message, "inprogress" );
 
         /**
          ****************************************************************************
-         * STEP 11. create a 'review' child node
+         * create a 'review' child node
          ****************************************************************************
          */
-        $childNodeReview = $this->client->createChildProject( [
+
+        $childReview = $this->client->createChildProject( [
                 'sessionId' => $this->sessionId,
-                'parentKey' => $masterProject->dqfUUID,
+                'parentKey' => $childTranslation->dqfUUID,
                 'type'      => 'review',
                 'name'      => 'child-revision-workflow-test',
                 'isDummy'   => false, // for type = 'revise' isDummy = false is not allowed
         ] );
 
-        $this->assertNotEmpty( $childNodeReview->dqfId );
-        $this->assertNotEmpty( $childNodeReview->dqfUUID );
+        $this->assertNotEmpty( $childReview->dqfId );
+        $this->assertNotEmpty( $childReview->dqfUUID );
 
         /**
          ****************************************************************************
-         * STEP 12. set review settings for the project
+         * set target language for the child node
          ****************************************************************************
          */
+
+        $childReviewTargetLang = $this->client->addTargetLanguageToChildProject( [
+                'sessionId'          => $this->sessionId,
+                'projectKey'         => $childReview->dqfUUID,
+                'projectId'          => $childReview->dqfId,
+                'fileId'             => $masterProjectFile->dqfId,
+                'targetLanguageCode' => $targetFile[ 'lang' ],
+        ] );
+
+        $this->assertNotEmpty( $childReviewTargetLang->dqfId );
+        $this->assertEquals( $childReviewTargetLang->message, "TargetLang successfully created" );
+
+        /**
+         ****************************************************************************
+         * set review settings for the child node
+         * (this is mandatory for a revision child node, but Can be inherited by master project settings if already declared)
+         ****************************************************************************
+         */
+
         $childNodeReviewSettings = $this->client->specifyProjectReviewSettings( [
                 'sessionId'           => $this->sessionId,
-                'projectKey'          => $childNodeReview->dqfUUID,
-                'projectId'           => $childNodeReview->dqfId,
+                'projectKey'          => $childReview->dqfUUID,
+                'projectId'           => $childReview->dqfId,
                 'reviewType'          => 'combined',
                 'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
                 'errorCategoryIds[0]' => 9,
@@ -333,30 +414,165 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'passFailThreshold'   => 1.00,
         ] );
 
-        var_dump($childNodeReviewSettings);
+        $this->assertNotEmpty( $childNodeReviewSettings->dqfId );
+        $this->assertEquals( $childNodeReviewSettings->message, "Review Settings successfully created" );
 
         /**
          ****************************************************************************
-         * STEP 13. update revisions in batch
+         * add a review template, retrieve and delete it
          ****************************************************************************
          */
 
+        $this->client->addReviewTemplate( [
+                'sessionId'           => $this->sessionId,
+                'projectKey'          => $childReview->dqfUUID,
+                'templateName'        => 'test-review-template-' . Uuid::uuid4()->toString(),
+                'reviewType'          => 'combined',
+                'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
+                'errorCategoryIds[0]' => 9,
+                'errorCategoryIds[1]' => 10,
+                'errorCategoryIds[2]' => 11,
+                'passFailThreshold'   => 1.00,
+                'isPublic'            => true,
+        ] );
+
+        $templates = $this->client->getReviewTemplates( [
+                'sessionId' => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $templates->message, "ReviewTemplates successfully fetched" );
+
+        $projectTemplateId = $templates->modelList[ 0 ]->id;
+
+        $getTemplate = $this->client->getReviewTemplate( [
+                'reviewTemplateId' => $projectTemplateId,
+                'sessionId'        => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $getTemplate->message, "ReviewTemplate successfully fetched" );
+
+        $deleteTemplate = $this->client->deleteReviewTemplate( [
+                'reviewTemplateId' => $projectTemplateId,
+                'sessionId'        => $this->sessionId,
+        ] );
+
+        $this->assertEquals( $deleteTemplate->message, "Review Template successfully deleted" );
 
         /**
          ****************************************************************************
-         * STEP 14. update a single segment revision
+         * check for segmentsId for the file
          ****************************************************************************
          */
 
+        $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile( [
+                'sessionId'      => $this->sessionId,
+                'projectKey'     => $childReview->dqfUUID,
+                'projectId'      => $childReview->dqfId,
+                'fileId'         => $masterProjectFile->dqfId,
+                'targetLangCode' => $targetFile[ 'lang' ],
+        ] );
+
+        $this->assertEquals( $sourceSegmentIds->message, "Source Segments successfully fetched" );
+        $this->assertCount( 3, $sourceSegmentIds->sourceSegmentList );
+
         /**
          ****************************************************************************
-         * STEP 15. destroy the master and child nodes
+         * submitting revisions(corrections) in batch
          ****************************************************************************
          */
+
+        $corrections = [];
+
+        // adding a first correction (2 errors)
+        $corrections[] = [
+                "clientId" => Uuid::uuid4()->toString(),
+                "comment"  => "Sample review comment",
+                "errors"   => [
+                        [
+                                "errorCategoryId" => 11,
+                                "severityId"      => 2,
+                                "charPosStart"    => null,
+                                "charPosEnd"      => null,
+                                "isRepeated"      => false
+                        ],
+                        [
+                                "errorCategoryId" => 9,
+                                "severityId"      => 1,
+                                "charPosStart"    => 1,
+                                "charPosEnd"      => 5,
+                                "isRepeated"      => false
+                        ],
+                ],
+        ];
+
+        // adding a second correction (correction)
+        $corrections[] = [
+                "clientId"   => Uuid::uuid4()->toString(),
+                "comment"    => "Another review comment",
+                "correction" => [
+                        "content"    => "The frog in Spain (from Barcelona)",
+                        "time"       => 10000,
+                        "detailList" => [
+                                [
+                                        "subContent" => "(from Barcelona)",
+                                        "type"       => "deleted"
+                                ],
+                                [
+                                        "subContent" => "The frog in Spain  ",
+                                        "type"       => "unchanged"
+                                ],
+                        ]
+                ]
+        ];
+
+        $batchId = Uuid::uuid4()->toString();
+
+        $updateReviewInBatch = $this->client->updateReviewInBatch( [
+                'sessionId'      => $this->sessionId,
+                'projectKey'     => $childReview->dqfUUID,
+                'projectId'      => $childReview->dqfId,
+                'fileId'         => $masterProjectFile->dqfId,
+                'targetLangCode' => $targetFile[ 'lang' ],
+                'translationId'  => $firstTranslationId->dqfId,
+                'batchId'        => $batchId,
+                'overwrite'      => true,
+                'body'           => $corrections,
+        ] );
+
+        $this->assertEquals( $batchId, $updateReviewInBatch->batchId );
+        $this->assertEquals( "Review successfully created (correction) ", $updateReviewInBatch->message );
+
+        /**
+         ****************************************************************************
+         * resetting reviews before deleting all the project and child nodes
+         * (it's forbidden to delete a child node with reviews)
+         ****************************************************************************
+         */
+
+        $updateReviewInBatch = $this->client->updateReviewInBatch( [
+                'sessionId'      => $this->sessionId,
+                'projectKey'     => $childReview->dqfUUID,
+                'projectId'      => $childReview->dqfId,
+                'fileId'         => $masterProjectFile->dqfId,
+                'targetLangCode' => $targetFile[ 'lang' ],
+                'translationId'  => $firstTranslationId->dqfId,
+                'batchId'        => $batchId,
+                'overwrite'      => true,
+                'body'           => [],
+        ] );
+
+        $this->assertNull( $updateReviewInBatch );
+
+        /**
+         ****************************************************************************
+         * destroy the master and child nodes
+         ****************************************************************************
+         */
+
         $deleteChildReview = $this->client->deleteChildProject( [
                 'sessionId'  => $this->sessionId,
-                'projectKey' => $childNodeReview->dqfUUID,
-                'projectId'  => $childNodeReview->dqfId,
+                'projectKey' => $childReview->dqfUUID,
+                'projectId'  => $childReview->dqfId,
         ] );
 
         $this->assertEquals( 'OK', $deleteChildReview->status );
@@ -381,12 +597,11 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
     /**
      * @return mixed
      */
-    private function getSegmentOrigin($name)
-    {
-        $segmentOrigins = $this->client->getBasicAttributesAggregate([])['segmentOrigin'];
+    private function getSegmentOrigin( $name ) {
+        $segmentOrigins = $this->client->getBasicAttributesAggregate( [] )[ 'segmentOrigin' ];
 
-        foreach ($segmentOrigins as $segmentOrigin){
-            if($segmentOrigin->name === $name){
+        foreach ( $segmentOrigins as $segmentOrigin ) {
+            if ( $segmentOrigin->name === $name ) {
                 return $segmentOrigin->id;
             }
         }

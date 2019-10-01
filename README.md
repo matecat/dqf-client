@@ -1,6 +1,6 @@
 # DQF Client
 
-**DQF Client** is a Client tailored for [DQF Tool by TAUS](https://www.taus.net/) easy integration into a PHP application.
+**DQF Client** is a Client tailored for [DQF Tool](https://www.taus.net/) easy integration into a PHP application.
 
 ## Basic Usage
 
@@ -43,52 +43,66 @@ If you want to login as a generic user you can use:
 
 Here is the list of Client's public methods:
 
-* `addCompleteTranslationOfASegment` -  
-* `addMasterProjectFile` -  
-* `addMasterProjectReviewSettings` -  
-* `addRemainingTargetSegmentsInBatch` -  
-* `addSourceSegmentsInBatchToMasterProject` -  
-* `addTargetLanguageToChildProject` -  
-* `addTargetLanguageToMasterProject` -  
-* `addTranslationOfASourceSegment` -  
-* `addTranslationsForSourceSegmentsInBatch` -  
-* `checkLanguageCode` -  
-* `checkUserExistence` -  
-* `createMasterProject` -  
-* `createChildProject` -  
-* `deleteChildProject` -  
-* `deleteMasterProject` -  
-* `deleteMasterProjectFile` -  
-* `deleteMasterProjectReviewSettings` -  
-* `deleteTargetLanguageForChildProject` -  
-* `deleteTargetLanguageForMasterProject` -  
-* `getBasicAttributesAggregate` -  
-* `getChildProjectFile` -  
-* `getChildProjectFiles` -  
-* `getChildProjectStatus` -  
-* `getFileId` -  
-* `getProjectId` -  
-* `getMasterProject` -  
-* `getMasterProjectFile` -  
-* `getMasterProjectReviewSettings` -  
-* `getSegmentId` -  
-* `getTargetLanguageForChildProject` -  
-* `getTargetLanguageForMasterProject` -  
-* `getTargetLanguageForChildProjectByLang` -  
-* `getTargetLanguageForMasterProjectByLang` -  
-* `getTranslationId` -  
-* `getTranslationsForSourceSegmentsInBatch` -  
-* `getUser` -  
-* `login` -  
-* `logout` -  
-* `updateChildProject` -  
-* `updateChildProjectStatus` -  
+* `addCompleteTranslationOfASegment` - 
+* `addMasterProjectFile` - 
+* `addProjectReviewCycle` - 
+* `addRemainingTargetSegmentsInBatch` - 
+* `addReviewTemplate` - 
+* `addSourceSegmentsInBatchToMasterProject` - 
+* `addTargetLanguageToChildProject` - 
+* `addTargetLanguageToMasterProject` - 
+* `addTemplate` - 
+* `addTranslationOfASourceSegment` - 
+* `addTranslationsForSourceSegmentsInBatch` - 
+* `checkLanguageCode` - 
+* `checkUserExistence` - 
+* `createMasterProject` - 
+* `createChildProject` - 
+* `deleteChildProject` - 
+* `deleteMasterProject` - 
+* `deleteMasterProjectFile` - 
+* `deleteMasterProjectReviewSettings` - 
+* `deleteReviewTemplate` - 
+* `deleteTargetLanguageForChildProject` - 
+* `deleteTargetLanguageForMasterProject` - 
+* `deleteTemplate` - 
+* `getBasicAttributesAggregate` - 
+* `getChildProjectFile` - 
+* `getChildProjectFiles` - 
+* `getFileId` - 
+* `getProjectId` - 
+* `getProjectReviewCycle` - 
+* `getReviewTemplate` - 
+* `getReviewTemplates` - 
+* `getMasterProject` - 
+* `getMasterProjectFile` - 
+* `getChildProjectStatus` - 
+* `getMasterProjectReviewSettings` - 
+* `getSegmentId` - 
+* `getSourceSegmentIdsForAFile` - 
+* `getTargetLanguageForChildProject` - 
+* `getTargetLanguageForMasterProject` - 
+* `getTargetLanguageForChildProjectByLang` - 
+* `getTargetLanguageForMasterProjectByLang` - 
+* `getTemplate` - 
+* `getTemplates` - 
+* `getTranslationId` - 
+* `getTranslationForASegment` - 
+* `getTranslationsForSourceSegmentsInBatch` - 
+* `getUser` - 
+* `login` - 
+* `logout` - 
+* `specifyProjectReviewSettings` - 
+* `updateChildProject` - 
+* `updateChildProjectStatus` - 
 * `updateCompleteTranslatedSegment` - 
-* `updateMasterProject` -  
-* `updateMasterProjectFile` -  
-* `updateMasterProjectReviewSettings` -  
-* `updateSegmentTranslationReviewInChildProject` -  
-* `updateTranslationForASegment` -  
+* `updateMasterProject` - 
+* `updateMasterProjectFile` - 
+* `updateMasterProjectReviewSettings` - 
+* `updateReviewTemplate` - 
+* `updateReviewInBatch` - 
+* `updateTemplate` - 
+* `updateTranslationForASegment` - 
 
 ## Input validation
 
@@ -98,6 +112,7 @@ If validation fails, a `ParamsValidatorException` is raised and **the request is
 
 ## Submitting data to DQF: a complete workflow
 
+Here is a complete, detailed typical workflow.
 
 ## Support
 

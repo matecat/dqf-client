@@ -6,15 +6,14 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class AddTemplate extends CommandHandler
-{
+class AddTemplate extends CommandHandler {
     protected function setRules() {
         $rules = [
-                'sessionId'  => [
+                'sessionId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'name'  => [
+                'name'           => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
@@ -22,19 +21,19 @@ class AddTemplate extends CommandHandler
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'industryId'  => [
+                'industryId'     => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'processId'  => [
+                'processId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'qualityLevelId'  => [
+                'qualityLevelId' => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'isPublic'  => [
+                'isPublic'       => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_BOOLEAN,
                 ],
@@ -49,17 +48,24 @@ class AddTemplate extends CommandHandler
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle($params = [])
-    {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('user/projectTemplate', []), [
-                'headers' => [
-                        'sessionId'  => $params[ 'sessionId' ],
-                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
+    public function handle( $params = [] ) {
+        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri( 'user/projectTemplate', [] ), [
+                'headers'     => [
+                        'sessionId' => $params[ 'sessionId' ],
+                        'email'     => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
                 ],
-        ]);
+                'form_params' => [
+                        'name'           => $params[ 'name' ],
+                        'contentTypeId'  => $params[ 'contentTypeId' ],
+                        'industryId'     => $params[ 'industryId' ],
+                        'processId'      => $params[ 'processId' ],
+                        'qualityLevelId' => $params[ 'qualityLevelId' ],
+                        'isPublic'       => $params[ 'isPublic' ],
+                ],
+        ] );
 
-        if ($response->getStatusCode() === StatusCode::CREATED) {
-            return $this->decodeResponse($response);
+        if ( $response->getStatusCode() === StatusCode::CREATED ) {
+            return $this->decodeResponse( $response );
         }
     }
 }

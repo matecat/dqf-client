@@ -14,7 +14,7 @@ class GetReviewTemplate extends CommandHandler
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectTemplateId'  => [
+                'reviewTemplateId'          => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
@@ -31,7 +31,7 @@ class GetReviewTemplate extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('user/reviewTemplate/{reviewTemplateId}', [ 'projectTemplateId' => $params['projectTemplateId'] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('user/reviewTemplate/{reviewTemplateId}', [ 'reviewTemplateId' => $params['reviewTemplateId'] ]), [
                 'headers' => [
                         'sessionId'  => $params[ 'sessionId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,

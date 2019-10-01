@@ -17,6 +17,10 @@ class UpdateReviewTemplate extends CommandHandler {
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
+                'reviewTemplateId'          => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
                 'templateName'        => [
                         'required' => false,
                         'type'     => Constants::DATA_TYPE_STRING,
@@ -69,10 +73,21 @@ class UpdateReviewTemplate extends CommandHandler {
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_UPDATE, $this->buildUri( 'user/reviewTemplate/{reviewTemplateId}', [ 'projectTemplateId' => $params[ 'projectTemplateId' ] ] ), [
-                'headers' => [
+        $response = $this->httpClient->request( Constants::HTTP_VERBS_UPDATE, $this->buildUri( 'user/reviewTemplate/{reviewTemplateId}', [ 'reviewTemplateId' => $params[ 'reviewTemplateId' ] ] ), [
+                'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
                         'email'     => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                ],
+                'form_params' => [
+                        'templateName'        => isset( $params[ 'templateName' ] ) ? $params[ 'templateName' ] : null,
+                        'reviewType'          => $params[ 'reviewType' ],
+                        'severityWeights'     => isset( $params[ 'severityWeights' ] ) ? $params[ 'severityWeights' ] : null,
+                        'errorCategoryIds[0]' => isset( $params[ 'errorCategoryIds[0]' ] ) ? $params[ 'errorCategoryIds[0]' ] : null,
+                        'errorCategoryIds[1]' => isset( $params[ 'errorCategoryIds[1]' ] ) ? $params[ 'errorCategoryIds[1]' ] : null,
+                        'errorCategoryIds[2]' => isset( $params[ 'errorCategoryIds[2]' ] ) ? $params[ 'errorCategoryIds[2]' ] : null,
+                        'passFailThreshold'   => isset( $params[ 'passFailThreshold' ] ) ? $params[ 'passFailThreshold' ] : null,
+                        'sampling'            => isset( $params[ 'sampling' ] ) ? $params[ 'sampling' ] : null,
+                        'isPublic'            => isset( $params[ 'isPublic' ] ) ? $params[ 'isPublic' ] : null,
                 ],
         ] );
 
