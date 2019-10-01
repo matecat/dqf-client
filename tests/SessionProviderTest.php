@@ -56,19 +56,19 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($destroy, 1);
     }
 
-//    /**
-//     * @test
-//     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
-//     */
-//    public function can_create_update_and_destroy_sessions()
-//    {
-//        $sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
-//        $this->assertInternalType('string', $sessionId);
-//
-//        $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
-//        $this->assertInternalType('string', $sessionId);
-//
-//        $destroy = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
-//        $this->assertEquals($destroy, 1);
-//    }
+    /**
+     * @test
+     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
+     */
+    public function can_create_update_and_destroy_sessions()
+    {
+        $sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+        $this->assertInternalType('string', $sessionId);
+
+        $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+        $this->assertInternalType('string', $sessionId);
+
+        $destroy = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+        $this->assertEquals($destroy, 1);
+    }
 }

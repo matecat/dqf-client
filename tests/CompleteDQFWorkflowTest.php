@@ -4,14 +4,16 @@ namespace Matecat\Dqf\Tests;
 
 use Ramsey\Uuid\Uuid;
 
-class CompleteDQFWorkflowTest extends AbstractClientTest {
+class CompleteDQFWorkflowTest extends AbstractClientTest
+{
     /**
      * This array represents an hypothetical source file
      *
      * @return array
      * @throws \Exception
      */
-    public function getSourceFile() {
+    public function getSourceFile()
+    {
         return [
                 'uuid'     => Uuid::uuid4()->toString(),
                 'name'     => 'original-filename',
@@ -42,7 +44,8 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
      * @return array
      * @throws \Exception
      */
-    public function getTranslationFile() {
+    public function getTranslationFile()
+    {
         return [
                 'uuid'         => Uuid::uuid4()->toString(),
                 'name'         => 'translated-filename',
@@ -89,8 +92,8 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
      * @throws \Exception
      * @test
      */
-    public function test_the_complete_workflow() {
-
+    public function test_the_complete_workflow()
+    {
         $sourceFile = $this->getSourceFile();
         $targetFile = $this->getTranslationFile();
 
@@ -101,14 +104,14 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          */
 
         // checking if the sourceLanguageCode is valid first
-        $languageCode = $this->client->checkLanguageCode( [
+        $languageCode = $this->client->checkLanguageCode([
                 'languageCode' => $sourceFile[ 'lang' ],
-        ] );
+        ]);
 
-        $this->assertEquals( 'OK', $languageCode->status );
+        $this->assertEquals('OK', $languageCode->status);
 
         $masterProjectClientId = Uuid::uuid4()->toString();
-        $masterProject         = $this->client->createMasterProject( [
+        $masterProject         = $this->client->createMasterProject([
                 'sessionId'          => $this->sessionId,
                 'name'               => 'master-workflow-test',
                 'sourceLanguageCode' => $sourceFile[ 'lang' ],
@@ -117,7 +120,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'processId'          => 1,
                 'qualityLevelId'     => 1,
                 'clientId'           => $masterProjectClientId,
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -125,37 +128,37 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->client->addTemplate( [
+        $this->client->addTemplate([
                 'sessionId'      => $this->sessionId,
                 'name'           => 'test-template-' . Uuid::uuid4()->toString(),
-                'contentTypeId'  => rand( 1, 15 ),
-                'industryId'     => rand( 1, 24 ),
-                'processId'      => rand( 1, 4 ),
-                'qualityLevelId' => rand( 1, 2 ),
+                'contentTypeId'  => rand(1, 15),
+                'industryId'     => rand(1, 24),
+                'processId'      => rand(1, 4),
+                'qualityLevelId' => rand(1, 2),
                 'isPublic'       => true,
-        ] );
+        ]);
 
-        $templates = $this->client->getTemplates( [
+        $templates = $this->client->getTemplates([
                 'sessionId' => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $templates->message, "ProjectTemplates successfully fetched" );
+        $this->assertEquals($templates->message, "ProjectTemplates successfully fetched");
 
         $projectTemplateId = $templates->modelList[ 0 ]->id;
 
-        $getTemplate = $this->client->getTemplate( [
+        $getTemplate = $this->client->getTemplate([
                 'projectTemplateId' => $projectTemplateId,
                 'sessionId'         => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $getTemplate->message, "ProjectTemplate successfully fetched" );
+        $this->assertEquals($getTemplate->message, "ProjectTemplate successfully fetched");
 
-        $deleteTemplate = $this->client->deleteTemplate( [
+        $deleteTemplate = $this->client->deleteTemplate([
                 'projectTemplateId' => $projectTemplateId,
                 'sessionId'         => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $deleteTemplate->message, "Project Template successfully deleted" );
+        $this->assertEquals($deleteTemplate->message, "Project Template successfully deleted");
 
         /**
          ****************************************************************************
@@ -163,17 +166,17 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertNotEmpty( $masterProject->dqfId );
-        $this->assertNotEmpty( $masterProject->dqfUUID );
+        $this->assertNotEmpty($masterProject->dqfId);
+        $this->assertNotEmpty($masterProject->dqfUUID);
 
-        $masterProjectFile = $this->client->addMasterProjectFile( [
+        $masterProjectFile = $this->client->addMasterProjectFile([
                 'sessionId'        => $this->sessionId,
                 'projectKey'       => $masterProject->dqfUUID,
                 'projectId'        => $masterProject->dqfId,
                 'name'             => $sourceFile[ 'name' ],
-                'numberOfSegments' => count( $sourceFile[ 'segments' ] ),
+                'numberOfSegments' => count($sourceFile[ 'segments' ]),
                 'clientId'         => $sourceFile[ 'uuid' ],
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -181,20 +184,20 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $languageCode = $this->client->checkLanguageCode( [
+        $languageCode = $this->client->checkLanguageCode([
                 'languageCode' => $targetFile[ 'lang' ],
-        ] );
+        ]);
 
-        $this->assertEquals( 'OK', $languageCode->status );
-        $this->assertNotEmpty( $masterProjectFile->dqfId );
+        $this->assertEquals('OK', $languageCode->status);
+        $this->assertNotEmpty($masterProjectFile->dqfId);
 
-        $masterProjectTargetLang = $this->client->addTargetLanguageToMasterProject( [
+        $masterProjectTargetLang = $this->client->addTargetLanguageToMasterProject([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $masterProject->dqfUUID,
                 'projectId'          => $masterProject->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
                 'targetLanguageCode' => $targetFile[ 'lang' ],
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -202,9 +205,9 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertNotEmpty( $masterProjectTargetLang->dqfId );
+        $this->assertNotEmpty($masterProjectTargetLang->dqfId);
 
-        $projectReviewSettings = $this->client->specifyProjectReviewSettings( [
+        $projectReviewSettings = $this->client->specifyProjectReviewSettings([
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $masterProject->dqfUUID,
                 'projectId'           => $masterProject->dqfId,
@@ -214,7 +217,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'errorCategoryIds[1]' => 10,
                 'errorCategoryIds[2]' => 11,
                 'passFailThreshold'   => 1.00,
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -222,15 +225,15 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertNotEmpty( $projectReviewSettings->dqfId );
+        $this->assertNotEmpty($projectReviewSettings->dqfId);
 
-        $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject( [
+        $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $masterProject->dqfUUID,
                 'projectId'  => $masterProject->dqfId,
                 'fileId'     => $masterProjectFile->dqfId,
                 'body'       => $sourceFile[ 'segments' ]
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -238,15 +241,15 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertEquals( $updatedSourceSegments->message, "Source Segments successfully created (All segments uploaded)" );
+        $this->assertEquals($updatedSourceSegments->message, "Source Segments successfully created (All segments uploaded)");
 
-        $childTranslation = $this->client->createChildProject( [
+        $childTranslation = $this->client->createChildProject([
                 'sessionId' => $this->sessionId,
                 'parentKey' => $masterProject->dqfUUID,
                 'type'      => 'translation',
                 'name'      => 'child-workflow-test',
                 'isDummy'   => true,
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -254,16 +257,16 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertNotEmpty( $childTranslation->dqfId );
-        $this->assertNotEmpty( $childTranslation->dqfUUID );
+        $this->assertNotEmpty($childTranslation->dqfId);
+        $this->assertNotEmpty($childTranslation->dqfUUID);
 
-        $childTranslationTargetLang = $this->client->addTargetLanguageToChildProject( [
+        $childTranslationTargetLang = $this->client->addTargetLanguageToChildProject([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $childTranslation->dqfUUID,
                 'projectId'          => $childTranslation->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
                 'targetLanguageCode' => $targetFile[ 'lang' ],
-        ] );
+        ]);
 
         /**
          ****************************************************************************
@@ -271,28 +274,28 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->assertNotEmpty( $childTranslationTargetLang->dqfId );
-        $this->assertEquals( $childTranslationTargetLang->message, "TargetLang successfully created" );
+        $this->assertNotEmpty($childTranslationTargetLang->dqfId);
+        $this->assertEquals($childTranslationTargetLang->message, "TargetLang successfully created");
 
         // update the fake $targetFile with real DQL ids for 'sourceSegmentId'
         $segmentPairs = $targetFile[ 'segmentPairs' ];
-        foreach ( $segmentPairs as $key => $segmentPair ) {
-            $segmentPairs[ $key ][ 'sourceSegmentId' ] = $this->client->getSegmentId( [
+        foreach ($segmentPairs as $key => $segmentPair) {
+            $segmentPairs[ $key ][ 'sourceSegmentId' ] = $this->client->getSegmentId([
                     'sessionId' => $this->sessionId,
                     'clientId'  => $sourceFile[ 'segments' ][ $key ][ 'clientId' ],
-            ] )->dqfId;
+            ])->dqfId;
         }
 
-        $translationsBatch = $this->client->addTranslationsForSourceSegmentsInBatch( [
+        $translationsBatch = $this->client->addTranslationsForSourceSegmentsInBatch([
                 'sessionId'      => $this->sessionId,
                 'projectKey'     => $childTranslation->dqfUUID,
                 'projectId'      => $childTranslation->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
                 'targetLangCode' => $targetFile[ 'lang' ],
                 'body'           => $segmentPairs,
-        ] );
+        ]);
 
-        $this->assertEquals( $translationsBatch->message, "Translations successfully created" );
+        $this->assertEquals($translationsBatch->message, "Translations successfully created");
 
         /**
          ****************************************************************************
@@ -300,19 +303,19 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $firstSegmentId = $this->client->getSegmentId( [
+        $firstSegmentId = $this->client->getSegmentId([
                 'sessionId' => $this->sessionId,
                 'clientId'  => $sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
-        ] );
+        ]);
 
-        $firstTranslationId = $this->client->getTranslationId( [
+        $firstTranslationId = $this->client->getTranslationId([
                 'sessionId' => $this->sessionId,
                 'clientId'  => $targetFile[ 'segmentPairs' ][ 0 ][ 'clientId' ],
-        ] );
+        ]);
 
-        $this->assertNotEmpty( $firstSegmentId->dqfId );
+        $this->assertNotEmpty($firstSegmentId->dqfId);
 
-        $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment( [
+        $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
                 'sessionId'       => $this->sessionId,
                 'projectKey'      => $childTranslation->dqfUUID,
                 'projectId'       => $childTranslation->dqfId,
@@ -320,13 +323,13 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'targetLangCode'  => $targetFile[ 'lang' ],
                 'sourceSegmentId' => $firstSegmentId->dqfId,
                 'translationId'   => $firstTranslationId->dqfId,
-                'segmentOriginId' => $this->getSegmentOrigin( 'HT' ),
+                'segmentOriginId' => $this->getSegmentOrigin('HT'),
                 'targetSegment'   => "The frog in Spain",
                 'editedSegment'   => "The frog in Spain (from Barcelona)",
                 'time'            => 5435435,
-        ] );
+        ]);
 
-        $this->assertEquals( $updateSingleSegmentTranslation->message, "Segments successfully updated" );
+        $this->assertEquals($updateSingleSegmentTranslation->message, "Segments successfully updated");
 
         /**
          ****************************************************************************
@@ -334,7 +337,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $translationForASegment = $this->client->getTranslationForASegment( [
+        $translationForASegment = $this->client->getTranslationForASegment([
                 'sessionId'       => $this->sessionId,
                 'projectKey'      => $childTranslation->dqfUUID,
                 'projectId'       => $childTranslation->dqfId,
@@ -342,9 +345,9 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'targetLangCode'  => $targetFile[ 'lang' ],
                 'sourceSegmentId' => $firstSegmentId->dqfId,
                 'translationId'   => $firstTranslationId->dqfId,
-        ] );
+        ]);
 
-        $this->assertEquals( $translationForASegment->message, "Translation successfully fetched" );
+        $this->assertEquals($translationForASegment->message, "Translation successfully fetched");
 
         /**
          ****************************************************************************
@@ -352,14 +355,14 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $childNodeStatus = $this->client->getChildProjectStatus( [
+        $childNodeStatus = $this->client->getChildProjectStatus([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $childTranslation->dqfUUID,
                 'projectId'  => $childTranslation->dqfId,
-        ] );
+        ]);
 
-        $this->assertEquals( $childNodeStatus->status, "OK" );
-        $this->assertEquals( $childNodeStatus->message, "inprogress" );
+        $this->assertEquals($childNodeStatus->status, "OK");
+        $this->assertEquals($childNodeStatus->message, "inprogress");
 
         /**
          ****************************************************************************
@@ -367,16 +370,16 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $childReview = $this->client->createChildProject( [
+        $childReview = $this->client->createChildProject([
                 'sessionId' => $this->sessionId,
                 'parentKey' => $childTranslation->dqfUUID,
                 'type'      => 'review',
                 'name'      => 'child-revision-workflow-test',
                 'isDummy'   => false, // for type = 'revise' isDummy = false is not allowed
-        ] );
+        ]);
 
-        $this->assertNotEmpty( $childReview->dqfId );
-        $this->assertNotEmpty( $childReview->dqfUUID );
+        $this->assertNotEmpty($childReview->dqfId);
+        $this->assertNotEmpty($childReview->dqfUUID);
 
         /**
          ****************************************************************************
@@ -384,16 +387,16 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $childReviewTargetLang = $this->client->addTargetLanguageToChildProject( [
+        $childReviewTargetLang = $this->client->addTargetLanguageToChildProject([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $childReview->dqfUUID,
                 'projectId'          => $childReview->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
                 'targetLanguageCode' => $targetFile[ 'lang' ],
-        ] );
+        ]);
 
-        $this->assertNotEmpty( $childReviewTargetLang->dqfId );
-        $this->assertEquals( $childReviewTargetLang->message, "TargetLang successfully created" );
+        $this->assertNotEmpty($childReviewTargetLang->dqfId);
+        $this->assertEquals($childReviewTargetLang->message, "TargetLang successfully created");
 
         /**
          ****************************************************************************
@@ -402,7 +405,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $childNodeReviewSettings = $this->client->specifyProjectReviewSettings( [
+        $childNodeReviewSettings = $this->client->specifyProjectReviewSettings([
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $childReview->dqfUUID,
                 'projectId'           => $childReview->dqfId,
@@ -412,10 +415,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'errorCategoryIds[1]' => 10,
                 'errorCategoryIds[2]' => 11,
                 'passFailThreshold'   => 1.00,
-        ] );
+        ]);
 
-        $this->assertNotEmpty( $childNodeReviewSettings->dqfId );
-        $this->assertEquals( $childNodeReviewSettings->message, "Review Settings successfully created" );
+        $this->assertNotEmpty($childNodeReviewSettings->dqfId);
+        $this->assertEquals($childNodeReviewSettings->message, "Review Settings successfully created");
 
         /**
          ****************************************************************************
@@ -423,7 +426,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $this->client->addReviewTemplate( [
+        $this->client->addReviewTemplate([
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $childReview->dqfUUID,
                 'templateName'        => 'test-review-template-' . Uuid::uuid4()->toString(),
@@ -434,29 +437,29 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'errorCategoryIds[2]' => 11,
                 'passFailThreshold'   => 1.00,
                 'isPublic'            => true,
-        ] );
+        ]);
 
-        $templates = $this->client->getReviewTemplates( [
+        $templates = $this->client->getReviewTemplates([
                 'sessionId' => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $templates->message, "ReviewTemplates successfully fetched" );
+        $this->assertEquals($templates->message, "ReviewTemplates successfully fetched");
 
         $projectTemplateId = $templates->modelList[ 0 ]->id;
 
-        $getTemplate = $this->client->getReviewTemplate( [
+        $getTemplate = $this->client->getReviewTemplate([
                 'reviewTemplateId' => $projectTemplateId,
                 'sessionId'        => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $getTemplate->message, "ReviewTemplate successfully fetched" );
+        $this->assertEquals($getTemplate->message, "ReviewTemplate successfully fetched");
 
-        $deleteTemplate = $this->client->deleteReviewTemplate( [
+        $deleteTemplate = $this->client->deleteReviewTemplate([
                 'reviewTemplateId' => $projectTemplateId,
                 'sessionId'        => $this->sessionId,
-        ] );
+        ]);
 
-        $this->assertEquals( $deleteTemplate->message, "Review Template successfully deleted" );
+        $this->assertEquals($deleteTemplate->message, "Review Template successfully deleted");
 
         /**
          ****************************************************************************
@@ -464,16 +467,16 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile( [
+        $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile([
                 'sessionId'      => $this->sessionId,
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
                 'targetLangCode' => $targetFile[ 'lang' ],
-        ] );
+        ]);
 
-        $this->assertEquals( $sourceSegmentIds->message, "Source Segments successfully fetched" );
-        $this->assertCount( 3, $sourceSegmentIds->sourceSegmentList );
+        $this->assertEquals($sourceSegmentIds->message, "Source Segments successfully fetched");
+        $this->assertCount(3, $sourceSegmentIds->sourceSegmentList);
 
         /**
          ****************************************************************************
@@ -527,7 +530,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
 
         $batchId = Uuid::uuid4()->toString();
 
-        $updateReviewInBatch = $this->client->updateReviewInBatch( [
+        $updateReviewInBatch = $this->client->updateReviewInBatch([
                 'sessionId'      => $this->sessionId,
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
@@ -537,10 +540,10 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'batchId'        => $batchId,
                 'overwrite'      => true,
                 'body'           => $corrections,
-        ] );
+        ]);
 
-        $this->assertEquals( $batchId, $updateReviewInBatch->batchId );
-        $this->assertEquals( "Review successfully created (correction) ", $updateReviewInBatch->message );
+        $this->assertEquals($batchId, $updateReviewInBatch->batchId);
+        $this->assertEquals("Review successfully created (correction) ", $updateReviewInBatch->message);
 
         /**
          ****************************************************************************
@@ -549,7 +552,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $updateReviewInBatch = $this->client->updateReviewInBatch( [
+        $updateReviewInBatch = $this->client->updateReviewInBatch([
                 'sessionId'      => $this->sessionId,
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
@@ -559,9 +562,9 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
                 'batchId'        => $batchId,
                 'overwrite'      => true,
                 'body'           => [],
-        ] );
+        ]);
 
-        $this->assertNull( $updateReviewInBatch );
+        $this->assertNull($updateReviewInBatch);
 
         /**
          ****************************************************************************
@@ -569,39 +572,40 @@ class CompleteDQFWorkflowTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $deleteChildReview = $this->client->deleteChildProject( [
+        $deleteChildReview = $this->client->deleteChildProject([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $childReview->dqfUUID,
                 'projectId'  => $childReview->dqfId,
-        ] );
+        ]);
 
-        $this->assertEquals( 'OK', $deleteChildReview->status );
+        $this->assertEquals('OK', $deleteChildReview->status);
 
-        $deleteChildProject = $this->client->deleteChildProject( [
+        $deleteChildProject = $this->client->deleteChildProject([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $childTranslation->dqfUUID,
                 'projectId'  => $childTranslation->dqfId,
-        ] );
+        ]);
 
-        $this->assertEquals( 'OK', $deleteChildProject->status );
+        $this->assertEquals('OK', $deleteChildProject->status);
 
-        $deleteMasterProject = $this->client->deleteMasterProject( [
+        $deleteMasterProject = $this->client->deleteMasterProject([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $masterProject->dqfUUID,
                 'projectId'  => $masterProject->dqfId,
-        ] );
+        ]);
 
-        $this->assertEquals( 'OK', $deleteMasterProject->status );
+        $this->assertEquals('OK', $deleteMasterProject->status);
     }
 
     /**
      * @return mixed
      */
-    private function getSegmentOrigin( $name ) {
-        $segmentOrigins = $this->client->getBasicAttributesAggregate( [] )[ 'segmentOrigin' ];
+    private function getSegmentOrigin($name)
+    {
+        $segmentOrigins = $this->client->getBasicAttributesAggregate([])[ 'segmentOrigin' ];
 
-        foreach ( $segmentOrigins as $segmentOrigin ) {
-            if ( $segmentOrigin->name === $name ) {
+        foreach ($segmentOrigins as $segmentOrigin) {
+            if ($segmentOrigin->name === $name) {
                 return $segmentOrigin->id;
             }
         }

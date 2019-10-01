@@ -8,7 +8,8 @@ use Teapot\StatusCode;
 
 class GetTranslationsForSourceSegmentsInBatch extends CommandHandler
 {
-    protected function setRules() {
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'      => [
                         'required' => true,

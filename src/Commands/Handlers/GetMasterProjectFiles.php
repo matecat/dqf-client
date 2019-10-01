@@ -6,7 +6,7 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class GetChildProjectStatus extends CommandHandler
+class GetMasterProjectFiles extends CommandHandler
 {
     protected function setRules()
     {
@@ -36,10 +36,10 @@ class GetChildProjectStatus extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/child/{projectId}/status', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/master/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers' => [
-                        'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
+                        'projectKey' => $params[ 'projectKey' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
         ]);

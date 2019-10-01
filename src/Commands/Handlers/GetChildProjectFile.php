@@ -8,7 +8,8 @@ use Teapot\StatusCode;
 
 class GetChildProjectFile extends CommandHandler
 {
-    protected function setRules() {
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'  => [
                         'required' => true,
@@ -19,6 +20,10 @@ class GetChildProjectFile extends CommandHandler
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
                 'projectId'  => [
+                        'required' => true,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
+                ],
+                'fileId'  => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
@@ -35,7 +40,10 @@ class GetChildProjectFile extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/child/{projectId}/file', [ 'projectId' => $params[ 'projectId' ] ]), [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri('project/child/{projectId}/file/{fileId}', [
+                'projectId' => $params[ 'projectId' ] ,
+                'fileId'    => $params[ 'fileId' ] ,
+        ]), [
                 'headers' => [
                         'sessionId'  => $params[ 'sessionId' ],
                         'projectKey' => $params[ 'projectKey' ],

@@ -6,8 +6,8 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class CreateChildProject extends CommandHandler {
-
+class CreateChildProject extends CommandHandler
+{
     protected function setRules()
     {
         $rules = [
@@ -47,8 +47,8 @@ class CreateChildProject extends CommandHandler {
                 'isDummy'         => [
                         'required' => false,
                         'type'     => Constants::DATA_TYPE_BOOLEAN,
-                        'callback' => function ( $value, $params ) {
-                            if($params['type'] === 'review'){
+                        'callback' => function ($value, $params) {
+                            if ($params['type'] === 'review') {
                                 return $value === false;
                             }
 
@@ -66,26 +66,27 @@ class CreateChildProject extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri( 'project/child' ), [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/child'), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
-                        'email'     => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
                         'parentKey'       => $params[ 'parentKey' ],
                         'type'            => $params[ 'type' ],
-                        'clientId'        => isset( $params[ 'clientId' ] ) ? $params[ 'clientId' ] : null,
-                        'name'            => isset( $params[ 'name' ] ) ? $params[ 'name' ] : null,
-                        'assignee'        => isset( $params[ 'assignee' ] ) ? $params[ 'assignee' ] : null,
-                        'assigner'        => isset( $params[ 'assigner' ] ) ? $params[ 'assigner' ] : null,
-                        'reviewSettingId' => isset( $params[ 'reviewSettingId' ] ) ? $params[ 'reviewSettingId' ] : null,
-                        'isDummy'         => isset( $params[ 'isDummy' ] ) ? $params[ 'isDummy' ] : null,
+                        'clientId'        => isset($params[ 'clientId' ]) ? $params[ 'clientId' ] : null,
+                        'name'            => isset($params[ 'name' ]) ? $params[ 'name' ] : null,
+                        'assignee'        => isset($params[ 'assignee' ]) ? $params[ 'assignee' ] : null,
+                        'assigner'        => isset($params[ 'assigner' ]) ? $params[ 'assigner' ] : null,
+                        'reviewSettingId' => isset($params[ 'reviewSettingId' ]) ? $params[ 'reviewSettingId' ] : null,
+                        'isDummy'         => isset($params[ 'isDummy' ]) ? $params[ 'isDummy' ] : null,
                 ]
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

@@ -5,3 +5,4 @@ config/parameters.ini
 composer.lock
 vendor
 log
+phinx.yml

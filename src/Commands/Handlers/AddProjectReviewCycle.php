@@ -6,8 +6,10 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class AddProjectReviewCycle extends CommandHandler {
-    protected function setRules() {
+class AddProjectReviewCycle extends CommandHandler
+{
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'  => [
                         'required' => true,
@@ -48,21 +50,22 @@ class AddProjectReviewCycle extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri( 'project/{projectId}/reviewCycle', [ 'projectId' => $params[ 'projectId' ] ] ), [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/{projectId}/reviewCycle', [ 'projectId' => $params[ 'projectId' ] ]), [
                 'headers' => [
                         'sessionId'            => $params[ 'sessionId' ],
                         'projectKey'           => $params[ 'projectKey' ],
                         'apiKeyTms'            => $params[ 'apiKeyTms' ],
                         'userId'               => $params[ 'userId' ],
                         'fileTargetLangIds[0]' => $params[ 'fileTargetLangIds[0]' ],
-                        'fileTargetLangIds[1]' => isset( $params[ 'fileTargetLangIds[1]' ] ) ? $params[ 'fileTargetLangIds[1]' ] : null,
-                        'email'                => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'fileTargetLangIds[1]' => isset($params[ 'fileTargetLangIds[1]' ]) ? $params[ 'fileTargetLangIds[1]' ] : null,
+                        'email'                => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

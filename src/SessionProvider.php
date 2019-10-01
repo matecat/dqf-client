@@ -31,9 +31,9 @@ class SessionProvider
     }
 
     /**
-     * @param $genericEmail
-     * @param $genericUsername
-     * @param $genericPassword
+     * @param string $genericEmail
+     * @param string $genericUsername
+     * @param string $genericPassword
      *
      * @return mixed
      * @throws SessionProviderException
@@ -66,7 +66,7 @@ class SessionProvider
     }
 
     /**
-     * @param int $externalReferenceId
+     * @param string $genericEmail
      *
      * @return mixed
      * @throws SessionProviderException
@@ -83,7 +83,7 @@ class SessionProvider
     }
 
     /**
-     * @param $email
+     * @param string $email
      *
      * @return mixed
      * @throws SessionProviderException

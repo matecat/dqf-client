@@ -176,15 +176,15 @@ class ClientTest extends AbstractClientTest
         $this->assertEquals('DQF id successfully fetched', $check->message);
 
         // retrieve a file
-        $retrieveMasterProjectFile = $this->client->getMasterProjectFile([
+        $retrieveMasterProjectFiles = $this->client->getMasterProjectFiles([
                 'sessionId'  => $this->sessionId,
                 'projectKey' => $masterProject->dqfUUID,
                 'projectId'  => $masterProject->dqfId,
         ]);
 
-        $this->assertInstanceOf(\stdClass::class, $retrieveMasterProjectFile);
-        $this->assertInternalType('string', $retrieveMasterProjectFile->message);
-        $this->assertEquals('Project Files successfully fetched', $retrieveMasterProjectFile->message);
+        $this->assertInstanceOf(\stdClass::class, $retrieveMasterProjectFiles);
+        $this->assertInternalType('string', $retrieveMasterProjectFiles->message);
+        $this->assertEquals('Project Files successfully fetched', $retrieveMasterProjectFiles->message);
 
         // add source segments to root
         $sourceSegmentsBatch = $this->client->addSourceSegmentsInBatchToMasterProject([

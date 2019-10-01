@@ -8,7 +8,8 @@ use Teapot\StatusCode;
 
 class CheckLanguageCode extends CommandHandler
 {
-    protected function setRules() {
+    protected function setRules()
+    {
         $rules = [
                 'languageCode'          => [
                         'required' => true,

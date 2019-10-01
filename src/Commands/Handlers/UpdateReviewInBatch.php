@@ -6,8 +6,10 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class UpdateReviewInBatch extends CommandHandler {
-    protected function setRules() {
+class UpdateReviewInBatch extends CommandHandler
+{
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'      => [
                         'required' => true,
@@ -56,16 +58,17 @@ class UpdateReviewInBatch extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
+    public function handle($params = [])
+    {
         $body[ 'revisions' ] = $params[ 'body' ];
-        $body[ 'batchId' ]   = isset( $params[ 'batchId' ] ) ? $params[ 'batchId' ] : null;
-        $body[ 'overwrite' ] = isset( $params[ 'overwrite' ] ) ? $params[ 'overwrite' ] : null;
+        $body[ 'batchId' ]   = isset($params[ 'batchId' ]) ? $params[ 'batchId' ] : null;
+        $body[ 'overwrite' ] = isset($params[ 'overwrite' ]) ? $params[ 'overwrite' ] : null;
 
-        $json = json_encode( $body );
+        $json = json_encode($body);
 
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri(
-                'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/translation/{translationId}/batchReview',
-                [
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
+            'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/translation/{translationId}/batchReview',
+            [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],
                         'targetLangCode' => $params[ 'targetLangCode' ],
@@ -74,16 +77,16 @@ class UpdateReviewInBatch extends CommandHandler {
         ), [
                 'headers' => [
                         'Content-Type'   => 'application/json',
-                        'Content-Length' => strlen( $json ),
+                        'Content-Length' => strlen($json),
                         'projectKey'     => $params[ 'projectKey' ],
                         'sessionId'      => $params[ 'sessionId' ],
-                        'email'          => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'          => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'json'    => json_decode($json),
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

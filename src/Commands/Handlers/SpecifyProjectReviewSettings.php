@@ -6,9 +6,10 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class SpecifyProjectReviewSettings extends CommandHandler {
-
-    protected function setRules() {
+class SpecifyProjectReviewSettings extends CommandHandler
+{
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'           => [
                         'required' => true,
@@ -69,29 +70,30 @@ class SpecifyProjectReviewSettings extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri( 'project/{projectId}/reviewSettings', [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('project/{projectId}/reviewSettings', [
                 'projectId' => $params[ 'projectId' ]
-        ] ), [
+        ]), [
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
-                        'email'      => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
                         'reviewType'          => $params[ 'reviewType' ],
-                        'templateName'        => isset( $params[ 'templateName' ] ) ? $params[ 'templateName' ] : null,
-                        'severityWeights'     => isset( $params[ 'severityWeights' ] ) ? $params[ 'severityWeights' ] : null,
-                        'errorCategoryIds[0]' => isset( $params[ 'errorCategoryIds[0]' ] ) ? $params[ 'errorCategoryIds[0]' ] : null,
-                        'errorCategoryIds[1]' => isset( $params[ 'errorCategoryIds[1]' ] ) ? $params[ 'errorCategoryIds[1]' ] : null,
-                        'errorCategoryIds[2]' => isset( $params[ 'errorCategoryIds[2]' ] ) ? $params[ 'errorCategoryIds[2]' ] : null,
-                        'passFailThreshold'   => isset( $params[ 'passFailThreshold' ] ) ? $params[ 'passFailThreshold' ] : null,
-                        'sampling'            => isset( $params[ 'sampling' ] ) ? $params[ 'sampling' ] : null,
+                        'templateName'        => isset($params[ 'templateName' ]) ? $params[ 'templateName' ] : null,
+                        'severityWeights'     => isset($params[ 'severityWeights' ]) ? $params[ 'severityWeights' ] : null,
+                        'errorCategoryIds[0]' => isset($params[ 'errorCategoryIds[0]' ]) ? $params[ 'errorCategoryIds[0]' ] : null,
+                        'errorCategoryIds[1]' => isset($params[ 'errorCategoryIds[1]' ]) ? $params[ 'errorCategoryIds[1]' ] : null,
+                        'errorCategoryIds[2]' => isset($params[ 'errorCategoryIds[2]' ]) ? $params[ 'errorCategoryIds[2]' ] : null,
+                        'passFailThreshold'   => isset($params[ 'passFailThreshold' ]) ? $params[ 'passFailThreshold' ] : null,
+                        'sampling'            => isset($params[ 'sampling' ]) ? $params[ 'sampling' ] : null,
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

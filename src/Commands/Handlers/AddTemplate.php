@@ -6,8 +6,10 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class AddTemplate extends CommandHandler {
-    protected function setRules() {
+class AddTemplate extends CommandHandler
+{
+    protected function setRules()
+    {
         $rules = [
                 'sessionId'      => [
                         'required' => true,
@@ -48,11 +50,12 @@ class AddTemplate extends CommandHandler {
      * @return mixed|void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle( $params = [] ) {
-        $response = $this->httpClient->request( Constants::HTTP_VERBS_CREATE, $this->buildUri( 'user/projectTemplate', [] ), [
+    public function handle($params = [])
+    {
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('user/projectTemplate', []), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
-                        'email'     => isset( $params[ 'generic_email' ] ) ? $params[ 'generic_email' ] : null,
+                        'email'     => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
                         'name'           => $params[ 'name' ],
@@ -62,10 +65,10 @@ class AddTemplate extends CommandHandler {
                         'qualityLevelId' => $params[ 'qualityLevelId' ],
                         'isPublic'       => $params[ 'isPublic' ],
                 ],
-        ] );
+        ]);
 
-        if ( $response->getStatusCode() === StatusCode::CREATED ) {
-            return $this->decodeResponse( $response );
+        if ($response->getStatusCode() === StatusCode::CREATED) {
+            return $this->decodeResponse($response);
         }
     }
 }

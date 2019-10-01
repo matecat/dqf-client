@@ -29,80 +29,123 @@ For further config details please refer to the official documentation:
 
 Use `SessionProvider` to manage SessionId. You have three methods available:
 
-*   `getById($externalReferenceId)` - get the SessionId by your external userId reference
-*   `createByCredentials($externalReferenceId, $username, $password)` -  get the SessionId by credentials. Login is performed and user data is persisted 
-*   `destroy($externalReferenceId)` - destroy the SessionId and performs logout
+*   `getById($externalReferenceId)` | ... |get the SessionId by your external userId reference
+*   `createByCredentials($externalReferenceId, $username, $password)` | ... | get the SessionId by credentials. A `externalReferenceId` is needed to link your application's user and DQF user. Login is
+ performed and user data is persisted 
+*   `destroy($externalReferenceId)` | ... |destroy the SessionId and performs logout
 
 If you want to login as a generic user you can use:
 
-*   `createAnonymous($email, $genericUsername, $genericPassword)` - get the SessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
-*   `getByGenericEmail($email)` -  get the SessionId by credentials. Login is performed and user data is persisted 
-*   `destroyAnonymous($email)` - destroy the SessionId and performs logout
+*   `createAnonymous($email, $genericUsername, $genericPassword)` | ... |get the SessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
+*   `getByGenericEmail($email)` | ... | get the SessionId by credentials. Login is performed and user data is persisted 
+*   `destroyAnonymous($email)` | ... |destroy the SessionId and performs logout
+
+Here is a full example:
+
+```php
+// ...
+
+$this->config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
+$client       = new Client([
+        'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
+        'idPrefix'       => $this->config[ 'dqf' ][ 'ID_PREFIX' ],
+        'encryptionKey'  => $this->config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
+        'encryptionIV'   => $this->config[ 'dqf' ][ 'ENCRYPTION_IV' ],
+        'debug'          => true,
+        'logStoragePath' => __DIR__ . '/../log/api.log'
+]);
+
+$pdo  = new \PDO("mysql:host=" . $this->config[ 'pdo' ][ 'SERVER' ] . ";dbname=" . $this->config[ 'pdo' ][ 'DBNAME' ], $this->config[ 'pdo' ][ 'USERNAME' ], $this->config[ 'pdo' ][ 'PASSWORD' ]);
+$repo = new PDODqfUserRepository($pdo);
+
+$sessionProvider = new SessionProvider($client, $repo);
+
+// get sessionId by DQF credentials
+$sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+
+// get sessionId by your application's user id
+$sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+
+```
+
+Please note, that __**you need to run migrations**__ before using `PDODqfUserRepository`:
+
+``````
+vendor/bin/phinx migrate 
+``````
+
+As you can notice [Phinx](https://phinx.org/) library is used, but of course you can run the migrations (which can be found in `db/migrations` folder) with another tool or manually.
 
 ## Methods
 
 Here is the list of Client's public methods:
 
-* `addCompleteTranslationOfASegment` - 
-* `addMasterProjectFile` - 
-* `addProjectReviewCycle` - 
-* `addRemainingTargetSegmentsInBatch` - 
-* `addReviewTemplate` - 
-* `addSourceSegmentsInBatchToMasterProject` - 
-* `addTargetLanguageToChildProject` - 
-* `addTargetLanguageToMasterProject` - 
-* `addTemplate` - 
-* `addTranslationOfASourceSegment` - 
-* `addTranslationsForSourceSegmentsInBatch` - 
-* `checkLanguageCode` - 
-* `checkUserExistence` - 
-* `createMasterProject` - 
-* `createChildProject` - 
-* `deleteChildProject` - 
-* `deleteMasterProject` - 
-* `deleteMasterProjectFile` - 
-* `deleteMasterProjectReviewSettings` - 
-* `deleteReviewTemplate` - 
-* `deleteTargetLanguageForChildProject` - 
-* `deleteTargetLanguageForMasterProject` - 
-* `deleteTemplate` - 
-* `getBasicAttributesAggregate` - 
-* `getChildProjectFile` - 
-* `getChildProjectFiles` - 
-* `getFileId` - 
-* `getProjectId` - 
-* `getProjectReviewCycle` - 
-* `getReviewTemplate` - 
-* `getReviewTemplates` - 
-* `getMasterProject` - 
-* `getMasterProjectFile` - 
-* `getChildProjectStatus` - 
-* `getMasterProjectReviewSettings` - 
-* `getSegmentId` - 
-* `getSourceSegmentIdsForAFile` - 
-* `getTargetLanguageForChildProject` - 
-* `getTargetLanguageForMasterProject` - 
-* `getTargetLanguageForChildProjectByLang` - 
-* `getTargetLanguageForMasterProjectByLang` - 
-* `getTemplate` - 
-* `getTemplates` - 
-* `getTranslationId` - 
-* `getTranslationForASegment` - 
-* `getTranslationsForSourceSegmentsInBatch` - 
-* `getUser` - 
-* `login` - 
-* `logout` - 
-* `specifyProjectReviewSettings` - 
-* `updateChildProject` - 
-* `updateChildProjectStatus` - 
-* `updateCompleteTranslatedSegment` - 
-* `updateMasterProject` - 
-* `updateMasterProjectFile` - 
-* `updateMasterProjectReviewSettings` - 
-* `updateReviewTemplate` - 
-* `updateReviewInBatch` - 
-* `updateTemplate` - 
-* `updateTranslationForASegment` - 
+| Command | Description |
+| --- | --- |
+| `addCompleteTranslationOfASegment` | .... |
+| `addMasterProjectFile` | Add files to a master project |
+| `addProjectReviewCycle` | Convenient method to automatically create review children |
+| `addRemainingTargetSegmentsInBatch` | ... |
+| `addReviewTemplate` | Add a review template |
+| `addSourceSegmentsInBatchToMasterProject` | ... |
+| `addTargetLanguageToChildProject` | ... |
+| `addTargetLanguageToMasterProject` | ... |
+| `addTemplate` | Add project templates |
+| `addTranslationOfASourceSegment` | ... |
+| `addTranslationsForSourceSegmentsInBatch` | ... |
+| `checkLanguageCode` | ... |
+| `checkUserExistence` | ... |
+| `createMasterProject` | Add a new master project to DQF |
+| `createChildProject` | Add a new child Project to DQF |
+| `deleteChildProject` | Delete an initialized child Project |
+| `deleteMasterProject` | Delete an initialized master Project |
+| `deleteMasterProjectFile` | Delete a file of an initialized master Project |
+| `deleteMasterProjectReviewSettings` | ... |
+| `deleteReviewTemplate` | Remove the review template of the user |
+| `deleteTargetLanguageForChildProject` | ... |
+| `deleteTargetLanguageForMasterProject` | ... |
+| `deleteTemplate` | Remove the project template of the user |
+| `getBasicAttributesAggregate` | Return an aggregate of DQF basic attributes |
+| `getChildProject` | Find the properties of a child Project |
+| `getChildProjectFile` | Find the details of a file |
+| `getChildProjectFiles` | Find the files of a child Project |
+| `getChildProjectStatus` | ... |
+| `getFileId` | Return the DQF file id |
+| `getMasterProject` | Find the properties of a master Project |
+| `getMasterProjectFile` | Find a file of a master Project |
+| `getMasterProjectFiles` | Find the files of a master Project |
+| `getMasterProjectReviewSettings` | ... |
+| `getProjectId` | Return the DQF project id |
+| `getProjectReviewCycle` | Get review children projects |
+| `getReviewTemplate` | Return the selected review template of the user |
+| `getReviewTemplates` | Return the review templates of a user |
+| `getSegmentId` | Return the DQF segment id |
+| `getSourceSegmentIdsForAFile` | ... |
+| `getTargetLanguageForChildProject` | ... |
+| `getTargetLanguageForMasterProject` | ... |
+| `getTargetLanguageForChildProjectByLang` | ... |
+| `getTargetLanguageForMasterProjectByLang` | ... |
+| `getTemplate` | Return the selected project template of the user |
+| `getTemplates` | Return the project templates of the user |
+| `getTranslationId` | Return the DQF translation id |
+| `getTranslationForASegment` | ... |
+| `getTranslationsForSourceSegmentsInBatch` | ... |
+| `getUser` | Get an existing TAUS user |
+| `login` | Login to the DQF APIv3 service  |
+| `logout` | Logout of the DQF APIv3 service |
+| `specifyProjectReviewSettings` | ... |
+| `updateChildProject` | ... |Update the properties of a child project.
+| `updateChildProjectStatus` | ... |
+| `updateCompleteTranslatedSegment` | ... |
+| `updateMasterProject` | Update the master project |
+| `updateMasterProjectFile` | Update the file of a master project |
+| `updateMasterProjectReviewSettings` | ... |
+| `updateReviewTemplate` | Update a review template of the user |
+| `updateReviewInBatch` | Add a review for a segment |
+| `updateTemplate` | Update a project template of the user |
+| `updateTranslationForASegment` | Update the translation of a source segment |
+
+Please note that __**every command takes an associative array of params as input**__. 
 
 ## Input validation
 

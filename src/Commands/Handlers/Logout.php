@@ -9,7 +9,8 @@ use Teapot\StatusCode;
 
 class Logout extends CommandHandler
 {
-    protected function setRules() {
+    protected function setRules()
+    {
         $rules = [
                 'username'  => [
                         'required' => true,

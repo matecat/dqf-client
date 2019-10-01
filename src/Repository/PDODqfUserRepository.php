@@ -62,7 +62,7 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
-     * @param $genericEmail
+     * @param string $genericEmail
      *
      * @return DqfUser|mixed
      */
