@@ -82,18 +82,18 @@ Here is the list of Client's public methods:
 
 | Command | Description |
 | --- | --- |
-| `addCompleteTranslationOfASegment` | .... |
+| `addCompleteTranslationOfASegment` | Add a complete translation of a segment |
 | `addMasterProjectFile` | Add files to a master project |
 | `addProjectReviewCycle` | Convenient method to automatically create review children |
 | `addProjectReviewSettings` | Add review preferences on a project |
-| `addRemainingTargetSegmentsInBatch` | ... |
+| `addRemainingTargetSegmentsInBatch` | Add remaining target segments |
 | `addReviewTemplate` | Add a review template |
-| `addSourceSegmentsInBatchToMasterProject` | ... |
+| `addSourceSegmentsInBatchToMasterProject` | Add source segments on a file of a project |
 | `addTargetLanguageToChildProject` | Add a target language for a file of a child project |
 | `addTargetLanguageToMasterProject` | Add target languages for the translation of a file |
 | `addTemplate` | Add project templates |
-| `addTranslationOfASourceSegment` | ... |
-| `addTranslationsForSourceSegmentsInBatch` | ... |
+| `addTranslationOfASourceSegment` | Add the translation of a source segment |
+| `addTranslationsForSourceSegmentsInBatch` | Add the translation of a source segment |
 | `checkLanguageCode` | Check language code |
 | `checkUserExistence` | Check the existence of a TAUS user |
 | `createMasterProject` | Add a new master project to DQF |
@@ -121,22 +121,22 @@ Here is the list of Client's public methods:
 | `getReviewTemplate` | Return the selected review template of the user |
 | `getReviewTemplates` | Return the review templates of a user |
 | `getSegmentId` | Return the DQF segment id |
-| `getSourceSegmentIdsForAFile` | ... |
-| `getTargetLanguageForChildProject` | ... |
-| `getTargetLanguageForMasterProject` | ... |
-| `getTargetLanguageForChildProjectByLang` | ... |
-| `getTargetLanguageForMasterProjectByLang` | ... |
+| `getSourceSegmentIdsForAFile` | Get all the source segment ids of a file |
+| `getTargetLanguageForChildProject` | Find the target languages of a child Project |
+| `getTargetLanguageForMasterProject` | Find the target languages of a master Project |
+| `getTargetLanguageForChildProjectByLang` | Find a target language of a child project |
+| `getTargetLanguageForMasterProjectByLang` | Find a target language of a master project |
 | `getTemplate` | Return the selected project template of the user |
 | `getTemplates` | Return the project templates of the user |
+| `getTranslationForASegment` | Get the translation of a source segment |
 | `getTranslationId` | Return the DQF translation id |
-| `getTranslationForASegment` | ... |
-| `getTranslationsForSourceSegmentsInBatch` | ... |
+| `getTranslationsForSourceSegmentsInBatch` | Get the multiple translation content |
 | `getUser` | Get an existing TAUS user |
 | `login` | Login to the DQF APIv3 service  |
 | `logout` | Logout of the DQF APIv3 service |
 | `updateChildProject` | Update the properties of a child project |
 | `updateChildProjectStatus` | Update project status |
-| `updateCompleteTranslatedSegment` | ... |
+| `updateCompleteTranslatedSegment` | Update a complete translated segment |
 | `updateMasterProject` | Update the master project |
 | `updateMasterProjectFile` | Update the file of a master project |
 | `updateProjectReviewSettings` | Update the project's review preferences |
