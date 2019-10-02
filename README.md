@@ -29,16 +29,16 @@ For further config details please refer to the official documentation:
 
 Use `SessionProvider` to obtain the needed sessionId. You have three methods available:
 
-*   `getById($externalReferenceId)` - get the SessionId by your external userId reference
-*   `createByCredentials($externalReferenceId, $username, $password)` - get the SessionId by credentials. A `externalReferenceId` is needed to link your application's user and DQF user. Login is
+*   `getById($externalReferenceId)` - get the sessionId by your external userId reference
+*   `createByCredentials($externalReferenceId, $username, $password)` - get the sessionId by credentials. A `externalReferenceId` is needed to link your application's user and DQF user. Login is
  performed and user data is persisted 
-*   `destroy($externalReferenceId)` - destroy the SessionId and performs logout
+*   `destroy($externalReferenceId)` - destroy the sessionId and performs logout
 
 If you want to login as a generic user you can use:
 
-*   `createAnonymous($email, $genericUsername, $genericPassword)` - get the SessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
-*   `getByGenericEmail($email)` - get the SessionId by credentials. Login is performed and user data is persisted 
-*   `destroyAnonymous($email)` - destroy the SessionId and performs logout
+*   `createAnonymous($email, $genericUsername, $genericPassword)` - get the sessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
+*   `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
+*   `destroyAnonymous($email)` - destroy the sessionId and performs logout
 
 Here is a full example:
 
