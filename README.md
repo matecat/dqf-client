@@ -668,6 +668,18 @@ $app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
 $app->run();
 ```
 
+You get this output:
+
+```
++-----------------------------------------+----------------------+---------+----------+
+| updateChildProjectStatus                | generic_email        | string  | YES      |
+|                                         | projectId            | string  | YES      |
+|                                         | projectKey           | integer | YES      |
+|                                         | sessionId            | string  | NO       |
+|                                         | status               | string  | NO       |
++-----------------------------------------+----------------------+---------+----------+
+```
+
 ## Support
 
 If you found an issue or had an idea please refer [to this section](https://github.com/matecat/dqf-client/issues).
