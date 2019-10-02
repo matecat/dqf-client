@@ -45,6 +45,8 @@ Here is a full example:
 ```php
 // ...
 
+use Matecat\Dqf\Client;
+
 $this->config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
 $client       = new Client([
         'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
