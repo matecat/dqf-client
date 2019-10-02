@@ -6,28 +6,28 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class AddTargetLanguageToMasterProject extends CommandHandler
+class DeleteMasterProjectTargetLanguage extends CommandHandler
 {
     protected function setRules()
     {
         $rules = [
-                'sessionId'          => [
+                'sessionId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectKey'         => [
+                'projectKey'     => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
-                'projectId'          => [
+                'projectId'      => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'fileId'             => [
+                'fileId'         => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'targetLanguageCode' => [
+                'targetLangCode' => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_STRING,
                 ],
@@ -44,20 +44,18 @@ class AddTargetLanguageToMasterProject extends CommandHandler
      */
     public function handle($params = [])
     {
-        $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
-            'project/master/{projectId}/file/{fileId}/targetLang',
+        $response = $this->httpClient->request(Constants::HTTP_VERBS_DELETE, $this->buildUri(
+            'project/master/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
             [
-                        'projectId' => $params[ 'projectId' ],
-                        'fileId'    => $params[ 'fileId' ],
+                        'projectId'      => $params[ 'projectId' ],
+                        'fileId'         => $params[ 'fileId' ],
+                        'targetLangCode' => $params[ 'targetLangCode' ],
                 ]
         ), [
-                'headers'     => [
+                'headers' => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
-                ],
-                'form_params' => [
-                        'targetLanguageCode' => $params[ 'targetLanguageCode' ]
                 ],
         ]);
 

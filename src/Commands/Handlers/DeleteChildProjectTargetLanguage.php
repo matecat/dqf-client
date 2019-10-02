@@ -6,7 +6,7 @@ use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Constants;
 use Teapot\StatusCode;
 
-class DeleteTargetLanguageForChildProject extends CommandHandler
+class DeleteChildProjectTargetLanguage extends CommandHandler
 {
     protected function setRules()
     {

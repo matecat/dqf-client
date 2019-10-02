@@ -82,29 +82,29 @@ Here is the list of Client's public methods:
 
 | Command | Description |
 | --- | --- |
+| `addChildProjectTargetLanguage` | Add a target language for a file of a child project |
 | `addCompleteTranslationOfASegment` | Add a complete translation of a segment |
 | `addMasterProjectFile` | Add files to a master project |
+| `addMasterProjectTargetLanguage` | Add source segments on a file of a project |
 | `addProjectReviewCycle` | Convenient method to automatically create review children |
 | `addProjectReviewSettings` | Add review preferences on a project |
 | `addRemainingTargetSegmentsInBatch` | Add remaining target segments |
 | `addReviewTemplate` | Add a review template |
-| `addSourceSegmentsInBatchToMasterProject` | Add source segments on a file of a project |
-| `addTargetLanguageToChildProject` | Add a target language for a file of a child project |
-| `addTargetLanguageToMasterProject` | Add target languages for the translation of a file |
+| `addSourceSegmentsInBatchToMasterProject` | Add target languages for the translation of a file |
 | `addTemplate` | Add project templates |
 | `addTranslationOfASourceSegment` | Add the translation of a source segment |
 | `addTranslationsForSourceSegmentsInBatch` | Add the translation of a source segment |
 | `checkLanguageCode` | Check language code |
 | `checkUserExistence` | Check the existence of a TAUS user |
-| `createMasterProject` | Add a new master project to DQF |
 | `createChildProject` | Add a new child Project to DQF |
+| `createMasterProject` | Add a new master project to DQF |
 | `deleteChildProject` | Delete an initialized child Project |
+| `deleteChildProjectTargetLanguage` | Delete a target language of a child project's file |
 | `deleteMasterProject` | Delete an initialized master Project |
 | `deleteMasterProjectFile` | Delete a file of an initialized master Project |
+| `deleteMasterProjectTargetLanguage` | Delete a target language of a master project |
 | `deleteProjectReviewSettings` | Delete the review preferences of an initialized project |
 | `deleteReviewTemplate` | Remove the review template of the user |
-| `deleteTargetLanguageForChildProject` | Delete a target language of a child project's file |
-| `deleteTargetLanguageForMasterProject` | Delete a target language of a master project |
 | `deleteTemplate` | Remove the project template of the user |
 | `getBasicAttributesAggregate` | Return an aggregate of DQF basic attributes |
 | `getChildProject` | Find the properties of a child Project |
@@ -112,20 +112,20 @@ Here is the list of Client's public methods:
 | `getChildProjectFiles` | Find the files of a child Project |
 | `getChildProjectStatus` | Get the project status |
 | `getFileId` | Return the DQF file id |
+| `getChildProjectTargetLanguage` | Find a target language of a child project |
+| `getChildProjectTargetLanguages` | Find the target languages of a child Project |
 | `getMasterProject` | Find the properties of a master Project |
 | `getMasterProjectFile` | Find a file of a master Project |
 | `getMasterProjectFiles` | Find the files of a master Project |
-| `getProjectReviewSettings` | Return the review preferences of a project |
+| `getMasterProjectTargetLanguage` | Find a target language of a master project |
+| `getMasterProjectTargetLanguages` | Find the target languages of a master Project |
 | `getProjectId` | Return the DQF project id |
 | `getProjectReviewCycle` | Get review children projects |
+| `getProjectReviewSettings` | Return the review preferences of a child project |
 | `getReviewTemplate` | Return the selected review template of the user |
 | `getReviewTemplates` | Return the review templates of a user |
 | `getSegmentId` | Return the DQF segment id |
 | `getSourceSegmentIdsForAFile` | Get all the source segment ids of a file |
-| `getChildProjectTargetLanguage` | Find a target language of a child project |
-| `getChildProjectTargetLanguages` | Find the target languages of a child Project |
-| `getMasterProjectTargetLanguage` | Find a target language of a master project |
-| `getMasterProjectTargetLanguages` | Find the target languages of a master Project |
 | `getTemplate` | Return the selected project template of the user |
 | `getTemplates` | Return the project templates of the user |
 | `getTranslationForASegment` | Get the translation of a source segment |
@@ -140,8 +140,8 @@ Here is the list of Client's public methods:
 | `updateMasterProject` | Update the master project |
 | `updateMasterProjectFile` | Update the file of a master project |
 | `updateProjectReviewSettings` | Update the project's review preferences |
-| `updateReviewTemplate` | Update a review template of the user |
 | `updateReviewInBatch` | Add a review for a segment |
+| `updateReviewTemplate` | Update a review template of the user |
 | `updateTemplate` | Update a project template of the user |
 | `updateTranslationForASegment` | Update the translation of a source segment |
 

@@ -24,68 +24,68 @@ use Monolog\Logger;
  *
  * Method list:
  *
- * @method mixed addCompleteTranslationOfASegment( array $input )
- * @method mixed addMasterProjectFile( array $input )
- * @method mixed addProjectReviewCycle( array $input )
- * @method mixed addProjectReviewSettings( array $input )
- * @method mixed addRemainingTargetSegmentsInBatch( array $input )
- * @method mixed addReviewTemplate( array $input )
- * @method mixed addSourceSegmentsInBatchToMasterProject( array $input )
- * @method mixed addTargetLanguageToChildProject( array $input )
- * @method mixed addTargetLanguageToMasterProject( array $input )
- * @method mixed addTemplate( array $input )
- * @method mixed addTranslationOfASourceSegment( array $input )
- * @method mixed addTranslationsForSourceSegmentsInBatch( array $input )
- * @method mixed checkLanguageCode( array $input )
- * @method mixed checkUserExistence( array $input )
- * @method mixed createMasterProject( array $input )
- * @method mixed createChildProject( array $input )
- * @method mixed deleteChildProject( array $input )
- * @method mixed deleteMasterProject( array $input )
- * @method mixed deleteMasterProjectFile( array $input )
- * @method mixed deleteProjectReviewSettings( array $input )
- * @method mixed deleteReviewTemplate( array $input )
- * @method mixed deleteTargetLanguageForChildProject( array $input )
- * @method mixed deleteTargetLanguageForMasterProject( array $input )
- * @method mixed deleteTemplate( array $input )
- * @method mixed getBasicAttributesAggregate( array $input )
- * @method mixed getChildProject( array $input )
- * @method mixed getChildProjectFile( array $input )
- * @method mixed getChildProjectFiles( array $input )
- * @method mixed getFileId( array $input )
- * @method mixed getProjectId( array $input )
- * @method mixed getProjectReviewCycle( array $input )
- * @method mixed getReviewTemplate( array $input )
- * @method mixed getReviewTemplates( array $input )
- * @method mixed getMasterProject( array $input )
- * @method mixed getMasterProjectFile( array $input )
- * @method mixed getMasterProjectFiles( array $input )
- * @method mixed getChildProjectStatus( array $input )
- * @method mixed getProjectReviewSettings( array $input )
- * @method mixed getSegmentId( array $input )
- * @method mixed getSourceSegmentIdsForAFile( array $input )
- * @method mixed getChildProjectTargetLanguage( array $input )
- * @method mixed getChildProjectTargetLanguages( array $input )
- * @method mixed getMasterProjectTargetLanguage( array $input )
- * @method mixed getMasterProjectTargetLanguages( array $input )
- * @method mixed getTemplate( array $input )
- * @method mixed getTemplates( array $input )
- * @method mixed getTranslationId( array $input )
- * @method mixed getTranslationForASegment( array $input )
- * @method mixed getTranslationsForSourceSegmentsInBatch( array $input )
- * @method mixed getUser( array $input )
- * @method mixed login( array $input )
- * @method mixed logout( array $input )
- * @method mixed updateChildProject( array $input )
- * @method mixed updateChildProjectStatus( array $input )
- * @method mixed updateCompleteTranslatedSegment( array $input )
- * @method mixed updateMasterProject( array $input )
- * @method mixed updateMasterProjectFile( array $input )
- * @method mixed updateProjectReviewSettings( array $input )
- * @method mixed updateReviewTemplate( array $input )
- * @method mixed updateReviewInBatch( array $input )
- * @method mixed updateTemplate( array $input )
- * @method mixed updateTranslationForASegment( array $input )
+ * @method mixed addChildProjectTargetLanguage( array $input ) - Add a target language for a file of a child project
+ * @method mixed addCompleteTranslationOfASegment( array $input ) - Add a complete translation of a segment
+ * @method mixed addMasterProjectFile( array $input ) - Add files to a master project
+ * @method mixed addMasterProjectTargetLanguage( array $input ) - Add source segments on a file of a project
+ * @method mixed addProjectReviewCycle( array $input ) - Convenient method to automatically create review children
+ * @method mixed addProjectReviewSettings( array $input ) - Add review preferences on a project
+ * @method mixed addRemainingTargetSegmentsInBatch( array $input ) - Add remaining target segments
+ * @method mixed addReviewTemplate( array $input ) - Add a review template
+ * @method mixed addSourceSegmentsInBatchToMasterProject( array $input ) - Add target languages for the translation of a file
+ * @method mixed addTemplate( array $input ) - Add project templates
+ * @method mixed addTranslationOfASourceSegment( array $input ) - Add the translation of a source segment
+ * @method mixed addTranslationsForSourceSegmentsInBatch( array $input ) - Add the translation of a source segment
+ * @method mixed checkLanguageCode( array $input ) - Check language code
+ * @method mixed checkUserExistence( array $input ) - Check the existence of a TAUS user
+ * @method mixed createChildProject( array $input ) - Add a new child Project to DQF
+ * @method mixed createMasterProject( array $input ) - Add a new master project to DQF
+ * @method mixed deleteChildProject( array $input ) - Delete an initialized child Project
+ * @method mixed deleteChildProjectTargetLanguage( array $input ) - Delete a target language of a child project's file
+ * @method mixed deleteMasterProject( array $input ) - Delete an initialized master Project
+ * @method mixed deleteMasterProjectFile( array $input ) - Delete a file of an initialized master Project
+ * @method mixed deleteMasterProjectTargetLanguage( array $input ) - Delete a target language of a master project
+ * @method mixed deleteProjectReviewSettings( array $input ) - Delete the review preferences of an initialized project
+ * @method mixed deleteReviewTemplate( array $input ) - Remove the review template of the user
+ * @method mixed deleteTemplate( array $input ) - Remove the project template of the user
+ * @method mixed getBasicAttributesAggregate( array $input ) - Return an aggregate of DQF basic attributes
+ * @method mixed getChildProject( array $input ) - Find the properties of a child Project
+ * @method mixed getChildProjectFile( array $input ) - Find the details of a file
+ * @method mixed getChildProjectFiles( array $input ) - Find the files of a child Project
+ * @method mixed getChildProjectStatus( array $input ) - Get the project status
+ * @method mixed getFileId( array $input ) - Return the DQF file id
+ * @method mixed getChildProjectTargetLanguage( array $input ) - Find a target language of a child project
+ * @method mixed getChildProjectTargetLanguages( array $input ) - Find the target languages of a child Project
+ * @method mixed getMasterProject( array $input ) - Find the properties of a master Project
+ * @method mixed getMasterProjectFile( array $input ) - Find a file of a master Project
+ * @method mixed getMasterProjectFiles( array $input ) - Find the files of a master Project
+ * @method mixed getMasterProjectTargetLanguage( array $input ) - Find a target language of a master project
+ * @method mixed getMasterProjectTargetLanguages( array $input ) - Find the target languages of a master Project
+ * @method mixed getProjectId( array $input ) - Return the DQF project id
+ * @method mixed getProjectReviewCycle( array $input ) - Get review children projects
+ * @method mixed getProjectReviewSettings( array $input ) - Return the review preferences of a child project
+ * @method mixed getReviewTemplate( array $input ) - Return the selected review template of the user
+ * @method mixed getReviewTemplates( array $input ) - Return the review templates of a user
+ * @method mixed getSegmentId( array $input ) - Return the DQF segment id
+ * @method mixed getSourceSegmentIdsForAFile( array $input ) - Get all the source segment ids of a file
+ * @method mixed getTemplate( array $input ) - Return the selected project template of the user
+ * @method mixed getTemplates( array $input ) - Return the project templates of the user
+ * @method mixed getTranslationForASegment( array $input ) - Get the translation of a source segment
+ * @method mixed getTranslationId( array $input ) - Return the DQF translation id
+ * @method mixed getTranslationsForSourceSegmentsInBatch( array $input ) - Get the multiple translation content
+ * @method mixed getUser( array $input ) - Get an existing TAUS user
+ * @method mixed login( array $input ) - Login to the DQF APIv3 service 
+ * @method mixed logout( array $input ) - Logout of the DQF APIv3 service
+ * @method mixed updateChildProject( array $input ) - Update the properties of a child project
+ * @method mixed updateChildProjectStatus( array $input ) - Update project status
+ * @method mixed updateCompleteTranslatedSegment( array $input ) - Update a complete translated segment
+ * @method mixed updateMasterProject( array $input ) - Update the master project
+ * @method mixed updateMasterProjectFile( array $input ) - Update the file of a master project
+ * @method mixed updateProjectReviewSettings( array $input ) - Update the project's review preferences
+ * @method mixed updateReviewInBatch( array $input ) - Add a review for a segment
+ * @method mixed updateReviewTemplate( array $input ) - Update a review template of the user
+ * @method mixed updateTemplate( array $input ) - Update a project template of the user
+ * @method mixed updateTranslationForASegment( array $input ) - Update the translation of a source segment
  *
  * @package Matecat\Dqf
  */

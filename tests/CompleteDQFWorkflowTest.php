@@ -191,7 +191,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest
         $this->assertEquals('OK', $languageCode->status);
         $this->assertNotEmpty($masterProjectFile->dqfId);
 
-        $masterProjectTargetLang = $this->client->addTargetLanguageToMasterProject([
+        $masterProjectTargetLang = $this->client->addMasterProjectTargetLanguage([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $masterProject->dqfUUID,
                 'projectId'          => $masterProject->dqfId,
@@ -260,7 +260,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest
         $this->assertNotEmpty($childTranslation->dqfId);
         $this->assertNotEmpty($childTranslation->dqfUUID);
 
-        $childTranslationTargetLang = $this->client->addTargetLanguageToChildProject([
+        $childTranslationTargetLang = $this->client->addChildProjectTargetLanguage([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $childTranslation->dqfUUID,
                 'projectId'          => $childTranslation->dqfId,
@@ -387,7 +387,7 @@ class CompleteDQFWorkflowTest extends AbstractClientTest
          ****************************************************************************
          */
 
-        $childReviewTargetLang = $this->client->addTargetLanguageToChildProject([
+        $childReviewTargetLang = $this->client->addChildProjectTargetLanguage([
                 'sessionId'          => $this->sessionId,
                 'projectKey'         => $childReview->dqfUUID,
                 'projectId'          => $childReview->dqfId,

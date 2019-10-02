@@ -193,7 +193,7 @@ class CompleteDQFWorkflowWithGenericSessionTest extends AbstractClientTest {
         $this->assertEquals( 'OK', $languageCode->status );
         $this->assertNotEmpty( $masterProjectFile->dqfId );
 
-        $masterProjectTargetLang = $this->client->addTargetLanguageToMasterProject( [
+        $masterProjectTargetLang = $this->client->addMasterProjectTargetLanguage( [
                 'sessionId'          => $this->genericSessionId,
                 'generic_email'      => $this->genericEmail,
                 'projectKey'         => $masterProject->dqfUUID,
@@ -266,7 +266,7 @@ class CompleteDQFWorkflowWithGenericSessionTest extends AbstractClientTest {
         $this->assertNotEmpty( $childTranslation->dqfId );
         $this->assertNotEmpty( $childTranslation->dqfUUID );
 
-        $childTranslationTargetLang = $this->client->addTargetLanguageToChildProject( [
+        $childTranslationTargetLang = $this->client->addChildProjectTargetLanguage( [
                 'sessionId'          => $this->genericSessionId,
                 'generic_email'      => $this->genericEmail,
                 'projectKey'         => $childTranslation->dqfUUID,
@@ -402,7 +402,7 @@ class CompleteDQFWorkflowWithGenericSessionTest extends AbstractClientTest {
          ****************************************************************************
          */
 
-        $childReviewTargetLang = $this->client->addTargetLanguageToChildProject( [
+        $childReviewTargetLang = $this->client->addChildProjectTargetLanguage( [
                 'sessionId'          => $this->genericSessionId,
                 'generic_email'      => $this->genericEmail,
                 'projectKey'         => $childReview->dqfUUID,
