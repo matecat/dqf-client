@@ -74,7 +74,7 @@ use Monolog\Logger;
  * @method mixed getTranslationId( array $input ) - Return the DQF translation id
  * @method mixed getTranslationsForSourceSegmentsInBatch( array $input ) - Get the multiple translation content
  * @method mixed getUser( array $input ) - Get an existing TAUS user
- * @method mixed login( array $input ) - Login to the DQF APIv3 service 
+ * @method mixed login( array $input ) - Login to the DQF APIv3 service
  * @method mixed logout( array $input ) - Logout of the DQF APIv3 service
  * @method mixed updateChildProject( array $input ) - Update the properties of a child project
  * @method mixed updateChildProjectStatus( array $input ) - Update project status
@@ -172,6 +172,22 @@ class Client
         $logger->pushHandler($streamHandler);
 
         return $logger;
+    }
+
+    /**
+     * @return array
+     */
+    public function getClientParams()
+    {
+        return $this->clientParams;
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClient;
     }
 
     /**

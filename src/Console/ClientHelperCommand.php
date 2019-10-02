@@ -136,12 +136,6 @@ class ClientHelperCommand extends Command
     {
         $commandHandler = 'Matecat\\Dqf\\Commands\\Handlers\\' . ucfirst($method);
 
-        $reflected = new \ReflectionObject($this->dqfClient);
-        $httpClient = $reflected->getProperty('httpClient');
-        $httpClient->setAccessible(true);
-        $clientParams = $reflected->getProperty('clientParams');
-        $clientParams->setAccessible(true);
-
-        return new $commandHandler($httpClient->getValue($this->dqfClient), $clientParams->getValue($this->dqfClient));
+        return new $commandHandler($this->dqfClient->getHttpClient(), $this->dqfClient->getClientParams());
     }
 }

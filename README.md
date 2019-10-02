@@ -40,7 +40,13 @@ If you want to login as a generic user you can use:
 *   `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
 *   `destroyAnonymous($email)` - destroy the sessionId and performs logout
 
-Here is a full example:
+You can choose between three different drivers:
+
+* In memory (`InMemoryDqfUserRepository`) 
+* PDO (`PDODqfUserRepository`)
+* Redis (`RedisDqfUserRepository`)
+
+Here is a full example implementing PDO driver:
 
 ```php
 // ...

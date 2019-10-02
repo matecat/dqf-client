@@ -4,9 +4,10 @@ namespace Matecat\Dqf\Tests;
 
 use Matecat\Dqf\Client;
 use Matecat\Dqf\Repository\PDODqfUserRepository;
+use Matecat\Dqf\Repository\RedisDqfUserRepository;
 use Matecat\Dqf\SessionProvider;
 
-class SessionProviderTest extends \PHPUnit_Framework_TestCase
+class SessionProviderWithRedisTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array
@@ -32,8 +33,8 @@ class SessionProviderTest extends \PHPUnit_Framework_TestCase
                 'logStoragePath' => __DIR__ . '/../log/api.log'
         ]);
 
-        $pdo  = new \PDO("mysql:host=" . $this->config[ 'pdo' ][ 'SERVER' ] . ";dbname=" . $this->config[ 'pdo' ][ 'DBNAME' ], $this->config[ 'pdo' ][ 'USERNAME' ], $this->config[ 'pdo' ][ 'PASSWORD' ]);
-        $repo = new PDODqfUserRepository($pdo);
+        $redis  = new \Predis\Client();
+        $repo = new RedisDqfUserRepository($redis);
 
         $this->sessionProvider = new SessionProvider($client, $repo);
     }

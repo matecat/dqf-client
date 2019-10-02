@@ -43,25 +43,6 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
-     * @param string $username
-     * @param string $password
-     *
-     * @return DqfUser
-     */
-    public function getByCredentials($username, $password)
-    {
-        $sql  = "SELECT * FROM " . self::TABLE_NAME . " WHERE username = :username AND password = :password";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-                'username' => $username,
-                'password' => $password
-        ]);
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, DqfUser::class);
-
-        return $stmt->fetch();
-    }
-
-    /**
      * @param string $genericEmail
      *
      * @return DqfUser|mixed
