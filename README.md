@@ -42,9 +42,9 @@ If you want to login as a generic user you can use:
 
 You can choose between three different drivers:
 
-* In memory (`InMemoryDqfUserRepository`) 
-* PDO (`PDODqfUserRepository`)
-* Redis (`RedisDqfUserRepository`)
+* **In memory** (`InMemoryDqfUserRepository`) 
+* **PDO** (`PDODqfUserRepository`)
+* **Redis** (`RedisDqfUserRepository`)
 
 Here is a full example implementing PDO driver:
 
