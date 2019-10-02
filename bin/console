@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+set_time_limit(0);
+require __DIR__.'/../vendor/autoload.php';
+
+use Matecat\Dqf\Client;
+
+$config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
+$client = new Client([
+    'apiKey'         => $config[ 'dqf' ][ 'API_KEY' ],
+    'idPrefix'       => $config[ 'dqf' ][ 'ID_PREFIX' ],
+    'encryptionKey'  => $config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
+    'encryptionIV'   => $config[ 'dqf' ][ 'ENCRYPTION_IV' ],
+    'debug'          => true,
+    'logStoragePath' => __DIR__ . '/../log/api.log'
+]);
+
+// create symfony console app
+$app = new \Symfony\Component\Console\Application('DQF Client', 'console tool');
+
+// add commands here
+$app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
+$app->run();

@@ -147,15 +147,75 @@ Here is the list of Client's public methods:
 
 Please note that __**every command takes an associative array of params as input**__. 
 
-## Input validation
+Every command validates input data against an array map of required/expected type values.
 
-The Client performs a validation when a command is invoked. Every command validates input data against an array map of required/expected type values.
+If validation fails, a `ParamsValidatorException` is raised and **the request is not sent** to DQF. You can use the provided `dqf:client:helper 
+` (see below) to know the parameter(s) required for each method.
 
-If validation fails, a `ParamsValidatorException` is raised and **the request is not sent** to DQF.
+## Working with generic sessions
+
+If you want to use generic sessions, provide `generic_email` to each command:
+
+```php
+// ...
+
+$sessionProvider = new SessionProvider($client, $repo);
+$sessionId = $sessionProvider->createAnonymous('email@example.org', 'DQF_GENERIC_USERNAME', 'DQF_GENERIC_PASSWORD');
+
+$masterProject = $client->createMasterProject([
+    'generic_email'      => 'email@example.org',
+    'sessionId'          => $sessionId,
+    'name'               => 'master-workflow-test',
+    'sourceLanguageCode' => 'it-IT',
+    'contentTypeId'      => 1,
+    'industryId'         => 2,
+    'processId'          => 1,
+    'qualityLevelId'     => 1,
+    'clientId'           => 'XXXXYYYY',
+]);
+
+```
 
 ## Submitting data to DQF: a complete workflow
 
 Here is a complete, detailed typical workflow.
+
+```php
+```
+
+## Commands
+
+If you have an application which uses [Symfony Console](https://github.com/symfony/console), you have some commands available:
+
+*  ``` dqf:client:helper```     displays the complete list of all client's available commands.
+
+You can register the commands in your app, consider this example:
+
+```php
+#!/usr/bin/env php
+<?php
+set_time_limit(0);
+require __DIR__.'/../vendor/autoload.php';
+
+use Matecat\Dqf\Client;
+
+$config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
+$client = new Client([
+    'apiKey'         => $config[ 'dqf' ][ 'API_KEY' ],
+    'idPrefix'       => $config[ 'dqf' ][ 'ID_PREFIX' ],
+    'encryptionKey'  => $config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
+    'encryptionIV'   => $config[ 'dqf' ][ 'ENCRYPTION_IV' ],
+    'debug'          => true,
+    'logStoragePath' => __DIR__ . '/../log/api.log'
+]);
+
+// create symfony console app
+$app = new \Symfony\Component\Console\Application('DQF Client', 'console tool');
+
+// add commands here
+$app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
+$app->run();
+```
 
 ## Support
 
