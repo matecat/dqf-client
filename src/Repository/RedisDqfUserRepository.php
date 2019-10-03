@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Repository;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\DqfUser;
 use Matecat\Dqf\Model\DqfUserRepositoryInterface;
 use Predis\Client as Redis;
@@ -58,6 +59,28 @@ class RedisDqfUserRepository implements DqfUserRepositoryInterface
                 return $dqfUser;
             }
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getNextGenericExternalId()
+    {
+        $ids = [];
+
+        $users = $this->redis->hgetall(self::DQF_USER_HASHSET);
+        foreach ($users as $user) {
+            $dqfUser = unserialize($user);
+            $ids[]  = $dqfUser->getExternalReferenceId();
+        }
+
+        sort($ids);
+
+        if(empty($ids) or $ids[0] > 0){
+            return Constants::ANONYMOUS_SESSION_ID;
+        }
+
+        return $ids[0] - 1;
     }
 
     /**

@@ -49,19 +49,35 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
      */
     public function getByGenericEmail($genericEmail)
     {
-        $sql  = "SELECT * FROM " . self::TABLE_NAME . " WHERE 
-            externalReferenceId = :externalReferenceId AND 
+        $sql  = "SELECT * FROM " . self::TABLE_NAME . " WHERE  
             genericEmail = :genericEmail AND 
             isGeneric = :isGeneric";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
                 'genericEmail'        => $genericEmail,
                 'isGeneric'           => true,
-                'externalReferenceId' => Constants::ANONYMOUS_SESSION_ID,
         ]);
         $stmt->setFetchMode(\PDO::FETCH_CLASS, DqfUser::class);
 
         return $stmt->fetch();
+    }
+
+    /**
+     * @return int
+     */
+    public function getNextGenericExternalId()
+    {
+        $sql  = "SELECT MIN(externalReferenceId) as id FROM " . self::TABLE_NAME;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        $id = $stmt->fetch()['id'];
+
+        if($id > 0){
+            return Constants::ANONYMOUS_SESSION_ID;
+        }
+
+        return $id - 1;
     }
 
     /**

@@ -9,7 +9,7 @@ class CreateDqfUserTable extends AbstractMigration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE IF NOT EXISTS `dqf_user` (
+        $sql = 'CREATE TABLE `dqf_user` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `externalReferenceId` int(11) NOT NULL,
               `username` varchar(45) NOT NULL,
@@ -18,11 +18,10 @@ class CreateDqfUserTable extends AbstractMigration
               `sessionExpiresAt` int(11) DEFAULT NULL,
               `isGeneric` tinyint(4) DEFAULT NULL,
               `genericEmail` varchar(45) DEFAULT NULL,
-              PRIMARY KEY (`id`,`username`,`externalReferenceId`),
-              UNIQUE KEY `username_UNIQUE` (`username`),
+              PRIMARY KEY (`id`,`externalReferenceId`),
               UNIQUE KEY `externalReferenceId_UNIQUE` (`externalReferenceId`),
               UNIQUE KEY `genericEmail_UNIQUE` (`genericEmail`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=621 DEFAULT CHARSET=latin1';
+            ) ENGINE=InnoDB AUTO_INCREMENT=472 DEFAULT CHARSET=latin1';
         $this->execute($sql);
     }
 

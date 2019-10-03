@@ -26,6 +26,11 @@ interface DqfUserRepositoryInterface
     public function getByGenericEmail($genericEmail);
 
     /**
+     * @return int
+     */
+    public function getNextGenericExternalId();
+
+    /**
      * @param DqfUser $dqfUser
      *
      * @return mixed

@@ -184,8 +184,6 @@ $masterProject = $client->createMasterProject([
 
 ```
 
-Please note that the `generic_email` **MUST BE THE SAME** of the one passed to SessionProvider to obtain the `sessionId`. 
-
 ## Submitting data to DQF: a complete workflow
 
 Here is a typical, complete and detailed workflow. These are the principal steps:

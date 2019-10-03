@@ -38,6 +38,7 @@
     "predis/predis": "^1.1",
     "ramsey/uuid": "^3.8",
     "robmorgan/phinx": "^0.11.1",
-    "symfony/console": "^3.4.17 || ^4.1.6"
+    "symfony/console": "^3.4.17 || ^4.1.6",
+    "fzaninotto/faker": "^1.8"
   }
 }

@@ -60,7 +60,7 @@ class SessionProvider
         }
 
         $dqfUser = new DqfUser();
-        $dqfUser->setExternalReferenceId(Constants::ANONYMOUS_SESSION_ID);
+        $dqfUser->setExternalReferenceId($this->dqfUserRepository->getNextGenericExternalId());
         $dqfUser->setUsername($this->dataEncryptor->encrypt($genericUsername));
         $dqfUser->setPassword($this->dataEncryptor->encrypt($genericPassword));
         $dqfUser->setSessionId($login->sessionId);
@@ -176,10 +176,6 @@ class SessionProvider
      */
     public function getById($externalReferenceId)
     {
-        if ($externalReferenceId === Constants::ANONYMOUS_SESSION_ID) {
-            exit;
-        }
-
         $dqfUser = $this->dqfUserRepository->getByExternalId($externalReferenceId);
         $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
         $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));

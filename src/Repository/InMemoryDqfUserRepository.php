@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Repository;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\DqfUser;
 use Matecat\Dqf\Model\DqfUserRepositoryInterface;
 
@@ -50,6 +51,30 @@ class InMemoryDqfUserRepository implements DqfUserRepositoryInterface
                 return $dqfUser;
             }
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getNextGenericExternalId() {
+
+        if(empty($this->users)){
+            return Constants::ANONYMOUS_SESSION_ID;
+        }
+
+        $ids = [];
+
+        foreach ($this->users as $dqfUser) {
+            $ids[]  = $dqfUser->getExternalReferenceId();
+        }
+
+        sort($ids);
+
+        if($ids[0] > 0){
+            return Constants::ANONYMOUS_SESSION_ID;
+        }
+
+        return $ids[0] - 1;
     }
 
     /**
