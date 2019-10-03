@@ -73,7 +73,7 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
 
         $id = $stmt->fetch()['id'];
 
-        if($id > 0){
+        if ($id > 0) {
             return Constants::ANONYMOUS_SESSION_ID;
         }
 

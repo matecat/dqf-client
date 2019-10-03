@@ -76,7 +76,7 @@ class RedisDqfUserRepository implements DqfUserRepositoryInterface
 
         sort($ids);
 
-        if(empty($ids) or $ids[0] > 0){
+        if (empty($ids) or $ids[0] > 0) {
             return Constants::ANONYMOUS_SESSION_ID;
         }
 

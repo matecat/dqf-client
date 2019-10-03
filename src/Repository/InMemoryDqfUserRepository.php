@@ -56,9 +56,9 @@ class InMemoryDqfUserRepository implements DqfUserRepositoryInterface
     /**
      * @return int
      */
-    public function getNextGenericExternalId() {
-
-        if(empty($this->users)){
+    public function getNextGenericExternalId()
+    {
+        if (empty($this->users)) {
             return Constants::ANONYMOUS_SESSION_ID;
         }
 
@@ -70,7 +70,7 @@ class InMemoryDqfUserRepository implements DqfUserRepositoryInterface
 
         sort($ids);
 
-        if($ids[0] > 0){
+        if ($ids[0] > 0) {
             return Constants::ANONYMOUS_SESSION_ID;
         }
 

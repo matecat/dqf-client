@@ -14,7 +14,7 @@ class AnonymousSessionProviderWithPDOTest extends AbstractClientTest
     {
         $faker = Factory::create();
 
-        for($i=0;$i<20;$i++){
+        for ($i=0;$i<20;$i++) {
             $genericEmail = $faker->email;
             $genericSessionId = $this->sessionProvider->createAnonymous($genericEmail, $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
 
@@ -24,7 +24,7 @@ class AnonymousSessionProviderWithPDOTest extends AbstractClientTest
 
             try {
                 $this->sessionProvider->getByGenericEmail($genericEmail);
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 $this->assertEquals($e->getMessage(), "Generic user with email {$genericEmail} does not exists");
             }
         }
