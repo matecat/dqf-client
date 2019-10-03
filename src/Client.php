@@ -8,7 +8,8 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
-use Monolog\Formatter\JsonFormatter;
+use Matecat\Dqf\Utils\ClientLogsFormatter;
+use Matecat\Dqf\Utils\HandlerStackFactory;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
@@ -142,36 +143,13 @@ class Client
      */
     private function createHttpClientInstance($debug = false, $logStoragePath = null)
     {
-        $stack = HandlerStack::create();
-        $stack->push(
-            Middleware::log(
-                $this->getLogger($logStoragePath),
-                new MessageFormatter('{req_body} - {res_body}')
-            )
-        );
-
         return new HttpClient([
-                'base_uri' => ($debug) ? Constants::API_STAGING_URI : Constants::API_PRODUCTION_URI,
-                'headers'  => [
-                        'apiKey' => $this->clientParams[ 'apiKey' ]
-                ],
-                'handler'  => $stack,
+            'base_uri' => ($debug) ? Constants::API_STAGING_URI : Constants::API_PRODUCTION_URI,
+            'headers'  => [
+                    'apiKey' => $this->clientParams[ 'apiKey' ]
+            ],
+            'handler'  => HandlerStackFactory::create($logStoragePath),
         ]);
-    }
-
-    /**
-     * @param $logStoragePath
-     *
-     * @return Logger
-     */
-    private function getLogger($logStoragePath = null)
-    {
-        $logger        = new Logger('dqf-api-consumer');
-        $streamHandler = new RotatingFileHandler(($logStoragePath) ? $logStoragePath : __DIR__ . '/../log');
-        $streamHandler->setFormatter(new JsonFormatter());
-        $logger->pushHandler($streamHandler);
-
-        return $logger;
     }
 
     /**

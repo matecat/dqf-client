@@ -4,6 +4,7 @@ namespace Matecat\Dqf\Tests;
 
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
 use Ramsey\Uuid\Uuid;
+use Teapot\StatusCode;
 
 class ClientTest extends AbstractClientTest
 {
@@ -53,6 +54,21 @@ class ClientTest extends AbstractClientTest
         $this->assertInstanceOf(\stdClass::class, $languageCode);
         $this->assertEquals('OK', $languageCode->status);
         $this->assertEquals('Valid Language Code', $languageCode->message);
+    }
+
+    /**
+     * @test
+     */
+    public function wrong_login()
+    {
+        try {
+            $this->client->login([
+                    'username'    => 'dsadsasd',
+                    'password' => 'dasdsadsa',
+            ]);
+        } catch (\Exception $exception) {
+            $this->assertEquals($exception->getCode(), 401);
+        }
     }
 
     /**
