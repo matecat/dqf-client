@@ -103,13 +103,14 @@ class ClientHelperCommand extends Command
             $reqs  = [];
             $types = [];
 
-            foreach ($commandHandler->getRules() as $key => $rule) {
+            $rules = $commandHandler->getRules();
+            ksort($rules);
+
+            foreach ($rules as $key => $rule) {
                 $keys[] = $key ;
                 $reqs[] = ($rule['required']) ? 'YES' : 'NO';
                 $types[] = $rule['type'] ;
             }
-
-            asort($keys);
 
             $keys = implode(PHP_EOL, $keys);
             $reqs = implode(PHP_EOL, $reqs);

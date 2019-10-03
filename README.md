@@ -675,13 +675,16 @@ $app->run();
 You get this output:
 
 ```
-+-----------------------------------------+----------------------+---------+----------+
-| updateChildProjectStatus                | generic_email        | string  | YES      |
-|                                         | projectId            | string  | YES      |
-|                                         | projectKey           | integer | YES      |
-|                                         | sessionId            | string  | NO       |
-|                                         | status               | string  | NO       |
-+-----------------------------------------+----------------------+---------+----------+
++--------------------------+---------------+---------+----------+
+| method                   | parameter(s)  | type    | required |
++--------------------------+---------------+---------+----------+
+| updateChildProjectStatus | generic_email | string  | NO       |
+|                          | projectId     | integer | YES      |
+|                          | projectKey    | string  | YES      |
+|                          | sessionId     | string  | YES      |
+|                          | status        | string  | NO       |
++--------------------------+---------------+---------+----------+
+
 ```
 
 ## Support
