@@ -63,7 +63,7 @@ class MasterProject extends BaseApiEntity
      * MasterProject constructor.
      *
      * @param $name
-     * @param $sourceLanguage
+     * @param $sourceLanguageCode
      * @param $contentTypeId
      * @param $industryId
      * @param $processId

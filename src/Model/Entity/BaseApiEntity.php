@@ -22,32 +22,42 @@ abstract class BaseApiEntity
     /**
      * @return int
      */
-    public function getDqfId()
-    {
+    public function getDqfId() {
         return $this->dqfId;
     }
 
     /**
-     * @return string
+     * @param int $dqfId
      */
-    public function getDqfUuid()
-    {
-        return $this->dqfUuid;
+    public function setDqfId( $dqfId ) {
+        $this->dqfId = $dqfId;
     }
 
     /**
      * @return string
      */
-    public function getClientId()
-    {
+    public function getDqfUuid() {
+        return $this->dqfUuid;
+    }
+
+    /**
+     * @param string $dqfUuid
+     */
+    public function setDqfUuid( $dqfUuid ) {
+        $this->dqfUuid = $dqfUuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId() {
         return $this->clientId;
     }
 
     /**
      * @param string $clientId
      */
-    public function setClientId($clientId)
-    {
+    public function setClientId( $clientId ) {
         $this->clientId = $clientId;
     }
 }

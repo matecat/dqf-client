@@ -1,6 +1,6 @@
 <?php
 
-namespace Matecat\Dqf\Tests\Oop;
+namespace Matecat\Dqf\Tests\Model;
 
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
@@ -18,7 +18,7 @@ use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
 
-class ModelTest extends BaseTest
+class EntityTest extends BaseTest
 {
     /**
      * @test

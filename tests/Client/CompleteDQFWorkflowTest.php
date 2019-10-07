@@ -1,6 +1,6 @@
 <?php
 
-namespace Matecat\Dqf\Tests\Workflow;
+namespace Matecat\Dqf\Tests\Client;
 
 use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
