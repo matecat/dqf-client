@@ -1,11 +1,12 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\Client;
 
 use Matecat\Dqf\Constants;
+use Matecat\Dqf\Tests\BaseTest;
 use Matecat\Dqf\Utils\ParamsValidator;
 
-class ParamsValidatorTest extends \PHPUnit_Framework_TestCase
+class ParamsValidatorTest extends BaseTest
 {
     /**
      * @test

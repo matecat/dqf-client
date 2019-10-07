@@ -1,10 +1,11 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\Workflow;
 
+use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
 
-class CompleteDQFWorkflowWithGenericSessionTest extends AbstractClientTest
+class CompleteDQFWorkflowWithGenericSessionTest extends BaseTest
 {
     /**
      * This array represents an hypothetical source file

@@ -1,12 +1,12 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\Client;
 
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
+use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
-use Teapot\StatusCode;
 
-class ClientTest extends AbstractClientTest
+class ClientTest extends BaseTest
 {
     /**
      * @test

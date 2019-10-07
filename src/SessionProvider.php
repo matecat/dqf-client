@@ -3,8 +3,8 @@
 namespace Matecat\Dqf;
 
 use Matecat\Dqf\Exceptions\SessionProviderException;
-use Matecat\Dqf\Model\DqfUser;
-use Matecat\Dqf\Model\DqfUserRepositoryInterface;
+use Matecat\Dqf\Model\Entity\DqfUser;
+use Matecat\Dqf\Model\Repository\DqfUserRepositoryInterface;
 use Matecat\Dqf\Utils\DataEncryptor;
 
 class SessionProvider

@@ -1,6 +1,6 @@
 <?php
 
-namespace Matecat\Dqf\Model;
+namespace Matecat\Dqf\Model\Entity;
 
 class DqfUser
 {

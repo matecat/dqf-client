@@ -1,12 +1,12 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\SessionProvider;
 
 use Matecat\Dqf\Client;
-use Matecat\Dqf\Repository\PDODqfUserRepository;
+use Matecat\Dqf\Repository\Persistence\InMemoryDqfUserRepository;
 use Matecat\Dqf\SessionProvider;
 
-class SessionProviderWithPDOTest extends \PHPUnit_Framework_TestCase
+class SessionProviderInMemoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array
@@ -22,18 +22,17 @@ class SessionProviderWithPDOTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
+        $this->config = parse_ini_file(__DIR__ . '/../../config/parameters.ini', true);
         $client       = new Client([
                 'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
                 'idPrefix'       => $this->config[ 'dqf' ][ 'ID_PREFIX' ],
                 'encryptionKey'  => $this->config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
                 'encryptionIV'   => $this->config[ 'dqf' ][ 'ENCRYPTION_IV' ],
                 'debug'          => true,
-                'logStoragePath' => __DIR__ . '/../log/api.log'
+                'logStoragePath' => __DIR__ . '/../../log/api.log'
         ]);
 
-        $pdo  = new \PDO("mysql:host=" . $this->config[ 'pdo' ][ 'SERVER' ] . ";dbname=" . $this->config[ 'pdo' ][ 'DBNAME' ], $this->config[ 'pdo' ][ 'USERNAME' ], $this->config[ 'pdo' ][ 'PASSWORD' ]);
-        $repo = new PDODqfUserRepository($pdo);
+        $repo = new InMemoryDqfUserRepository();
 
         $this->sessionProvider = new SessionProvider($client, $repo);
     }

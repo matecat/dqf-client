@@ -1,6 +1,8 @@
 <?php
 
-namespace Matecat\Dqf\Model;
+namespace Matecat\Dqf\Model\Repository;
+
+use Matecat\Dqf\Model\Entity\DqfUser;
 
 interface DqfUserRepositoryInterface
 {

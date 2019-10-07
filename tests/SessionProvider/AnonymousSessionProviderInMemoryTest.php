@@ -1,13 +1,14 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\SessionProvider;
 
 use Faker\Factory;
 use Matecat\Dqf\Client;
-use Matecat\Dqf\Repository\RedisDqfUserRepository;
+use Matecat\Dqf\Repository\Persistence\InMemoryDqfUserRepository;
 use Matecat\Dqf\SessionProvider;
+use Matecat\Dqf\Tests\BaseTest;
 
-class AnonymousSessionProviderWithRedisTest extends AbstractClientTest
+class AnonymousSessionProviderInMemoryTest extends BaseTest
 {
     /**
      * @var SessionProvider
@@ -18,18 +19,17 @@ class AnonymousSessionProviderWithRedisTest extends AbstractClientTest
     {
         parent::setUp();
 
-        $this->config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
+        $this->config = parse_ini_file(__DIR__ . '/../../config/parameters.ini', true);
         $client       = new Client([
                 'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
                 'idPrefix'       => $this->config[ 'dqf' ][ 'ID_PREFIX' ],
                 'encryptionKey'  => $this->config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
                 'encryptionIV'   => $this->config[ 'dqf' ][ 'ENCRYPTION_IV' ],
                 'debug'          => true,
-                'logStoragePath' => __DIR__ . '/../log/api.log'
+                'logStoragePath' => __DIR__ . '/../../log/api.log'
         ]);
 
-        $redis  = new \Predis\Client();
-        $repo = new RedisDqfUserRepository($redis);
+        $repo = new InMemoryDqfUserRepository();
 
         $this->sessionProvider = new SessionProvider($client, $repo);
     }
@@ -42,7 +42,7 @@ class AnonymousSessionProviderWithRedisTest extends AbstractClientTest
     {
         $faker = Factory::create();
 
-        for ($i=0;$i<3;$i++) {
+        for ($i=0;$i<20;$i++) {
             $genericEmail = $faker->email;
             $genericSessionId = $this->sessionProvider->createAnonymous($genericEmail, $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
 

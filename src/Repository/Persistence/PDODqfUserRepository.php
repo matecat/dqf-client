@@ -1,10 +1,10 @@
 <?php
 
-namespace Matecat\Dqf\Repository;
+namespace Matecat\Dqf\Repository\Persistence;
 
 use Matecat\Dqf\Constants;
-use Matecat\Dqf\Model\DqfUser;
-use Matecat\Dqf\Model\DqfUserRepositoryInterface;
+use Matecat\Dqf\Model\Entity\DqfUser;
+use Matecat\Dqf\Model\Repository\DqfUserRepositoryInterface;
 
 class PDODqfUserRepository implements DqfUserRepositoryInterface
 {

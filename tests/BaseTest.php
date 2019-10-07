@@ -3,10 +3,10 @@
 namespace Matecat\Dqf\Tests;
 
 use Matecat\Dqf\Client;
-use Matecat\Dqf\Repository\PDODqfUserRepository;
+use Matecat\Dqf\Repository\Persistence\PDODqfUserRepository;
 use Matecat\Dqf\SessionProvider;
 
-abstract class AbstractClientTest extends \PHPUnit_Framework_TestCase
+abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array

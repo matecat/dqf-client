@@ -1,10 +1,11 @@
 <?php
 
-namespace Matecat\Dqf\Tests;
+namespace Matecat\Dqf\Tests\SessionProvider;
 
 use Faker\Factory;
+use Matecat\Dqf\Tests\BaseTest;
 
-class AnonymousSessionProviderWithPDOTest extends AbstractClientTest
+class AnonymousSessionProviderWithPDOTest extends BaseTest
 {
     /**
      * @throws \Exception
