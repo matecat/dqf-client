@@ -95,6 +95,7 @@ class MasterProjectRepositoryTest extends BaseTest
 
         $this->assertEquals($modifiedMasterProject->getName(), 'Modified name');
         $this->assertEquals($modifiedMasterProject->getFiles()[0]->getName(), 'test-file-changed');
+        $this->assertEquals(['fr-FR','pt-PT','es-ES',], array_keys($modifiedMasterProject->getTargetLanguageAssoc()));
     }
 
     /**

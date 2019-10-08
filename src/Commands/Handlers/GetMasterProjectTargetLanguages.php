@@ -54,7 +54,7 @@ class GetMasterProjectTargetLanguages extends CommandHandler
                 ],
         ]);
 
-        if ($response->getStatusCode() === StatusCode::CREATED) {
+        if ($response->getStatusCode() === StatusCode::OK) {
             return $this->decodeResponse($response);
         }
     }

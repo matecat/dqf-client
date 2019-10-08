@@ -73,6 +73,8 @@ class MasterProjectRepository extends AbstractApiRepository {
             }
         }
 
+
+
         // assoc targetLang to file(s)
         if ( false === empty( $model->fileProjectTargetLangs ) ) {
             foreach ( $model->fileProjectTargetLangs as $assoc ) {
@@ -313,22 +315,33 @@ class MasterProjectRepository extends AbstractApiRepository {
 
         // assoc targetLang to file(s)
         if ( false === empty( $baseEntity->getTargetLanguageAssoc() ) ) {
-            foreach ( $baseEntity->getTargetLanguageAssoc() as $targetLanguageCode => $fileTargetLangs ) {
 
+            // delete ALL target lang assoc
+            foreach ( $baseEntity->getFiles() as $file ) {
+                $masterProjectTargetLanguages = $this->client->getMasterProjectTargetLanguages( [
+                        'generic_email'      => $this->genericEmail,
+                        'sessionId'          => $this->sessionId,
+                        'projectKey'         => $baseEntity->getDqfUuid(),
+                        'projectId'          => $baseEntity->getDqfId(),
+                        'fileId'             => $file->getDqfId(),
+                ] );
+
+                foreach ($masterProjectTargetLanguages->modelList as $masterProjectTargetLanguage) {
+                    $this->client->deleteMasterProjectTargetLanguage( [
+                            'generic_email'      => $this->genericEmail,
+                            'sessionId'          => $this->sessionId,
+                            'projectKey'         => $baseEntity->getDqfUuid(),
+                            'projectId'          => $baseEntity->getDqfId(),
+                            'fileId'             => $file->getDqfId(),
+                            'targetLangCode'     => $masterProjectTargetLanguage->localeCode,
+                    ] );
+                }
+            }
+
+            // And then reset values
+            foreach ( $baseEntity->getTargetLanguageAssoc() as $targetLanguageCode => $fileTargetLangs ) {
                 /** @var FileTargetLang $fileTargetLang */
                 foreach ( $fileTargetLangs as $fileTargetLang ) {
-
-                    if(false === empty($fileTargetLang->getDqfId())){
-                        $this->client->deleteMasterProjectTargetLanguage( [
-                                'generic_email'      => $this->genericEmail,
-                                'sessionId'          => $this->sessionId,
-                                'projectKey'         => $baseEntity->getDqfUuid(),
-                                'projectId'          => $baseEntity->getDqfId(),
-                                'fileId'             => $fileTargetLang->getFile()->getDqfId(),
-                                'targetLangCode'     => $targetLanguageCode,
-                        ] );
-                    }
-
                     $projectTargetLanguage = $this->client->addMasterProjectTargetLanguage( [
                             'generic_email'      => $this->genericEmail,
                             'sessionId'          => $this->sessionId,
