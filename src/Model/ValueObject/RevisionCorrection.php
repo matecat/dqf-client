@@ -25,7 +25,8 @@ class RevisionCorrection
      * @param string $content
      * @param int    $time
      */
-    public function __construct($content, $time) {
+    public function __construct($content, $time)
+    {
         $this->content = $content;
         $this->time    = $time;
     }
@@ -33,14 +34,16 @@ class RevisionCorrection
     /**
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         return $this->content;
     }
 
     /**
      * @return int
      */
-    public function getTime() {
+    public function getTime()
+    {
         return $this->time;
     }
 
@@ -49,7 +52,7 @@ class RevisionCorrection
      */
     public function addItem(RevisionCorrectionItem $item)
     {
-        if(false === $this->hasItem($item)){
+        if (false === $this->hasItem($item)) {
             $this->detailList[] = $item;
         }
     }
@@ -61,12 +64,12 @@ class RevisionCorrection
      */
     public function hasItem(RevisionCorrectionItem $item)
     {
-        if(empty($this->detailList)){
+        if (empty($this->detailList)) {
             return false;
         }
 
-        foreach ($this->detailList as $i){
-            if($i->isEqualTo($item)){
+        foreach ($this->detailList as $i) {
+            if ($i->isEqualTo($item)) {
                 return true;
             }
         }

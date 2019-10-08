@@ -17,7 +17,7 @@ interface CrudApiRepositoryInterface
     public function delete($dqfId, $dqfUuid = null);
 
     /**
-     * Retrive a record
+     * Retrieve a record
      *
      * @param int $dqfId
      * @param null $dqfUuid

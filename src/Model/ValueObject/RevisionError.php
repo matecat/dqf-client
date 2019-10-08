@@ -2,7 +2,8 @@
 
 namespace Matecat\Dqf\Model\ValueObject;
 
-class RevisionError {
+class RevisionError
+{
     /**
      * @var int
      */
@@ -37,11 +38,12 @@ class RevisionError {
      * @param null $charPosEnd
      * @param bool $isRepeated
      */
-    public function __construct( $errorCategoryId, $severityId, $charPosStart = null, $charPosEnd = null, $isRepeated = false ) {
+    public function __construct($errorCategoryId, $severityId, $charPosStart = null, $charPosEnd = null, $isRepeated = false)
+    {
         $this->errorCategoryId = $errorCategoryId;
         $this->severityId      = $severityId;
 
-        if($charPosEnd !== null and $charPosStart > $charPosEnd){
+        if ($charPosEnd !== null and $charPosStart > $charPosEnd) {
             throw new \DomainException('\'charPosStart\' cannot be greater than \'charPosEnd\'');
         }
 
@@ -53,35 +55,40 @@ class RevisionError {
     /**
      * @return int
      */
-    public function getErrorCategoryId() {
+    public function getErrorCategoryId()
+    {
         return $this->errorCategoryId;
     }
 
     /**
      * @return int
      */
-    public function getSeverityId() {
+    public function getSeverityId()
+    {
         return $this->severityId;
     }
 
     /**
      * @return int
      */
-    public function getCharPosStart() {
+    public function getCharPosStart()
+    {
         return $this->charPosStart;
     }
 
     /**
      * @return int
      */
-    public function getCharPosEnd() {
+    public function getCharPosEnd()
+    {
         return $this->charPosEnd;
     }
 
     /**
      * @return bool
      */
-    public function isRepeated() {
+    public function isRepeated()
+    {
         return $this->isRepeated;
     }
 
@@ -90,7 +97,8 @@ class RevisionError {
      *
      * @return bool
      */
-    public function isEqualTo( RevisionError $revisionError ) {
+    public function isEqualTo(RevisionError $revisionError)
+    {
         return (
                 $this->errorCategoryId === $revisionError->getErrorCategoryId() and
                 $this->severityId === $revisionError->getSeverityId() and

@@ -22,29 +22,33 @@ class ReviewedSegment extends BaseApiEntity
      */
     private $correction;
 
-    public function __construct($comment = null) {
+    public function __construct($comment = null)
+    {
         $this->comment = $comment;
     }
 
     /**
      * @return string
      */
-    public function getComment() {
+    public function getComment()
+    {
         return $this->comment;
     }
 
     /**
      * @return RevisionError[]
      */
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
     /**
      * @param RevisionError $error
      */
-    public function addError( RevisionError $error ) {
-        if(false === $this->hasError($error)){
+    public function addError(RevisionError $error)
+    {
+        if (false === $this->hasError($error)) {
             $this->errors[] = $error;
         }
     }
@@ -56,12 +60,12 @@ class ReviewedSegment extends BaseApiEntity
      */
     public function hasError(RevisionError $error)
     {
-        if(empty($this->errors)){
+        if (empty($this->errors)) {
             return false;
         }
 
-        foreach ($this->errors as $e){
-            if($e->isEqualTo($error)){
+        foreach ($this->errors as $e) {
+            if ($e->isEqualTo($error)) {
                 return true;
             }
         }
@@ -72,14 +76,16 @@ class ReviewedSegment extends BaseApiEntity
     /**
      * @return RevisionCorrection
      */
-    public function getCorrection() {
+    public function getCorrection()
+    {
         return $this->correction;
     }
 
     /**
      * @param RevisionCorrection $correction
      */
-    public function setCorrection( RevisionCorrection $correction ) {
+    public function setCorrection(RevisionCorrection $correction)
+    {
         $this->correction = $correction;
     }
 }

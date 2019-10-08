@@ -35,19 +35,31 @@ class Template extends BaseApiEntity
     private $isPublic;
 
     /**
+     * Template constructor.
+     *
+     * @param string $name
+     * @param int    $contentTypeId
+     * @param int    $industryId
+     * @param int    $processId
+     * @param int    $qualityLevelId
+     * @param bool   $isPublic
+     */
+    public function __construct($name, $contentTypeId, $industryId, $processId, $qualityLevelId, $isPublic)
+    {
+        $this->name           = $name;
+        $this->contentTypeId  = $contentTypeId;
+        $this->industryId     = $industryId;
+        $this->processId      = $processId;
+        $this->qualityLevelId = $qualityLevelId;
+        $this->isPublic       = $isPublic;
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     /**
@@ -59,27 +71,11 @@ class Template extends BaseApiEntity
     }
 
     /**
-     * @param int $contentTypeId
-     */
-    public function setContentTypeId($contentTypeId)
-    {
-        $this->contentTypeId = $contentTypeId;
-    }
-
-    /**
      * @return int
      */
     public function getIndustryId()
     {
         return $this->industryId;
-    }
-
-    /**
-     * @param int $industryId
-     */
-    public function setIndustryId($industryId)
-    {
-        $this->industryId = $industryId;
     }
 
     /**
@@ -91,14 +87,6 @@ class Template extends BaseApiEntity
     }
 
     /**
-     * @param int $processId
-     */
-    public function setProcessId($processId)
-    {
-        $this->processId = $processId;
-    }
-
-    /**
      * @return int
      */
     public function getQualityLevelId()
@@ -107,26 +95,10 @@ class Template extends BaseApiEntity
     }
 
     /**
-     * @param int $qualityLevelId
-     */
-    public function setQualityLevelId($qualityLevelId)
-    {
-        $this->qualityLevelId = $qualityLevelId;
-    }
-
-    /**
      * @return bool
      */
     public function isPublic()
     {
         return $this->isPublic;
-    }
-
-    /**
-     * @param bool $isPublic
-     */
-    public function setIsPublic($isPublic)
-    {
-        $this->isPublic = $isPublic;
     }
 }

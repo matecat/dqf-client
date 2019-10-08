@@ -3,15 +3,9 @@
 namespace Matecat\Dqf;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
-use GuzzleHttp\Middleware;
 use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
-use Matecat\Dqf\Utils\ClientLogsFormatter;
 use Matecat\Dqf\Utils\HandlerStackFactory;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
 
 /**
  * Class Client

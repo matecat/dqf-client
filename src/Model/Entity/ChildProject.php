@@ -2,7 +2,7 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
-class ChildProject extends BaseApiEntity
+class ChildProject extends BaseApiEntity implements ProjectInterface
 {
     /**
      * @var MasterProject
@@ -38,11 +38,6 @@ class ChildProject extends BaseApiEntity
      * @var ReviewSettings
      */
     private $reviewSettings;
-
-    /**
-     * @var Template
-     */
-    private $template;
 
     /**
      * @var array
@@ -160,7 +155,7 @@ class ChildProject extends BaseApiEntity
      */
     public function setIsDummy($isDummy)
     {
-        if ( true === $isDummy and $this->type === 'review' ) {
+        if (true === $isDummy and $this->type === 'review') {
             throw new \DomainException('\'isDummy\' MUST be set to false if project tpye is \'review\'');
         }
 
@@ -184,28 +179,12 @@ class ChildProject extends BaseApiEntity
     }
 
     /**
-     * @return Template
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    /**
-     * @param Template $template
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-    }
-
-    /**
      * @param string $languageCode
      * @param File     $file
      */
     public function assocTargetLanguageToFile($languageCode, File $file)
     {
-        if(false === $this->masterProject->hasFile($file)){
+        if (false === $this->masterProject->hasFile($file)) {
             throw new \DomainException($file->getName() . ' does not belong to the master project');
         }
 
@@ -219,7 +198,7 @@ class ChildProject extends BaseApiEntity
     {
         $targetLanguages = [];
 
-        foreach (array_keys($this->targetLanguageAssoc) as $targetLanguage){
+        foreach (array_keys($this->targetLanguageAssoc) as $targetLanguage) {
             $targetLanguages[]  = new Language($targetLanguage);
         }
 

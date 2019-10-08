@@ -5,6 +5,11 @@ namespace Matecat\Dqf\Model\Entity;
 class SourceSegment extends BaseApiEntity
 {
     /**
+     * @var File
+     */
+    private $file;
+
+    /**
      * @var int
      */
     private $index;
@@ -15,34 +20,36 @@ class SourceSegment extends BaseApiEntity
     private $segment;
 
     /**
-     * @return int
+     * SourceSegment constructor.
+     *
+     * @param File   $file
+     * @param int    $index
+     * @param string $segment
      */
-    public function getIndex()
-    {
-        return $this->index;
+    public function __construct( File $file, $index, $segment ) {
+        $this->file    = $file;
+        $this->index   = $index;
+        $this->segment = $segment;
     }
 
     /**
-     * @param int $index
+     * @return File
      */
-    public function setIndex($index)
-    {
-        $this->index = $index;
+    public function getFile() {
+        return $this->file;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndex() {
+        return $this->index;
     }
 
     /**
      * @return string
      */
-    public function getSegment()
-    {
+    public function getSegment() {
         return $this->segment;
-    }
-
-    /**
-     * @param string $segment
-     */
-    public function setSegment($segment)
-    {
-        $this->segment = $segment;
     }
 }

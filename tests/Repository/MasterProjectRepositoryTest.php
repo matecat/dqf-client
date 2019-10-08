@@ -2,14 +2,14 @@
 
 namespace Matecat\Dqf\Tests\SessionProvider;
 
-use Faker\Factory;
-use Matecat\Dqf\Client;
+use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\MasterProject;
+use Matecat\Dqf\Model\Entity\ReviewSettings;
+use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Repository\Api\MasterProjectRepository;
-use Matecat\Dqf\Repository\Persistence\InMemoryDqfUserRepository;
-use Matecat\Dqf\SessionProvider;
 use Matecat\Dqf\Tests\BaseTest;
+use Ramsey\Uuid\Uuid;
 
 class MasterProjectRepositoryTest extends BaseTest
 {
@@ -18,7 +18,8 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     private $repo;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
 
         $this->repo = new MasterProjectRepository($this->client, $this->sessionId);
@@ -31,14 +32,39 @@ class MasterProjectRepositoryTest extends BaseTest
     public function save_a_master_project()
     {
         try {
-            $l = new Language('it-IT');
+            $language = new Language('it-IT');
 
-            $this->repo->save($l);
-        } catch (\Exception $e){
+            $this->repo->save($language);
+        } catch (\Exception $e) {
             $this->assertEquals('Entity provided is not an instance of MasterProject', $e->getMessage());
         }
 
         $masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
+
+        // file(s)
+        $file = new File('test-file', 3);
+        $file->setClientId(Uuid::uuid4()->toString());
+        $masterProject->addFile($file);
+
+        // assoc targetLang to file(s)
+        $masterProject->assocTargetLanguageToFile('en-US', $file);
+        $masterProject->assocTargetLanguageToFile('fr-FR', $file);
+
+        // review settings
+        $reviewSettings = new ReviewSettings('combined');
+        $reviewSettings->setErrorCategoryIds0(1);
+        $reviewSettings->setErrorCategoryIds1(2);
+        $reviewSettings->setErrorCategoryIds2(3);
+        $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+        $reviewSettings->setPassFailThreshold(0.00);
+        $masterProject->setReviewSettings($reviewSettings);
+
+        // source segments
+        foreach ($this->getSourceSegments($file) as $sourceSegment) {
+            $masterProject->addSourceSegment($sourceSegment);
+        }
+
+        // save project
         $this->repo->save($masterProject);
 
         $this->get_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
@@ -53,7 +79,6 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     public function update_a_master_project($dqfId, $dqfUuid)
     {
-
     }
 
     /**
@@ -81,5 +106,31 @@ class MasterProjectRepositoryTest extends BaseTest
         $masterProject = $this->repo->delete($dqfId, $dqfUuid);
 
         $this->assertEquals(1, $masterProject);
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    private function getSourceSegments(File $file)
+    {
+        $segments = [];
+
+        $sources = [
+                'La rana in Spagna',
+                'gracida in campagna.',
+                'Un semplice scioglilingua!',
+        ];
+
+        $i = 1;
+        foreach ($sources as $source) {
+            $sourceSegment = new SourceSegment($file, $i, $source);
+            $sourceSegment->setClientId(Uuid::uuid4()->toString());
+            $segments[] = $sourceSegment;
+
+            $i++;
+        }
+
+        return $segments;
     }
 }

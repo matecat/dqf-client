@@ -2,7 +2,7 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
-class MasterProject extends BaseApiEntity
+class MasterProject extends BaseApiEntity implements ProjectInterface
 {
     /**
      * @var string
@@ -38,11 +38,6 @@ class MasterProject extends BaseApiEntity
      * @var ReviewSettings
      */
     private $reviewSettings;
-
-    /**
-     * @var Template
-     */
-    private $template;
 
     /**
      * @var File[]
@@ -192,19 +187,17 @@ class MasterProject extends BaseApiEntity
     }
 
     /**
-     * @return Template
+     * @param $name
+     *
+     * @return File
      */
-    public function getTemplate()
+    public function getFile($name)
     {
-        return $this->template;
-    }
-
-    /**
-     * @param Template $template
-     */
-    public function setTemplate(Template $template)
-    {
-        $this->template = $template;
+        foreach ($this->getFiles() as $f) {
+            if ($name === $f->getName()) {
+                return $f;
+            }
+        }
     }
 
     /**
@@ -217,12 +210,12 @@ class MasterProject extends BaseApiEntity
 
     public function hasFile(File $file)
     {
-        if(empty($this->getFiles())){
+        if (empty($this->getFiles())) {
             return false;
         }
 
-        foreach ($this->getFiles() as $f){
-            if($file->getName() === $f->getName()){
+        foreach ($this->getFiles() as $f) {
+            if ($file->getName() === $f->getName()) {
                 return true;
             }
         }
@@ -235,7 +228,7 @@ class MasterProject extends BaseApiEntity
      */
     public function addFile(File $file)
     {
-        if(false === $this->hasFile($file)){
+        if (false === $this->hasFile($file)) {
             $this->files[] = $file;
         }
     }
@@ -246,11 +239,19 @@ class MasterProject extends BaseApiEntity
      */
     public function assocTargetLanguageToFile($languageCode, File $file)
     {
-        if(false === $this->hasFile($file)){
+        if (false === $this->hasFile($file)) {
             throw new \DomainException($file->getName() . ' does not belong to the project');
         }
 
         $this->targetLanguageAssoc[$languageCode][] = $file;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTargetLanguageAssoc()
+    {
+        return $this->targetLanguageAssoc;
     }
 
     /**
@@ -270,7 +271,7 @@ class MasterProject extends BaseApiEntity
     {
         $targetLanguages = [];
 
-        foreach (array_keys($this->targetLanguageAssoc) as $targetLanguage){
+        foreach (array_keys($this->targetLanguageAssoc) as $targetLanguage) {
             $targetLanguages[]  = new Language($targetLanguage);
         }
 

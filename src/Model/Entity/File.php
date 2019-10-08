@@ -25,7 +25,8 @@ class File extends BaseApiEntity
      * @param $name
      * @param $numberOfSegments
      */
-    public function __construct($name, $numberOfSegments) {
+    public function __construct($name, $numberOfSegments)
+    {
         $this->name = $name;
         $this->numberOfSegments = $numberOfSegments;
     }
@@ -65,14 +66,16 @@ class File extends BaseApiEntity
     /**
      * @return int
      */
-    public function getTmsFileId() {
+    public function getTmsFileId()
+    {
         return $this->tmsFileId;
     }
 
     /**
      * @param int $tmsFileId
      */
-    public function setTmsFileId( $tmsFileId ) {
+    public function setTmsFileId($tmsFileId)
+    {
         $this->tmsFileId = $tmsFileId;
     }
 }

@@ -38,11 +38,10 @@ class EntityTest extends BaseTest
         $masterProject->setClientId($clientId);
 
         // add review settings
-        $reviewSettings = new ReviewSettings();
+        $reviewSettings = new ReviewSettings('combined');
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->setReviewType('combined');
         $reviewSettings->setSeverityWeights('[]');
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
@@ -58,7 +57,7 @@ class EntityTest extends BaseTest
         $masterProject->assocTargetLanguageToFile('fr-FR', $file);
 
         // add source segments
-        foreach ($this->getSourceSegments() as $sourceSegment) {
+        foreach ($this->getSourceSegments($file) as $sourceSegment) {
             $masterProject->addSourceSegment($sourceSegment);
         }
 
@@ -74,13 +73,13 @@ class EntityTest extends BaseTest
         try {
             $file3 = new File('test-file333', 3);
             $masterProject->assocTargetLanguageToFile('es-ES', $file3);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), 'test-file333 does not belong to the project');
         }
 
         try {
             new Language('dsadsadsadsa');
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), 'dsadsadsadsa is not a valid locale code');
         }
 
@@ -97,7 +96,7 @@ class EntityTest extends BaseTest
             $childTranslation->setName('translation-test');
             $childTranslation->setClientId($clientId);
             $childTranslation->setIsDummy(true);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), 'dsadsadsadsais not a valid type. [Allowed: translation,review]');
         }
 
@@ -112,9 +111,9 @@ class EntityTest extends BaseTest
 
         // create a segment translation batch
         $translationBatch = new TranslationBatch($childTranslation, $file, 'en-US');
-        $segmTrans1 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments()[0], 'blah', 'blah blah blah');
-        $segmTrans2 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments()[1], 'blah', 'blah blah blah');
-        $segmTrans3 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments()[2], 'blah', 'blah blah blah');
+        $segmTrans1 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments($file)[0], 'blah', 'blah blah blah');
+        $segmTrans2 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments($file)[1], 'blah', 'blah blah blah');
+        $segmTrans3 = new TranslatedSegment($childTranslation, $file, 'en-US', $this->getSourceSegments($file)[2], 'blah', 'blah blah blah');
 
         $translationBatch->addSegment($segmTrans1);
         $translationBatch->addSegment($segmTrans2);
@@ -128,7 +127,7 @@ class EntityTest extends BaseTest
         try {
             $file3 = new File('test-file333', 3);
             $childTranslation->assocTargetLanguageToFile('es-ES', $file3);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), 'test-file333 does not belong to the master project');
         }
 
@@ -147,7 +146,7 @@ class EntityTest extends BaseTest
             $childReview->setName('review-test');
             $childReview->setClientId($clientId);
             $childReview->setIsDummy(true);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '\'isDummy\' MUST be set to false if project tpye is \'review\'');
         }
 
@@ -163,17 +162,17 @@ class EntityTest extends BaseTest
 
         try {
             $correction->addItem(new RevisionCorrectionItem('Another comment', 'fdsfdsfdsfsd'));
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), 'fdsfdsfdsfsdis not a valid type. [Allowed: unchanged,added,deleted]');
         }
 
         $reviewedSegment = new ReviewedSegment('this is a comment');
-        $reviewedSegment->addError(new RevisionError(11,2));
-        $reviewedSegment->addError(new RevisionError(9,1,1, 5));
+        $reviewedSegment->addError(new RevisionError(11, 2));
+        $reviewedSegment->addError(new RevisionError(9, 1, 1, 5));
 
         try {
-            $reviewedSegment->addError(new RevisionError(9,1,11111, 5));
-        } catch (\DomainException $e){
+            $reviewedSegment->addError(new RevisionError(9, 1, 11111, 5));
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '\'charPosStart\' cannot be greater than \'charPosEnd\'');
         }
 
@@ -191,7 +190,7 @@ class EntityTest extends BaseTest
      * @return array
      * @throws \Exception
      */
-    private function getSourceSegments()
+    private function getSourceSegments(File $file)
     {
         $segments = [];
 
@@ -203,11 +202,8 @@ class EntityTest extends BaseTest
 
         $i = 1;
         foreach ($sources as $source) {
-            $sourceSegment = new SourceSegment();
-            $sourceSegment->setIndex($i);
+            $sourceSegment = new SourceSegment($file, $i, $source);
             $sourceSegment->setClientId(Uuid::uuid4()->toString());
-            $sourceSegment->setSegment($source);
-
             $segments[] = $sourceSegment;
 
             $i++;

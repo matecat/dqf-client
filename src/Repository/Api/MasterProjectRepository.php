@@ -3,7 +3,9 @@
 namespace Matecat\Dqf\Repository\Api;
 
 use Matecat\Dqf\Model\Entity\BaseApiEntity;
+use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\MasterProject;
+use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class MasterProjectRepository extends AbstractApiRepository {
@@ -17,7 +19,6 @@ class MasterProjectRepository extends AbstractApiRepository {
      * @return int
      */
     public function delete( $dqfId, $dqfUuid = null ) {
-
         $masterProject = $this->client->deleteMasterProject( [
                 'generic_email' => $this->genericEmail,
                 'sessionId'     => $this->sessionId,
@@ -25,11 +26,11 @@ class MasterProjectRepository extends AbstractApiRepository {
                 'projectId'     => $dqfId,
         ] );
 
-        return ($masterProject->status === 'OK') ? 1 : 0;
+        return ( $masterProject->status === 'OK' ) ? 1 : 0;
     }
 
     /**
-     * Retrive a record
+     * Retrieve a record
      *
      * @param int  $dqfId
      * @param null $dqfUuid
@@ -37,6 +38,8 @@ class MasterProjectRepository extends AbstractApiRepository {
      * @return mixed
      */
     public function get( $dqfId, $dqfUuid = null ) {
+
+        // get master project
         $masterProject = $this->client->getMasterProject( [
                 'generic_email' => $this->genericEmail,
                 'sessionId'     => $this->sessionId,
@@ -47,181 +50,69 @@ class MasterProjectRepository extends AbstractApiRepository {
         $model = $masterProject->model;
 
         $masterProject = new MasterProject(
-            $model->name,
-            $model->language->localeCode,
-            $model->projectSettings->contentType->id,
-            $model->projectSettings->industry->id,
-            $model->projectSettings->process->id,
-            $model->projectSettings->quality->id
+                $model->name,
+                $model->language->localeCode,
+                $model->projectSettings->contentType->id,
+                $model->projectSettings->industry->id,
+                $model->projectSettings->process->id,
+                $model->projectSettings->quality->id
         );
 
-        $masterProject->setDqfId($dqfId);
-        $masterProject->setDqfUuid($dqfUuid);
+        $masterProject->setDqfId( $dqfId );
+        $masterProject->setDqfUuid( $dqfUuid );
+
+        // file(s)
+        if(false === empty($model->files)){
+            foreach ($model->files as $f){
+                $file = new File($f->name, $f->segmentSize);
+                $file->setDqfId($f->id);
+                $file->setTmsFileId($f->tmsFile);
+                $masterProject->addFile($file);
+            }
+        }
+
+        // assoc targetLang to file(s)
+        if(false === empty($model->fileProjectTargetLangs)){
+            foreach ($model->fileProjectTargetLangs as $index => $assoc){
+                $masterProject->assocTargetLanguageToFile($assoc->projectTargetLang->language->localeCode, $masterProject->getFile($assoc->file->name));
+            }
+        }
+
+        // review settings
+        $reviewSettings = $this->client->getProjectReviewSettings( [
+                'generic_email' => $this->genericEmail,
+                'sessionId'     => $this->sessionId,
+                'projectKey'    => $dqfUuid,
+                'projectId'     => $dqfId,
+        ] );
+
+        $model = $reviewSettings->model;
+
+        $reviewSettings = new ReviewSettings($model->type);
+        $reviewSettings->setDqfId($model->id);
+        $reviewSettings->setPassFailThreshold($model->threshold);
+
+        $errorSeveritySetting  = '[';
+        $errorSeveritySettingArray = [];
+        if(false === empty($model->errorSeveritySetting)){
+            foreach ($model->errorSeveritySetting as $setting){
+                $errorSeveritySettingArray[] = '{"severityId":'.$setting->value.',"weight":'.$setting->errorSeverity->id.'}';
+            }
+        }
+        $errorSeveritySetting .= implode(',', $errorSeveritySettingArray);
+        $errorSeveritySetting .= ']';
+
+        $reviewSettings->setSeverityWeights($errorSeveritySetting);
+        if(false === empty($model->errorTypologySetting[0]->errorCategory->id)) { $reviewSettings->setErrorCategoryIds0($model->errorTypologySetting[0]->errorCategory->id); }
+        if(false === empty($model->errorTypologySetting[1]->errorCategory->id)) { $reviewSettings->setErrorCategoryIds1($model->errorTypologySetting[1]->errorCategory->id); }
+        if(false === empty($model->errorTypologySetting[2]->errorCategory->id)) { $reviewSettings->setErrorCategoryIds2($model->errorTypologySetting[2]->errorCategory->id); }
+
+        $masterProject->setReviewSettings($model);
+
+        // source segments
+
 
         return $masterProject;
-
-
-
-
-
-//        ["message"]=>
-//  string(28) "Project successfully fetched"
-//        ["class"]=>
-//  string(29) "net.taus.dqf.model.v3.Project"
-//        ["model"]=>
-//  object(stdClass)#241 (32) {
-//  ["id"]=>
-//    int(66945)
-//    ["completionTimestamp"]=>
-//    NULL
-//    ["creationTimestamp"]=>
-//    int(1570457076000)
-//    ["name"]=>
-//    string(19) "master-project-test"
-//        ["ownerUser"]=>
-//    object(stdClass)#247 (3) {
-//    ["id"]=>
-//      int(10943)
-//      ["email"]=>
-//      string(32) "luca.defranceschi@translated.net"
-//        ["tausId"]=>
-//      int(150)
-//    }
-//["organization"]=>
-//object(stdClass)#248 (3) {
-//["id"]=>
-//int(8)
-//["name"]=>
-//string(14) "Translated.net"
-//["tausId"]=>
-//int(367)
-//}
-//["status"]=>
-//    string(11) "initialized"
-//["type"]=>
-//    string(11) "translation"
-//["updateTimestamp"]=>
-//    int(1570457076000)
-//    ["user"]=>
-//    object(stdClass)#245 (3) {
-//    ["id"]=>
-//      int(10943)
-//      ["email"]=>
-//      string(32) "luca.defranceschi@translated.net"
-//["tausId"]=>
-//      int(150)
-//    }
-//    ["uuid"]=>
-//    string(36) "d927a7a3-2551-4a99-a038-0767d5b026ed"
-//["level"]=>
-//    int(0)
-//    ["isReturn"]=>
-//    bool(false)
-//    ["files"]=>
-//    array(0) {
-//}
-//    ["integrator"]=>
-//    object(stdClass)#234 (9) {
-//    ["id"]=>
-//      int(5)
-//      ["admin"]=>
-//      bool(false)
-//      ["description"]=>
-//      string(7) "MateCat"
-//["catTool"]=>
-//      object(stdClass)#235 (2) {
-//      ["id"]=>
-//        int(12)
-//        ["name"]=>
-//        string(7) "MateCat"
-//      }
-//      ["url"]=>
-//      NULL
-//      ["version"]=>
-//      NULL
-//      ["enableApi"]=>
-//      bool(true)
-//      ["enableWaiter"]=>
-//      bool(false)
-//      ["enableCreditsCheck"]=>
-//      bool(true)
-//    }
-//    ["integratorProjectMap"]=>
-//    NULL
-//    ["language"]=>
-//    object(stdClass)#236 (3) {
-//    ["id"]=>
-//      int(125)
-//      ["localeCode"]=>
-//      string(5) "it-IT"
-//["name"]=>
-//      string(14) "Italian(Italy)"
-//    }
-//    ["projectSettings"]=>
-//    object(stdClass)#246 (5) {
-//    ["id"]=>
-//      int(32459)
-//      ["industry"]=>
-//      object(stdClass)#232 (2) {
-//      ["id"]=>
-//        int(2)
-//        ["name"]=>
-//        string(10) "Automotive"
-//      }
-//      ["process"]=>
-//      object(stdClass)#259 (2) {
-//      ["id"]=>
-//        int(3)
-//        ["name"]=>
-//        string(11) "MT+PE+TM+HT"
-//      }
-//      ["contentType"]=>
-//      object(stdClass)#240 (2) {
-//      ["id"]=>
-//        int(1)
-//        ["name"]=>
-//        string(19) "User Interface Text"
-//      }
-//      ["quality"]=>
-//      object(stdClass)#230 (2) {
-//      ["id"]=>
-//        int(1)
-//        ["name"]=>
-//        string(11) "Good Enough"
-//      }
-//    }
-//    ["projectReviewSetting"]=>
-//    NULL
-//    ["projectTargetLangs"]=>
-//    array(0) {
-//}
-//    ["fileProjectTargetLangs"]=>
-//    array(0) {
-//}
-//    ["left"]=>
-//    int(1)
-//    ["right"]=>
-//    int(2)
-//    ["year"]=>
-//    int(2019)
-//    ["yearWeek"]=>
-//    int(201940)
-//    ["yearMonth"]=>
-//    int(201910)
-//    ["yearMonthDay"]=>
-//    int(20191007)
-//    ["userRoot"]=>
-//    bool(true)
-//    ["organizationRoot"]=>
-//    bool(true)
-//    ["meta"]=>
-//    bool(false)
-//    ["active"]=>
-//    bool(true)
-//    ["dummy"]=>
-//    bool(false)
-//  }
-
     }
 
     /**
@@ -231,7 +122,6 @@ class MasterProjectRepository extends AbstractApiRepository {
      * @throws \Exception
      */
     public function save( BaseApiEntity $baseEntity ) {
-
         /** @var $baseEntity MasterProject */
         if ( false === $baseEntity instanceof MasterProject ) {
             throw new InvalidTypeException( 'Entity provided is not an instance of MasterProject' );
@@ -253,13 +143,83 @@ class MasterProjectRepository extends AbstractApiRepository {
         $baseEntity->setDqfId( $masterProject->dqfId );
         $baseEntity->setDqfUuid( $masterProject->dqfUUID );
 
-        // template
-
         // file(s)
+        if ( false === empty( $baseEntity->getFiles() ) ) {
+            foreach ( $baseEntity->getFiles() as $file ) {
+                $masterProjectFile = $this->client->addMasterProjectFile( [
+                        'generic_email'    => $this->genericEmail,
+                        'sessionId'        => $this->sessionId,
+                        'projectKey'       => $baseEntity->getDqfUuid(),
+                        'projectId'        => $baseEntity->getDqfId(),
+                        'name'             => $file->getName(),
+                        'numberOfSegments' => $file->getNumberOfSegments(),
+                        'clientId'         => $file->getClientId(),
+                ] );
+
+                $file->setDqfId( $masterProjectFile->dqfId );
+            }
+        }
+
+        // assoc targetLang to file(s)
+        if ( false === empty( $baseEntity->getTargetLanguageAssoc() ) ) {
+            foreach ( $baseEntity->getTargetLanguageAssoc() as $targetLanguageCode => $files ) {
+                foreach ( $files as $file ) {
+                    $this->client->addMasterProjectTargetLanguage( [
+                            'generic_email'      => $this->genericEmail,
+                            'sessionId'          => $this->sessionId,
+                            'projectKey'         => $baseEntity->getDqfUuid(),
+                            'projectId'          => $baseEntity->getDqfId(),
+                            'fileId'             => $file->getDqfId(),
+                            'targetLanguageCode' => $targetLanguageCode,
+                    ] );
+                }
+            }
+        }
 
         // review settings
+        if ( false === empty( $baseEntity->getReviewSettings() ) ) {
+            $projectReviewSettings = $this->client->addProjectReviewSettings( [
+                    'generic_email'       => $this->genericEmail,
+                    'sessionId'           => $this->sessionId,
+                    'projectKey'          => $baseEntity->getDqfUuid(),
+                    'projectId'           => $baseEntity->getDqfId(),
+                    'reviewType'          => $baseEntity->getReviewSettings()->getReviewType(),
+                    'severityWeights'     => $baseEntity->getReviewSettings()->getSeverityWeights(),
+                    'errorCategoryIds[0]' => $baseEntity->getReviewSettings()->getErrorCategoryIds0(),
+                    'errorCategoryIds[1]' => $baseEntity->getReviewSettings()->getErrorCategoryIds1(),
+                    'errorCategoryIds[2]' => $baseEntity->getReviewSettings()->getErrorCategoryIds2(),
+                    'passFailThreshold'   => $baseEntity->getReviewSettings()->getPassFailThreshold(),
+            ] );
+
+            $baseEntity->getReviewSettings()->setDqfId( $projectReviewSettings->dqfId );
+        }
 
         // source segments
+        if ( false === empty( $baseEntity->getSourceSegments() ) ) {
+            $bodies = [];
+            foreach ( $baseEntity->getSourceSegments() as $sourceSegment ) {
+                $bodies[ $sourceSegment->getFile()->getDqfId() ][] = [
+                        'index'         => $sourceSegment->getIndex(),
+                        'sourceSegment' => $sourceSegment->getSegment(),
+                        'clientId'      => $sourceSegment->getClientId(),
+                ];
+            }
+
+            foreach ( $bodies as $fileId => $body ) {
+                $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject( [
+                        'generic_email' => $this->genericEmail,
+                        'sessionId'     => $this->sessionId,
+                        'projectKey'    => $baseEntity->getDqfUuid(),
+                        'projectId'     => $baseEntity->getDqfId(),
+                        'fileId'        => $fileId,
+                        'body'          => $body
+                ] );
+
+                foreach ( $updatedSourceSegments->segmentList as $segment ) {
+                    $baseEntity->getSourceSegments()[ $segment->index ]->setDqfId( $segment->dqfId );
+                }
+            }
+        }
 
         return $baseEntity;
     }
@@ -278,7 +238,7 @@ class MasterProjectRepository extends AbstractApiRepository {
             throw new InvalidTypeException( 'Entity provided is not an instance of MasterProject' );
         }
 
-        $masterProject = $this->get($baseEntity->getDqfId(), $baseEntity->getDqfUuid());
+        $masterProject = $this->get( $baseEntity->getDqfId(), $baseEntity->getDqfUuid() );
 
         // update project
 

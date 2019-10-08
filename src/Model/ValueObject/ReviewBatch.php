@@ -8,7 +8,8 @@ use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\ReviewedSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 
-class ReviewBatch {
+class ReviewBatch
+{
     /**
      * @var ChildProject
      */
@@ -54,10 +55,11 @@ class ReviewBatch {
      * @param string            $batchId
      * @param bool              $overwrite
      */
-    public function __construct( ChildProject $childProject, File $file, $targetLanguageCode, TranslatedSegment $translation, $batchId, $overwrite = true ) {
+    public function __construct(ChildProject $childProject, File $file, $targetLanguageCode, TranslatedSegment $translation, $batchId, $overwrite = true)
+    {
         $this->childProject   = $childProject;
         $this->file           = $file;
-        $this->targetLanguage = new Language( $targetLanguageCode );
+        $this->targetLanguage = new Language($targetLanguageCode);
         $this->translation    = $translation;
         $this->batchId        = $batchId;
         $this->overwrite      = $overwrite;
@@ -66,57 +68,64 @@ class ReviewBatch {
     /**
      * @return ChildProject
      */
-    public function getChildProject() {
+    public function getChildProject()
+    {
         return $this->childProject;
     }
 
     /**
      * @return File
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
     /**
      * @return Language
      */
-    public function getTargetLanguage() {
+    public function getTargetLanguage()
+    {
         return $this->targetLanguage;
     }
 
     /**
      * @return TranslatedSegment
      */
-    public function getTranslation() {
+    public function getTranslation()
+    {
         return $this->translation;
     }
 
     /**
      * @return bool
      */
-    public function isOverwrite() {
+    public function isOverwrite()
+    {
         return $this->overwrite;
     }
 
     /**
      * @return string
      */
-    public function getBatchId() {
+    public function getBatchId()
+    {
         return $this->batchId;
     }
 
     /**
      * @return ReviewedSegment
      */
-    public function getReviewedSegment() {
+    public function getReviewedSegment()
+    {
         return $this->reviewedSegment;
     }
 
     /**
      * @param ReviewedSegment $reviewedSegment
      */
-    public function setReviewedSegment( ReviewedSegment $reviewedSegment ) {
+    public function setReviewedSegment(ReviewedSegment $reviewedSegment)
+    {
         $this->reviewedSegment = $reviewedSegment;
     }
 }
-

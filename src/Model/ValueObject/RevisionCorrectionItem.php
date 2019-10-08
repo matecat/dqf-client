@@ -20,7 +20,8 @@ class RevisionCorrectionItem
      * @param string $subContent
      * @param string $type
      */
-    public function __construct( $subContent, $type ) {
+    public function __construct($subContent, $type)
+    {
         $this->subContent = $subContent;
         $this->setType($type);
     }
@@ -42,14 +43,16 @@ class RevisionCorrectionItem
     /**
      * @return string
      */
-    public function getSubContent() {
+    public function getSubContent()
+    {
         return $this->subContent;
     }
 
     /**
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -58,7 +61,8 @@ class RevisionCorrectionItem
      *
      * @return bool
      */
-    public function isEqualTo(RevisionCorrectionItem $revisionCorrectionItem) {
+    public function isEqualTo(RevisionCorrectionItem $revisionCorrectionItem)
+    {
         return (
                 $this->subContent === $revisionCorrectionItem->getSubContent() and
                 $this->type === $revisionCorrectionItem->getType()

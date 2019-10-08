@@ -21,7 +21,7 @@ class Language extends BaseApiEntity
      */
     public function __construct($localeCode)
     {
-        if(false === $this->checkLocaleCode($localeCode)){
+        if (false === $this->checkLocaleCode($localeCode)) {
             throw new \DomainException($localeCode . ' is not a valid locale code');
         }
 
@@ -36,7 +36,8 @@ class Language extends BaseApiEntity
      *
      * @return bool
      */
-    private function checkLocaleCode($localeCode){
+    private function checkLocaleCode($localeCode)
+    {
         $validLocaleCodes = [
             'af-ZA',
             'sq-AL',
@@ -444,14 +445,16 @@ class Language extends BaseApiEntity
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName( $name ) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 }

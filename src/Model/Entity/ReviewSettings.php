@@ -35,6 +35,15 @@ class ReviewSettings extends BaseApiEntity
     private $passFailThreshold;
 
     /**
+     * ReviewSettings constructor.
+     *
+     * @param string $reviewType
+     */
+    public function __construct($reviewType) {
+        $this->setReviewType($reviewType);
+    }
+
+    /**
      * @return string
      */
     public function getReviewType()
@@ -45,7 +54,7 @@ class ReviewSettings extends BaseApiEntity
     /**
      * @param string $reviewType
      */
-    public function setReviewType($reviewType)
+    private function setReviewType($reviewType)
     {
         $allowed = ['correction', 'error_typology', 'combined'];
 
