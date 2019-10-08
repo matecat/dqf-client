@@ -26,7 +26,7 @@ class SourceSegment extends BaseApiEntity
      * @param int    $index
      * @param string $segment
      */
-    public function __construct( File $file, $index, $segment ) {
+    public function __construct(File $file, $index, $segment ) {
         $this->file    = $file;
         $this->index   = $index;
         $this->segment = $segment;
@@ -51,5 +51,19 @@ class SourceSegment extends BaseApiEntity
      */
     public function getSegment() {
         return $this->segment;
+    }
+
+    /**
+     * @param SourceSegment $sourceSegment
+     *
+     * @return bool
+     */
+    public function isEqualTo(SourceSegment $sourceSegment)
+    {
+        return (
+            $this->getFile()->getName() === $sourceSegment->getFile()->getName() and
+            $this->getIndex() === $sourceSegment->getIndex() and
+            $this->getSegment() === $sourceSegment->getSegment()
+        );
     }
 }

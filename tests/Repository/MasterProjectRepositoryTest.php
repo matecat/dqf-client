@@ -68,6 +68,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $this->repo->save($masterProject);
 
         $this->get_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+        $this->update_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
         $this->delete_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
     }
 
@@ -79,6 +80,21 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     public function update_a_master_project($dqfId, $dqfUuid)
     {
+        /** @var MasterProject $masterProject */
+        $masterProject = $this->repo->get($dqfId, $dqfUuid);
+        $masterProject->setName('Modified name');
+
+        $masterProject->getFiles()[0]->setName('test-file-changed');
+        $masterProject->modifyTargetLanguageToFile('en-US', 'pt-PT', $masterProject->getFiles()[0]);
+        $masterProject->assocTargetLanguageToFile('es-ES', $masterProject->getFiles()[0]);
+
+        $this->repo->update($masterProject);
+
+        /** @var MasterProject $modifiedMasterProject */
+        $modifiedMasterProject = $this->repo->get($dqfId, $dqfUuid);
+
+        $this->assertEquals($modifiedMasterProject->getName(), 'Modified name');
+        $this->assertEquals($modifiedMasterProject->getFiles()[0]->getName(), 'test-file-changed');
     }
 
     /**
@@ -89,10 +105,12 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     public function get_a_master_project($dqfId, $dqfUuid)
     {
+        /** @var MasterProject $masterProject */
         $masterProject = $this->repo->get($dqfId, $dqfUuid);
 
         $this->assertEquals($masterProject->getDqfId(), $dqfId);
         $this->assertEquals($masterProject->getDqfUuid(), $dqfUuid);
+        $this->assertInstanceOf(ReviewSettings::class, $masterProject->getReviewSettings());
     }
 
     /**

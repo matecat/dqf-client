@@ -76,6 +76,7 @@ use Matecat\Dqf\Utils\HandlerStackFactory;
  * @method mixed updateCompleteTranslatedSegment( array $input ) - Update a complete translated segment
  * @method mixed updateMasterProject( array $input ) - Update the master project
  * @method mixed updateMasterProjectFile( array $input ) - Update the file of a master project
+ * @method mixed updateMasterProjectTargetLanguage( array $input ) - Update the project's review preferences
  * @method mixed updateProjectReviewSettings( array $input ) - Update the project's review preferences
  * @method mixed updateReviewInBatch( array $input ) - Add a review for a segment
  * @method mixed updateReviewTemplate( array $input ) - Update a review template of the user

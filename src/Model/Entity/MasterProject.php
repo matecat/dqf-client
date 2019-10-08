@@ -35,6 +35,16 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     private $qualityLevelId;
 
     /**
+     * @var string
+     */
+    private $templateName;
+
+    /**
+     * @var string
+     */
+    private $tmsProjectKey;
+
+    /**
      * @var ReviewSettings
      */
     private $reviewSettings;
@@ -45,7 +55,7 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     private $files;
 
     /**
-     * @var SourceSegment[]
+     * @var array
      */
     private $sourceSegments;
 
@@ -187,6 +197,34 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
+     * @return string
+     */
+    public function getTemplateName() {
+        return $this->templateName;
+    }
+
+    /**
+     * @param string $templateName
+     */
+    public function setTemplateName( $templateName ) {
+        $this->templateName = $templateName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTmsProjectKey() {
+        return $this->tmsProjectKey;
+    }
+
+    /**
+     * @param string $tmsProjectKey
+     */
+    public function setTmsProjectKey( $tmsProjectKey ) {
+        $this->tmsProjectKey = $tmsProjectKey;
+    }
+
+    /**
      * @param $name
      *
      * @return File
@@ -208,6 +246,11 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
         return $this->files;
     }
 
+    /**
+     * @param File $file
+     *
+     * @return bool
+     */
     public function hasFile(File $file)
     {
         if (empty($this->getFiles())) {
@@ -234,16 +277,57 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
-     * @param string $languageCode
-     * @param File     $file
+     * @param      $languageCode
+     * @param File $file
+     * @param null $dqfId
      */
-    public function assocTargetLanguageToFile($languageCode, File $file)
+    public function assocTargetLanguageToFile($languageCode, File $file, $dqfId = null)
     {
         if (false === $this->hasFile($file)) {
             throw new \DomainException($file->getName() . ' does not belong to the project');
         }
 
-        $this->targetLanguageAssoc[$languageCode][] = $file;
+        $fileTargetLang = new FileTargetLang($languageCode, $file);
+        if($dqfId){ $fileTargetLang->setDqfId($dqfId); }
+
+        $this->targetLanguageAssoc[$languageCode][] = $fileTargetLang;
+    }
+
+    /**
+     * @param      $languageCode
+     * @param      $newLanguageCode
+     * @param File $file
+     * @param null $dqfId
+     */
+    public function modifyTargetLanguageToFile($languageCode, $newLanguageCode, File $file, $dqfId = null)
+    {
+        if (false === $this->hasFile($file)) {
+            throw new \DomainException($file->getName() . ' does not belong to the project');
+        }
+
+        /** @var FileTargetLang $f */
+        foreach ($this->getTargetLanguageAssoc()[$languageCode] as $k => $f) {
+            if ($file->getName() === $f->getFile()->getName()) {
+                unset($this->targetLanguageAssoc[$languageCode][$k]);
+
+                if(count($this->targetLanguageAssoc[$languageCode]) === 0){
+                    unset($this->targetLanguageAssoc[$languageCode]);
+                }
+            }
+        }
+
+        $fileTargetLang = new FileTargetLang($newLanguageCode, $file);
+        if($dqfId){ $fileTargetLang->setDqfId($dqfId); }
+
+        $this->targetLanguageAssoc[$newLanguageCode][] = $fileTargetLang;
+    }
+
+    /**
+     * Clear the targetLanguageAssoc array
+     */
+    public function clearTargetLanguageAssoc()
+    {
+        $this->targetLanguageAssoc = [];
     }
 
     /**
@@ -279,7 +363,7 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
-     * @return SourceSegment[]
+     * @return array
      */
     public function getSourceSegments()
     {
@@ -291,26 +375,40 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
      */
     public function addSourceSegment(SourceSegment $sourceSegment)
     {
-        if (false === $this->hasSourceSegment($sourceSegment->getIndex())) {
-            $this->sourceSegments[$sourceSegment->getIndex()] = $sourceSegment;
+        if (false === $this->hasSourceSegment($sourceSegment)) {
+            $this->sourceSegments[$sourceSegment->getFile()->getName()][] = $sourceSegment;
         }
     }
 
     /**
-     * @param int $sourceSegmentIndex
+     * @param SourceSegment $sourceSegment
      *
      * @return bool
      */
-    public function hasSourceSegment($sourceSegmentIndex)
+    public function hasSourceSegment(SourceSegment $sourceSegment)
     {
-        return isset($this->sourceSegments[$sourceSegmentIndex]);
+        $fileName = $sourceSegment->getFile()->getName();
+
+        if(empty($this->sourceSegments[$fileName])){
+            return false;
+        }
+
+        foreach ($this->sourceSegments[$fileName] as $segment){
+            if($sourceSegment->isEqualTo($segment)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
+     * @param string $fileName
+     *
      * @return int
      */
-    public function getSourceSegmentsCount()
+    public function getSourceSegmentsCount($fileName)
     {
-        return count($this->sourceSegments);
+        return count($this->sourceSegments[$fileName]);
     }
 }

@@ -41,7 +41,7 @@ class UpdateMasterProject extends CommandHandler
                 ],
                 'processId'          => [
                         'required' => false,
-                        'type'     => Constants::DATA_TYPE_STRING,
+                        'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
                 'qualityLevelId'     => [
                         'required' => false,

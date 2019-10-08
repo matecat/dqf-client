@@ -63,7 +63,7 @@ class EntityTest extends BaseTest
 
         // make assertions
         $this->assertInstanceOf(MasterProject::class, $masterProject);
-        $this->assertEquals(3, $masterProject->getSourceSegmentsCount());
+        $this->assertEquals(3, $masterProject->getSourceSegmentsCount($file->getName()));
         $this->assertCount(2, $masterProject->getTargetLanguages());
         $this->assertEquals($masterProject->getTargetLanguages()[0]->getLocaleCode(), 'en-US');
         $this->assertEquals($masterProject->getTargetLanguages()[1]->getLocaleCode(), 'fr-FR');

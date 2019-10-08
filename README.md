@@ -147,6 +147,7 @@ Here is the list of Client's public methods:
 | `updateCompleteTranslatedSegment` | Update a complete translated segment |
 | `updateMasterProject` | Update the master project |
 | `updateMasterProjectFile` | Update the file of a master project |
+| `updateMasterProjectTargetLanguage` | Update a target language of a master project |
 | `updateProjectReviewSettings` | Update the project's review preferences |
 | `updateReviewInBatch` | Add a review for a segment |
 | `updateReviewTemplate` | Update a review template of the user |
