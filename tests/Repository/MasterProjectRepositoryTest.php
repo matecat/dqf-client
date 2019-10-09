@@ -18,6 +18,9 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     private $repo;
 
+    /**
+     * @throws \Matecat\Dqf\Exceptions\SessionProviderException
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -42,7 +45,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
 
         // file(s)
-        $file = new File('test-file', 3);
+        $file = new File('test-file', 200);
         $file->setClientId(Uuid::uuid4()->toString());
         $masterProject->addFile($file);
 
@@ -67,9 +70,30 @@ class MasterProjectRepositoryTest extends BaseTest
         // save project
         $this->repo->save($masterProject);
 
+        // get a master project
         $this->get_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+
+        // update the master project
         $this->update_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+
+        // delete the master project
         $this->delete_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+    }
+
+    /**
+     * Get a master project
+     *
+     * @param $dqfId
+     * @param $dqfUuid
+     */
+    public function get_a_master_project($dqfId, $dqfUuid)
+    {
+        /** @var MasterProject $masterProject */
+        $masterProject = $this->repo->get($dqfId, $dqfUuid);
+
+        $this->assertEquals($masterProject->getDqfId(), $dqfId);
+        $this->assertEquals($masterProject->getDqfUuid(), $dqfUuid);
+        $this->assertInstanceOf(ReviewSettings::class, $masterProject->getReviewSettings());
     }
 
     /**
@@ -99,22 +123,6 @@ class MasterProjectRepositoryTest extends BaseTest
     }
 
     /**
-     * Get a master project
-     *
-     * @param $dqfId
-     * @param $dqfUuid
-     */
-    public function get_a_master_project($dqfId, $dqfUuid)
-    {
-        /** @var MasterProject $masterProject */
-        $masterProject = $this->repo->get($dqfId, $dqfUuid);
-
-        $this->assertEquals($masterProject->getDqfId(), $dqfId);
-        $this->assertEquals($masterProject->getDqfUuid(), $dqfUuid);
-        $this->assertInstanceOf(ReviewSettings::class, $masterProject->getReviewSettings());
-    }
-
-    /**
      * Delete a master project
      *
      * @param $dqfId
@@ -128,26 +136,20 @@ class MasterProjectRepositoryTest extends BaseTest
     }
 
     /**
+     * @param File $file
+     *
      * @return array
      * @throws \Exception
      */
     private function getSourceSegments(File $file)
     {
         $segments = [];
+        $faker = \Faker\Factory::create();
 
-        $sources = [
-                'La rana in Spagna',
-                'gracida in campagna.',
-                'Un semplice scioglilingua!',
-        ];
-
-        $i = 1;
-        foreach ($sources as $source) {
-            $sourceSegment = new SourceSegment($file, $i, $source);
+        for ($i=1; $i < 201; $i++){
+            $sourceSegment = new SourceSegment($file, $i, $faker->realText(100));
             $sourceSegment->setClientId(Uuid::uuid4()->toString());
             $segments[] = $sourceSegment;
-
-            $i++;
         }
 
         return $segments;

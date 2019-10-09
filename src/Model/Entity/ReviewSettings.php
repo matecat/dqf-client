@@ -39,7 +39,8 @@ class ReviewSettings extends BaseApiEntity
      *
      * @param string $reviewType
      */
-    public function __construct($reviewType) {
+    public function __construct($reviewType)
+    {
         $this->setReviewType($reviewType);
     }
 

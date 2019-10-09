@@ -199,28 +199,32 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     /**
      * @return string
      */
-    public function getTemplateName() {
+    public function getTemplateName()
+    {
         return $this->templateName;
     }
 
     /**
      * @param string $templateName
      */
-    public function setTemplateName( $templateName ) {
+    public function setTemplateName($templateName)
+    {
         $this->templateName = $templateName;
     }
 
     /**
      * @return string
      */
-    public function getTmsProjectKey() {
+    public function getTmsProjectKey()
+    {
         return $this->tmsProjectKey;
     }
 
     /**
      * @param string $tmsProjectKey
      */
-    public function setTmsProjectKey( $tmsProjectKey ) {
+    public function setTmsProjectKey($tmsProjectKey)
+    {
         $this->tmsProjectKey = $tmsProjectKey;
     }
 
@@ -288,7 +292,9 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
         }
 
         $fileTargetLang = new FileTargetLang($languageCode, $file);
-        if($dqfId){ $fileTargetLang->setDqfId($dqfId); }
+        if ($dqfId) {
+            $fileTargetLang->setDqfId($dqfId);
+        }
 
         $this->targetLanguageAssoc[$languageCode][] = $fileTargetLang;
     }
@@ -310,14 +316,16 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
             if ($file->getName() === $f->getFile()->getName()) {
                 unset($this->targetLanguageAssoc[$languageCode][$k]);
 
-                if(count($this->targetLanguageAssoc[$languageCode]) === 0){
+                if (count($this->targetLanguageAssoc[$languageCode]) === 0) {
                     unset($this->targetLanguageAssoc[$languageCode]);
                 }
             }
         }
 
         $fileTargetLang = new FileTargetLang($newLanguageCode, $file);
-        if($dqfId){ $fileTargetLang->setDqfId($dqfId); }
+        if ($dqfId) {
+            $fileTargetLang->setDqfId($dqfId);
+        }
 
         $this->targetLanguageAssoc[$newLanguageCode][] = $fileTargetLang;
     }
@@ -389,12 +397,12 @@ class MasterProject extends BaseApiEntity implements ProjectInterface
     {
         $fileName = $sourceSegment->getFile()->getName();
 
-        if(empty($this->sourceSegments[$fileName])){
+        if (empty($this->sourceSegments[$fileName])) {
             return false;
         }
 
-        foreach ($this->sourceSegments[$fileName] as $segment){
-            if($sourceSegment->isEqualTo($segment)){
+        foreach ($this->sourceSegments[$fileName] as $segment) {
+            if ($sourceSegment->isEqualTo($segment)) {
                 return true;
             }
         }

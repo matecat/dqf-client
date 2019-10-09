@@ -20,7 +20,8 @@ class FileTargetLang extends BaseApiEntity
      * @param string $languageCode
      * @param File     $file
      */
-    public function __construct($languageCode, File $file ) {
+    public function __construct($languageCode, File $file)
+    {
         $this->language = new Language($languageCode);
         $this->file     = $file;
     }
@@ -28,14 +29,16 @@ class FileTargetLang extends BaseApiEntity
     /**
      * @return Language
      */
-    public function getLanguage() {
+    public function getLanguage()
+    {
         return $this->language;
     }
 
     /**
      * @return File
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 }

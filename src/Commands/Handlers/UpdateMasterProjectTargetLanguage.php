@@ -49,8 +49,8 @@ class UpdateMasterProjectTargetLanguage extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_UPDATE, $this->buildUri(
-                'project/master/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
-                [
+            'project/master/{projectId}/file/{fileId}/targetLang/{targetLangCode}',
+            [
                         'projectId'      => $params[ 'projectId' ],
                         'fileId'         => $params[ 'fileId' ],
                         'targetLangCode' => $params[ 'targetLangCode' ],
