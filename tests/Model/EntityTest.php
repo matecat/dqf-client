@@ -92,7 +92,8 @@ class EntityTest extends BaseTest
         $clientId = Uuid::uuid4()->toString();
 
         try {
-            $childTranslation = new ChildProject($masterProject, 'dsadsadsadsa');
+            $childTranslation = new ChildProject('dsadsadsadsa');
+            $childTranslation->setMasterProject($masterProject);
             $childTranslation->setName('translation-test');
             $childTranslation->setClientId($clientId);
             $childTranslation->setIsDummy(true);
@@ -100,7 +101,8 @@ class EntityTest extends BaseTest
             $this->assertEquals($e->getMessage(), 'dsadsadsadsais not a valid type. [Allowed: translation,review]');
         }
 
-        $childTranslation = new ChildProject($masterProject, 'translation');
+        $childTranslation = new ChildProject('translation');
+        $childTranslation->setMasterProject($masterProject);
         $childTranslation->setName('translation-test');
         $childTranslation->setClientId($clientId);
         $childTranslation->setIsDummy(true);
@@ -142,7 +144,8 @@ class EntityTest extends BaseTest
         $clientId = Uuid::uuid4()->toString();
 
         try {
-            $childReview = new ChildProject($masterProject, 'review');
+            $childReview = new ChildProject('review');
+            $childReview->setMasterProject($masterProject);
             $childReview->setName('review-test');
             $childReview->setClientId($clientId);
             $childReview->setIsDummy(true);
@@ -150,7 +153,8 @@ class EntityTest extends BaseTest
             $this->assertEquals($e->getMessage(), '\'isDummy\' MUST be set to false if project tpye is \'review\'');
         }
 
-        $childReview = new ChildProject($masterProject, 'review');
+        $childReview = new ChildProject('review');
+        $childReview->setMasterProject($masterProject);
         $childReview->setName('review-test');
         $childReview->setClientId($clientId);
         $childReview->setIsDummy(false);

@@ -2,7 +2,7 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
-class ChildProject extends BaseApiEntity implements ProjectInterface
+class ChildProject extends AbstractProject
 {
     /**
      * @var MasterProject
@@ -35,25 +35,25 @@ class ChildProject extends BaseApiEntity implements ProjectInterface
     private $isDummy;
 
     /**
-     * @var ReviewSettings
+     * @var int
      */
-    private $reviewSettings;
-
-    /**
-     * @var array
-     */
-    private $targetLanguageAssoc;
+    private $reviewSettingsId;
 
     /**
      * ChildProject constructor.
      *
-     * @param MasterProject $masterProject
      * @param string $type
      */
-    public function __construct(MasterProject $masterProject, $type)
+    public function __construct($type)
     {
-        $this->masterProject = $masterProject;
         $this->setType($type);
+    }
+
+    /**
+     * @param MasterProject $masterProject
+     */
+    public function setMasterProject( $masterProject ) {
+        $this->masterProject = $masterProject;
     }
 
     /**
@@ -62,14 +62,6 @@ class ChildProject extends BaseApiEntity implements ProjectInterface
     public function getMasterProject()
     {
         return $this->masterProject;
-    }
-
-    /**
-     * @param MasterProject $masterProject
-     */
-    public function setMasterProject($masterProject)
-    {
-        $this->masterProject = $masterProject;
     }
 
     /**
@@ -163,45 +155,18 @@ class ChildProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
-     * @return ReviewSettings
+     * @return int
      */
-    public function getReviewSettings()
+    public function getReviewSettingsId()
     {
-        return $this->reviewSettings;
+        return $this->reviewSettingsId;
     }
 
     /**
-     * @param ReviewSettings $reviewSettings
+     * @param int $reviewSettingsId
      */
-    public function setReviewSettings($reviewSettings)
+    public function setReviewSettingsId($reviewSettingsId)
     {
-        $this->reviewSettings = $reviewSettings;
-    }
-
-    /**
-     * @param string $languageCode
-     * @param File     $file
-     */
-    public function assocTargetLanguageToFile($languageCode, File $file)
-    {
-        if (false === $this->masterProject->hasFile($file)) {
-            throw new \DomainException($file->getName() . ' does not belong to the master project');
-        }
-
-        $this->targetLanguageAssoc[$languageCode][] = $file;
-    }
-
-    /**
-     * @return Language[]
-     */
-    public function getTargetLanguages()
-    {
-        $targetLanguages = [];
-
-        foreach (array_keys($this->targetLanguageAssoc) as $targetLanguage) {
-            $targetLanguages[]  = new Language($targetLanguage);
-        }
-
-        return $targetLanguages;
+        $this->reviewSettingsId = $reviewSettingsId;
     }
 }

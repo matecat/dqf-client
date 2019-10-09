@@ -42,6 +42,7 @@ class MasterProjectRepositoryTest extends BaseTest
             $this->assertEquals('Entity provided is not an instance of MasterProject', $e->getMessage());
         }
 
+        // create the master project
         $masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
 
         // file(s)
@@ -146,7 +147,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $segments = [];
         $faker = \Faker\Factory::create();
 
-        for ($i=1; $i < 201; $i++){
+        for ($i=1; $i < 201; $i++) {
             $sourceSegment = new SourceSegment($file, $i, $faker->realText(100));
             $sourceSegment->setClientId(Uuid::uuid4()->toString());
             $segments[] = $sourceSegment;

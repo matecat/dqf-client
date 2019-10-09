@@ -12,7 +12,6 @@ use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class MasterProjectRepository extends AbstractApiRepository
 {
-
     /**
      * Delete a record
      *
@@ -43,7 +42,6 @@ class MasterProjectRepository extends AbstractApiRepository
      */
     public function get($dqfId, $dqfUuid = null)
     {
-
         // get master project
         $masterProject = $this->client->getMasterProject([
                 'generic_email' => $this->genericEmail,
@@ -224,16 +222,18 @@ class MasterProjectRepository extends AbstractApiRepository
 
                 /** @var FileTargetLang $fileTargetLang */
                 foreach ($fileTargetLangs as $fileTargetLang) {
-                    $projectTargetLanguage = $this->client->addMasterProjectTargetLanguage([
-                            'generic_email'      => $this->genericEmail,
-                            'sessionId'          => $this->sessionId,
-                            'projectKey'         => $baseEntity->getDqfUuid(),
-                            'projectId'          => $baseEntity->getDqfId(),
-                            'fileId'             => $fileTargetLang->getFile()->getDqfId(),
-                            'targetLanguageCode' => $targetLanguageCode,
-                    ]);
+                    if(false === empty($fileTargetLang->getFile()->getDqfId())){
+                        $projectTargetLanguage = $this->client->addMasterProjectTargetLanguage([
+                                'generic_email'      => $this->genericEmail,
+                                'sessionId'          => $this->sessionId,
+                                'projectKey'         => $baseEntity->getDqfUuid(),
+                                'projectId'          => $baseEntity->getDqfId(),
+                                'fileId'             => $fileTargetLang->getFile()->getDqfId(),
+                                'targetLanguageCode' => $targetLanguageCode,
+                        ]);
 
-                    $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                        $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                    }
                 }
             }
         }
@@ -451,7 +451,7 @@ class MasterProjectRepository extends AbstractApiRepository
                 $chunks = array_chunk($sourceSegments, 100, true);
 
                 $k = 0;
-                for ($i=0; $i<count($chunks);$i++){
+                for ($i=0; $i<count($chunks);$i++) {
                     $sourceSegments = $chunks[$i];
 
                     /** @var SourceSegment $sourceSegment */
@@ -467,7 +467,7 @@ class MasterProjectRepository extends AbstractApiRepository
                 }
             }
 
-            for ($i=0; $i<count($bodies);$i++){
+            for ($i=0; $i<count($bodies);$i++) {
                 foreach ($bodies[$i] as $fileId => $body) {
                     $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject([
                             'generic_email' => $this->genericEmail,
