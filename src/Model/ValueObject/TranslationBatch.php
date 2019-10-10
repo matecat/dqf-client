@@ -2,12 +2,13 @@
 
 namespace Matecat\Dqf\Model\ValueObject;
 
+use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 
-class TranslationBatch
+class TranslationBatch extends BaseApiEntity
 {
     /**
      * @var ChildProject

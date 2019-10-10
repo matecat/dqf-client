@@ -8,9 +8,10 @@ use Matecat\Dqf\Model\Entity\FileTargetLang;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
+use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
-class MasterProjectRepository extends AbstractApiRepository
+class MasterProjectRepository extends AbstractApiRepository implements CrudApiRepositoryInterface
 {
     /**
      * Delete a record
@@ -271,7 +272,6 @@ class MasterProjectRepository extends AbstractApiRepository
      */
     public function update(BaseApiEntity $baseEntity)
     {
-
         /** @var $baseEntity MasterProject */
         if (false === $baseEntity instanceof MasterProject) {
             throw new InvalidTypeException('Entity provided is not an instance of MasterProject');

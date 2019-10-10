@@ -5,7 +5,7 @@ namespace Matecat\Dqf\Repository\Api;
 use Matecat\Dqf\Client;
 use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
 
-abstract class AbstractApiRepository implements CrudApiRepositoryInterface
+abstract class AbstractApiRepository
 {
     /**
      * @var Client

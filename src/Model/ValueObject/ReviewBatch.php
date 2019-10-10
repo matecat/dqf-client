@@ -2,13 +2,14 @@
 
 namespace Matecat\Dqf\Model\ValueObject;
 
+use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\ReviewedSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 
-class ReviewBatch
+class ReviewBatch extends BaseApiEntity
 {
     /**
      * @var ChildProject
