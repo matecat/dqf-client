@@ -11,12 +11,5 @@ interface ReviewRepositoryInterface
      *
      * @return mixed
      */
-    public function save( ReviewBatch $batch );
-
-    /**
-     * @param ReviewBatch $batch
-     *
-     * @return mixed
-     */
-    public function update( ReviewBatch $batch );
+    public function save(ReviewBatch $batch);
 }

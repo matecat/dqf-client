@@ -4,6 +4,7 @@ namespace Matecat\Dqf\Tests\SessionProvider;
 
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
+use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
@@ -89,12 +90,13 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     public function get_a_master_project($dqfId, $dqfUuid)
     {
-        /** @var MasterProject $masterProject */
+        /** @var AbstractProject $masterProject */
         $masterProject = $this->repo->get($dqfId, $dqfUuid);
 
         $this->assertEquals($masterProject->getDqfId(), $dqfId);
         $this->assertEquals($masterProject->getDqfUuid(), $dqfUuid);
         $this->assertInstanceOf(ReviewSettings::class, $masterProject->getReviewSettings());
+        $this->assertNotNull($masterProject->getReviewSettings()->getDqfId());
     }
 
     /**
@@ -105,7 +107,7 @@ class MasterProjectRepositoryTest extends BaseTest
      */
     public function update_a_master_project($dqfId, $dqfUuid)
     {
-        /** @var MasterProject $masterProject */
+        /** @var AbstractProject $masterProject */
         $masterProject = $this->repo->get($dqfId, $dqfUuid);
         $masterProject->setName('Modified name');
 
@@ -115,7 +117,7 @@ class MasterProjectRepositoryTest extends BaseTest
 
         $this->repo->update($masterProject);
 
-        /** @var MasterProject $modifiedMasterProject */
+        /** @var AbstractProject $modifiedMasterProject */
         $modifiedMasterProject = $this->repo->get($dqfId, $dqfUuid);
 
         $this->assertEquals($modifiedMasterProject->getName(), 'Modified name');

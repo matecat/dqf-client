@@ -2,12 +2,14 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
+use Matecat\Dqf\Constants;
+
 class ChildProject extends AbstractProject
 {
     /**
-     * @var MasterProject
+     * @var AbstractProject
      */
-    private $masterProject;
+    private $parentProject;
 
     /**
      * @var string
@@ -42,7 +44,7 @@ class ChildProject extends AbstractProject
     /**
      * ChildProject constructor.
      *
-     * @param string $type
+     * @param $type
      */
     public function __construct($type)
     {
@@ -50,18 +52,19 @@ class ChildProject extends AbstractProject
     }
 
     /**
-     * @param MasterProject $masterProject
+     * @param AbstractProject $parentProject
      */
-    public function setMasterProject( $masterProject ) {
-        $this->masterProject = $masterProject;
+    public function setParentProject(AbstractProject $parentProject)
+    {
+        $this->parentProject = $parentProject;
     }
 
     /**
-     * @return MasterProject
+     * @return AbstractProject
      */
-    public function getMasterProject()
+    public function getParentProject()
     {
-        return $this->masterProject;
+        return $this->parentProject;
     }
 
     /**
@@ -77,7 +80,7 @@ class ChildProject extends AbstractProject
      */
     private function setType($type)
     {
-        $allowed = ['translation', 'review'];
+        $allowed = [Constants::PROJECT_TYPE_TRANSLATION, Constants::PROJECT_TYPE_REVIEW];
 
         if (false === in_array($type, $allowed)) {
             throw new \DomainException($type . 'is not a valid type. [Allowed: '.implode(',', $allowed).']');

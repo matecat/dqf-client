@@ -5,6 +5,7 @@ namespace Matecat\Dqf\Repository\Api;
 use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
+use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
@@ -145,8 +146,8 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
      */
     public function save(BaseApiEntity $baseEntity)
     {
-        /** @var $baseEntity MasterProject */
-        if (false === $baseEntity instanceof MasterProject) {
+        /** @var $baseEntity AbstractProject */
+        if (false === $baseEntity instanceof AbstractProject) {
             throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
         }
 
@@ -169,9 +170,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function createProject(MasterProject $baseEntity)
+    private function createProject(AbstractProject $baseEntity)
     {
         $masterProject = $this->client->createMasterProject([
                 'generic_email'      => $this->genericEmail,
@@ -192,9 +193,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function saveFiles(MasterProject $baseEntity)
+    private function saveFiles(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getFiles())) {
             foreach ($baseEntity->getFiles() as $file) {
@@ -214,16 +215,16 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function saveTargetLanguageAssoc(MasterProject $baseEntity)
+    private function saveTargetLanguageAssoc(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getTargetLanguageAssoc())) {
             foreach ($baseEntity->getTargetLanguageAssoc() as $targetLanguageCode => $fileTargetLangs) {
 
                 /** @var FileTargetLang $fileTargetLang */
                 foreach ($fileTargetLangs as $fileTargetLang) {
-                    if(false === empty($fileTargetLang->getFile()->getDqfId())){
+                    if (false === empty($fileTargetLang->getFile()->getDqfId())) {
                         $projectTargetLanguage = $this->client->addMasterProjectTargetLanguage([
                                 'generic_email'      => $this->genericEmail,
                                 'sessionId'          => $this->sessionId,
@@ -241,9 +242,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function saveReviewSettings(MasterProject $baseEntity)
+    private function saveReviewSettings(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getReviewSettings())) {
             $projectReviewSettings = $this->client->addProjectReviewSettings([
@@ -272,8 +273,8 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
      */
     public function update(BaseApiEntity $baseEntity)
     {
-        /** @var $baseEntity MasterProject */
-        if (false === $baseEntity instanceof MasterProject) {
+        /** @var $baseEntity AbstractProject */
+        if (false === $baseEntity instanceof AbstractProject) {
             throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
         }
 
@@ -296,11 +297,11 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      *
      * @return mixed
      */
-    private function updateProject(MasterProject $baseEntity)
+    private function updateProject(AbstractProject $baseEntity)
     {
         return $this->client->updateMasterProject([
                 'generic_email'      => $this->genericEmail,
@@ -320,9 +321,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function updateFiles(MasterProject $baseEntity)
+    private function updateFiles(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getFiles())) {
             foreach ($baseEntity->getFiles() as $file) {
@@ -355,9 +356,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function updateTargetLanguageAssoc(MasterProject $baseEntity)
+    private function updateTargetLanguageAssoc(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getTargetLanguageAssoc())) {
 
@@ -403,9 +404,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function updateReviewSettings(MasterProject $baseEntity)
+    private function updateReviewSettings(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getReviewSettings())) {
             if (false === empty($baseEntity->getReviewSettings()->getDqfId())) {
@@ -441,9 +442,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param MasterProject $baseEntity
+     * @param AbstractProject $baseEntity
      */
-    private function saveSourceSegments(MasterProject $baseEntity)
+    private function saveSourceSegments(AbstractProject $baseEntity)
     {
         if (false === empty($baseEntity->getSourceSegments())) {
             $bodies = [];

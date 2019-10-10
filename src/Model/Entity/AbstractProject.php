@@ -5,6 +5,11 @@ namespace Matecat\Dqf\Model\Entity;
 abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
 {
     /**
+     * @var ReviewSettings
+     */
+    protected $reviewSettings;
+
+    /**
      * @var File[]
      */
     protected $files;
@@ -13,6 +18,22 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
      * @var array
      */
     protected $targetLanguageAssoc;
+
+    /**
+     * @return ReviewSettings
+     */
+    public function getReviewSettings()
+    {
+        return $this->reviewSettings;
+    }
+
+    /**
+     * @param ReviewSettings $reviewSettings
+     */
+    public function setReviewSettings($reviewSettings)
+    {
+        $this->reviewSettings = $reviewSettings;
+    }
 
     /**
      * @param $name

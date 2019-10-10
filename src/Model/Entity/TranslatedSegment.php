@@ -74,15 +74,27 @@ class TranslatedSegment extends BaseApiEntity
      *
      * @param ChildProject  $childProject
      * @param File          $file
-     * @param string        $targetLanguageCode
+     * @param               $mtEngineId
+     * @param               $segmentOriginId
+     * @param               $targetLanguageCode
      * @param SourceSegment $sourceSegment
-     * @param string        $targetSegment
-     * @param string        $editedSegment
+     * @param               $targetSegment
+     * @param               $editedSegment
      */
-    public function __construct(ChildProject $childProject, File $file, $targetLanguageCode, SourceSegment $sourceSegment, $targetSegment, $editedSegment)
-    {
+    public function __construct(
+        ChildProject $childProject,
+        File $file,
+        $mtEngineId,
+        $segmentOriginId,
+        $targetLanguageCode,
+        SourceSegment $sourceSegment,
+        $targetSegment,
+        $editedSegment
+    ) {
         $this->childProject   = $childProject;
         $this->file           = $file;
+        $this->mtEngineId     = $mtEngineId;
+        $this->setSegmentOriginId($segmentOriginId);
         $this->targetLanguage = new Language($targetLanguageCode);
         $this->sourceSegment  = $sourceSegment;
         $this->targetSegment  = $targetSegment;
@@ -130,11 +142,27 @@ class TranslatedSegment extends BaseApiEntity
     }
 
     /**
+     * @param string $targetSegment
+     */
+    public function setTargetSegment($targetSegment)
+    {
+        $this->targetSegment = $targetSegment;
+    }
+
+    /**
      * @return string
      */
     public function getEditedSegment()
     {
         return $this->editedSegment;
+    }
+
+    /**
+     * @param string $editedSegment
+     */
+    public function setEditedSegment($editedSegment)
+    {
+        $this->editedSegment = $editedSegment;
     }
 
     /**
@@ -166,6 +194,10 @@ class TranslatedSegment extends BaseApiEntity
      */
     public function setSegmentOriginId($segmentOriginId)
     {
+        if (false === in_array($segmentOriginId, [1, 2, 3, 4, 5])) {
+            throw new \DomainException($segmentOriginId . 'is not an allowed value. [Allowed: 1,2,3,4,5]');
+        }
+
         $this->segmentOriginId = $segmentOriginId;
     }
 

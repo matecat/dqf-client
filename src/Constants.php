@@ -2,9 +2,7 @@
 
 namespace Matecat\Dqf;
 
-class Constants
-{
-
+class Constants {
     /**
      * **********************************************
      * API
@@ -52,4 +50,21 @@ class Constants
      */
 
     const LOGICAL_OPERATOR_EQUALS = '===';
+
+    /**
+     * **********************************************
+     * PROJECT_TYPE
+     * **********************************************
+     */
+    const PROJECT_TYPE_REVIEW      = 'review';
+    const PROJECT_TYPE_TRANSLATION = 'translation';
+
+    /**
+     * **********************************************
+     * REVIEW_TYPE
+     * **********************************************
+     */
+    const REVIEW_TYPE_CORRECTION = 'correction';
+    const PROJECT_TYPE_ERROR     = 'error_typology';
+    const PROJECT_TYPE_COMBINED  = 'combined';
 }

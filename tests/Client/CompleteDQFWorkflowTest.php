@@ -315,6 +315,7 @@ class CompleteDQFWorkflowTest extends BaseTest
         ]);
 
         $this->assertNotEmpty($firstSegmentId->dqfId);
+        $this->assertNotEmpty($firstTranslationId->dqfId);
 
         $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
                 'sessionId'       => $this->sessionId,

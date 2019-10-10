@@ -42,9 +42,9 @@ class ReviewBatch extends BaseApiEntity
     private $batchId;
 
     /**
-     * @var ReviewedSegment
+     * @var ReviewedSegment[]
      */
-    private $reviewedSegment;
+    private $reviewedSegments;
 
     /**
      * ReviewBatch constructor.
@@ -115,18 +115,18 @@ class ReviewBatch extends BaseApiEntity
     }
 
     /**
-     * @return ReviewedSegment
+     * @return ReviewedSegment[]
      */
-    public function getReviewedSegment()
+    public function getReviewedSegments()
     {
-        return $this->reviewedSegment;
+        return $this->reviewedSegments;
     }
 
     /**
      * @param ReviewedSegment $reviewedSegment
      */
-    public function setReviewedSegment(ReviewedSegment $reviewedSegment)
+    public function addReviewedSegment(ReviewedSegment $reviewedSegment)
     {
-        $this->reviewedSegment = $reviewedSegment;
+        $this->reviewedSegments[] = $reviewedSegment;
     }
 }

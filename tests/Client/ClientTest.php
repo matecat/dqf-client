@@ -67,7 +67,10 @@ class ClientTest extends BaseTest
                     'password' => 'dasdsadsa',
             ]);
         } catch (\Exception $exception) {
-            $this->assertEquals($exception->getCode(), 401);
+            $error = json_decode($exception->getMessage(), true);
+            $this->assertEquals(401, $error['exceptionCode']['status']);
+            $this->assertEquals(502, $error['exceptionCode']['code']);
+            $this->assertEquals('Invalid email and/or password', $error['exceptionMessage']);
         }
     }
 

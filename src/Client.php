@@ -190,6 +190,10 @@ class Client
             throw new ParamsValidatorException($name . ' cannot be executed. ' . implode(',', $validate) . '.');
         }
 
-        return $commandHandler->handle($params);
+        try {
+            return $commandHandler->handle($params);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getResponse()->getBody()->getContents());
+        }
     }
 }

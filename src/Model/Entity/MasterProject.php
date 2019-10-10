@@ -45,11 +45,6 @@ class MasterProject extends AbstractProject
     private $tmsProjectKey;
 
     /**
-     * @var ReviewSettings
-     */
-    private $reviewSettings;
-
-    /**
      * @var array
      */
     private $sourceSegments;
@@ -168,22 +163,6 @@ class MasterProject extends AbstractProject
     public function setQualityLevelId($qualityLevelId)
     {
         $this->qualityLevelId = $qualityLevelId;
-    }
-
-    /**
-     * @return ReviewSettings
-     */
-    public function getReviewSettings()
-    {
-        return $this->reviewSettings;
-    }
-
-    /**
-     * @param ReviewSettings $reviewSettings
-     */
-    public function setReviewSettings($reviewSettings)
-    {
-        $this->reviewSettings = $reviewSettings;
     }
 
     /**

@@ -41,16 +41,40 @@ class TranslationBatch extends BaseApiEntity
     {
         $this->childProject = $childProject;
 
-        if (false === $this->childProject->getMasterProject()->hasFile($file)) {
+        if (false === $this->childProject->getParentProject()->hasFile($file)) {
             throw new \DomainException('The file ' . $file->getName() . ' does not belong to master project');
         }
 
-        if (false === $this->childProject->getMasterProject()->hasTargetLanguage($targetLanguageCode)) {
+        if (false === $this->childProject->getParentProject()->hasTargetLanguage($targetLanguageCode)) {
             throw new \DomainException('The master project has not set ' . $targetLanguageCode . ' as a target language');
         }
 
         $this->file           = $file;
         $this->targetLanguage = new Language($targetLanguageCode);
+    }
+
+    /**
+     * @return ChildProject
+     */
+    public function getChildProject()
+    {
+        return $this->childProject;
+    }
+
+    /**
+     * @return File
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getTargetLanguage()
+    {
+        return $this->targetLanguage;
     }
 
     /**
