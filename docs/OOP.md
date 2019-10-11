@@ -94,5 +94,5 @@ $masterProjectRepo->update($retrivedMasterProject);
 
 ```
 
-In this case, the project is saved firstly, and THEN a file, a target language, a review setting and some source segments are set; the project is finally send to DQF by using the `update
-` method.
+In this case, the project is firstly sent and saved on DQF; and THEN a file, a target language, a review setting and some source segments are set, and the project is finally updated on DQF by using
+ the `update` method.
