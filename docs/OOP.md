@@ -48,9 +48,9 @@ $masterProjectRepo->save($masterProject);
 
 ```
 
-In this example, a new `MasterProject` object is created; then were appended a file, a target lang, and finally data is sent to DQF using `update` method.
+In this example, a new `MasterProject` object is created; then were appended a file, a target lang, and finally data is sent to DQF using `save` method.
 
-In this other example, the project is saved firstly, and then it's updated:
+Take a look at this other example:
 
 ```php
 //...
@@ -93,3 +93,6 @@ foreach ($sourceSegments as $sourceSegment) {
 $masterProjectRepo->update($retrivedMasterProject);
 
 ```
+
+In this case, the project is saved firstly, and THEN a file, a target language, a review setting and some source segments are set; the project is finally send to DQF by using the `update
+` method.
