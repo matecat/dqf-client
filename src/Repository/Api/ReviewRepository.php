@@ -25,8 +25,8 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
         $corrections = [];
         $errors = [];
 
-        if(false === empty($reviewedSegments)){
-            foreach ($reviewedSegments as $reviewedSegment){
+        if (false === empty($reviewedSegments)) {
+            foreach ($reviewedSegments as $reviewedSegment) {
                 // errors
                 foreach ($reviewedSegment->getErrors() as $error) {
                     $errors[] = [
@@ -72,8 +72,8 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                 'body'           => $corrections,
         ]);
 
-        if(false === empty($reviewedSegments)){
-            foreach ($reviewedSegments as $key => $reviewedSegment){
+        if (false === empty($reviewedSegments)) {
+            foreach ($reviewedSegments as $key => $reviewedSegment) {
                 $reviewedSegment->setClientId($updateReviewInBatch->createdReviewIds[$key]->clientId);
             }
         }

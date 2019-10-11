@@ -37,8 +37,8 @@ class GetProjectFileTargetLang extends CommandHandler
     public function handle($params = [])
     {
         $response = $this->httpClient->request(Constants::HTTP_VERBS_GET, $this->buildUri(
-                'project/{projectId}/fileTargetLang',
-                [
+            'project/{projectId}/fileTargetLang',
+            [
                         'projectId' => $params[ 'projectId' ],
                 ]
         ), [

@@ -9,7 +9,7 @@ use Predis\Client as Redis;
 
 class RedisDqfUserRepository implements DqfUserRepositoryInterface
 {
-    const DQF_USER_HASHSET =  'DQF_USER_HASHSET';
+    const DQF_USER_HASHSET = 'DQF_USER_HASHSET';
 
     /**
      * @var Redis
@@ -71,16 +71,18 @@ class RedisDqfUserRepository implements DqfUserRepositoryInterface
         $users = $this->redis->hgetall(self::DQF_USER_HASHSET);
         foreach ($users as $user) {
             $dqfUser = unserialize($user);
-            $ids[]  = $dqfUser->getExternalReferenceId();
+            if ($dqfUser instanceof DqfUser and false === empty($dqfUser->getExternalReferenceId())) {
+                $ids[] = $dqfUser->getExternalReferenceId();
+            }
         }
 
         sort($ids);
 
-        if (empty($ids) or $ids[0] > 0) {
+        if (empty($ids) or $ids[ 0 ] > 0) {
             return Constants::ANONYMOUS_SESSION_ID;
         }
 
-        return $ids[0] - 1;
+        return $ids[ 0 ] - 1;
     }
 
     /**

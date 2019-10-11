@@ -84,7 +84,7 @@ class TranslationRepositoryTest extends BaseTest
         $masterProject->setReviewSettings($reviewSettings);
 
         // source segments
-        foreach ( $this->getSourceSegmentsArray($file) as $sourceSegment) {
+        foreach ($this->getSourceSegmentsArray($file) as $sourceSegment) {
             $masterProject->addSourceSegment($sourceSegment);
         }
 
@@ -115,7 +115,7 @@ class TranslationRepositoryTest extends BaseTest
         // build the translation batch
         $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
 
-        foreach ($this->getTargetSegmentsArray($childProject, $file) as $segmTrans){
+        foreach ($this->getTargetSegmentsArray($childProject, $file) as $segmTrans) {
             $translationBatch->addSegment($segmTrans);
         }
 
@@ -149,11 +149,12 @@ class TranslationRepositoryTest extends BaseTest
     /**
      * @param TranslatedSegment $segment
      */
-    public function update_a_single_segment_translation( TranslatedSegment $segment ) {
-        $segment->setTargetSegment( 'The frog in Spain' );
-        $segment->setEditedSegment( 'The frog in Spain (from Barcelona)' );
+    public function update_a_single_segment_translation(TranslatedSegment $segment)
+    {
+        $segment->setTargetSegment('The frog in Spain');
+        $segment->setEditedSegment('The frog in Spain (from Barcelona)');
 
-        $this->translationRepository->update( $segment );
+        $this->translationRepository->update($segment);
     }
 
     /**
@@ -214,7 +215,7 @@ class TranslationRepositoryTest extends BaseTest
 
         $this->assertInstanceOf(ReviewBatch::class, $batch);
 
-        foreach ($batch->getReviewedSegments() as $reviewedSegment){
+        foreach ($batch->getReviewedSegments() as $reviewedSegment) {
             $this->assertNotNull($reviewedSegment->getClientId());
         }
 
@@ -236,7 +237,7 @@ class TranslationRepositoryTest extends BaseTest
      * @return array
      * @throws \Exception
      */
-    private function getSourceSegmentsArray( File $file)
+    private function getSourceSegmentsArray(File $file)
     {
         $segments = [];
 
@@ -262,14 +263,14 @@ class TranslationRepositoryTest extends BaseTest
 
         foreach ($this->targetFile['segmentPairs'] as $key => $segment) {
             $translations[] = new TranslatedSegment(
-                    $childProject,
-                    $file,
-                    $segment['mtEngineId'],
-                    $segment['segmentOriginId'],
-                    $this->targetFile['lang'],
-                    $this->getSourceSegmentsArray($file)[$key],
-                    $segment['targetSegment'],
-                    $segment['editedSegment']
+                $childProject,
+                $file,
+                $segment['mtEngineId'],
+                $segment['segmentOriginId'],
+                $this->targetFile['lang'],
+                $this->getSourceSegmentsArray($file)[$key],
+                $segment['targetSegment'],
+                $segment['editedSegment']
             );
         }
 

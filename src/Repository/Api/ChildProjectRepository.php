@@ -159,7 +159,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
             throw new \DomainException('MasterProject MUST be set during creation of a ChildProject');
         }
 
-        if ($baseEntity->getType() === Constants::PROJECT_TYPE_REVIEW and empty($baseEntity->getReviewSettings()))  {
+        if ($baseEntity->getType() === Constants::PROJECT_TYPE_REVIEW and empty($baseEntity->getReviewSettings())) {
             throw new \DomainException('A \'review\' ChildProject MUST have set review settings');
         }
 
