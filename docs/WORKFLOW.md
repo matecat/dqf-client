@@ -600,7 +600,7 @@ $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId)
 $reviewBatch->addReviewedSegment($reviewedSegment);
 $reviewBatch->addReviewedSegment($reviewedSegment2);
 
-$batch = $reviewRepository->save($reviewBatch);
+$reviewRepository->save($reviewBatch);
 
 /**
 ****************************************************************************
