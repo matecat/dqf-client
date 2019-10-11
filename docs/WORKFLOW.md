@@ -577,7 +577,7 @@ $childReview = $childProjectRepo->save($childProject);
 
 /**
 ****************************************************************************
-* create a segment review batch
+* create a review batch
 ****************************************************************************
 */
 
