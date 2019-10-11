@@ -535,7 +535,7 @@ $translationBatch->addSegment($segmTrans2);
 $translationBatch->addSegment($segmTrans3);
 
 // save the translation batch
-$translationBatch = $this->translationRepository->save($translationBatch);
+$translationBatch = $translationRepository->save($translationBatch);
 
 /**
 ****************************************************************************
@@ -547,7 +547,7 @@ $translationBatch = $this->translationRepository->save($translationBatch);
 $firstSegment = $translationBatch->getSegments()[0];
 $segment->setTargetSegment( 'The frog in Spain' );
 $segment->setEditedSegment( 'The frog in Spain (from Barcelona)' );
-$this->translationRepository->update( $segment );
+$translationRepository->update( $segment );
 
 /**
 ****************************************************************************
@@ -600,7 +600,7 @@ $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId)
 $reviewBatch->addReviewedSegment($reviewedSegment);
 $reviewBatch->addReviewedSegment($reviewedSegment2);
 
-$batch = $this->reviewRepository->save($reviewBatch);
+$batch = $reviewRepository->save($reviewBatch);
 
 /**
 ****************************************************************************
@@ -610,7 +610,7 @@ $batch = $this->reviewRepository->save($reviewBatch);
 
 // resetting reviews before deleting all the project and child nodes
 $emptyReviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
-$emptyBatch = $this->reviewRepository->save($emptyReviewBatch);
+$emptyBatch = $reviewRepository->save($emptyReviewBatch);
 
 // deleting the review project
 $childProjectRepo->delete($childReview);
