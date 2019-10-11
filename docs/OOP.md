@@ -48,7 +48,7 @@ $masterProjectRepo->save($masterProject);
 
 ```
 
-In this example, a new `MasterProject` object is created; then were append a file, a target lang, and finally data is sent to DQF using MasterProjectRepository.
+In this example, a new `MasterProject` object is created; then were appended a file, a target lang, and finally data is sent to DQF using `update` method.
 
 In this other example, the project is saved firstly, and then it's updated:
 
@@ -84,7 +84,7 @@ $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityI
 $reviewSettings->setPassFailThreshold(0.00);
 $retrivedMasterProject->setReviewSettings($reviewSettings);
 
-// add source segments from a $sourceSegment array 
+// add source segments from a $sourceSegments array 
 foreach ($sourceSegments as $sourceSegment) {
     $retrivedMasterProject->addSourceSegment($sourceSegment);
 }

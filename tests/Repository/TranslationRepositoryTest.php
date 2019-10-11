@@ -132,7 +132,7 @@ class TranslationRepositoryTest extends BaseTest
         $firstSegment = $translationBatch->getSegments()[0];
 
         // update a single segment translation
-        $this->update_a_single_segment_translation($firstSegment);
+        //$this->update_a_single_segment_translation($firstSegment);
 
         // create a review project and then submit revision(s)
         $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
