@@ -491,7 +491,7 @@ foreach ($sourceSegments as $sourceSegment) {
 }
 
 // save the master project
-$this->masterProjectRepo->save($masterProject);
+$masterProjectRepo->save($masterProject);
 
 /**
 ****************************************************************************
@@ -517,7 +517,7 @@ $reviewSettings->setPassFailThreshold(0.00);
 $childProject->setReviewSettings($reviewSettings);
 
 // save the child project
-$this->childProjectRepo->save($childProject);
+$childProjectRepo->save($childProject);
  
 /**
 ****************************************************************************
@@ -573,7 +573,7 @@ $reviewSettings->setPassFailThreshold(0.00);
 $childProject->setReviewSettings($reviewSettings);
 
 // save the child project
-$childReview = $this->childProjectRepo->save($childProject);
+$childReview = $childProjectRepo->save($childProject);
 
 /**
 ****************************************************************************
@@ -613,12 +613,12 @@ $emptyReviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $bat
 $emptyBatch = $this->reviewRepository->save($emptyReviewBatch);
 
 // deleting the review project
-$this->childProjectRepo->delete($childReview);
+$childProjectRepo->delete($childReview);
 
 // deleting the translation project
-$this->childProjectRepo->delete($childProject);
+$childProjectRepo->delete($childProject);
 
 // deleting the master project
-$this->masterProjectRepo->delete($masterProject);
+$masterProjectRepo->delete($masterProject);
 
 ```
