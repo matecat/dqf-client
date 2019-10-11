@@ -238,10 +238,25 @@ class CompleteDQFWorkflowTest extends BaseTest
 
         /**
          ****************************************************************************
+         * check declared target language
+         ****************************************************************************
+         */
+
+        $projectFileTargetLang = $this->client->getProjectFileTargetLang([
+                'sessionId'  => $this->sessionId,
+                'projectKey' => $masterProject->dqfUUID,
+                'projectId'  => $masterProject->dqfId,
+        ]);
+
+        /**
+         ****************************************************************************
          * create a 'translation' child node
          ****************************************************************************
          */
 
+        $this->assertEquals($projectFileTargetLang->message, "Project File/TargetLangs successfully fetched");
+        $this->assertEquals($projectFileTargetLang->modelList[0]->file->name, "original-filename");
+        $this->assertEquals($projectFileTargetLang->modelList[0]->file->segmentSize, 3);
         $this->assertEquals($updatedSourceSegments->message, "Source Segments successfully created (All segments uploaded)");
 
         $childTranslation = $this->client->createChildProject([

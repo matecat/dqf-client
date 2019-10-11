@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Repository\Api;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\ChildProject;
@@ -147,6 +148,10 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
 
         if (empty($baseEntity->getParentProject())) {
             throw new \DomainException('MasterProject MUST be set during creation of a ChildProject');
+        }
+
+        if ($baseEntity->getType() === Constants::PROJECT_TYPE_REVIEW and empty($baseEntity->getReviewSettings()))  {
+            throw new \DomainException('A \'review\' ChildProject MUST have set review settings');
         }
 
         // create child project
@@ -327,7 +332,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
     /**
      * @param AbstractProject $baseEntity
      */
-    private function updateReviewSettings(AbstractProject $baseEntity)
+    private function updateReviewSettings(BaseApiEntity $baseEntity)
     {
         if (false === empty($baseEntity->getReviewSettings())) {
             if (false === empty($baseEntity->getReviewSettings()->getDqfId())) {

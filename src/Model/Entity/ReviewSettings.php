@@ -59,7 +59,7 @@ class ReviewSettings extends BaseApiEntity
      */
     private function setReviewType($reviewType)
     {
-        $allowed = [Constants::REVIEW_TYPE_CORRECTION, Constants::PROJECT_TYPE_ERROR, Constants::PROJECT_TYPE_COMBINED];
+        $allowed = [Constants::REVIEW_TYPE_CORRECTION, Constants::REVIEW_TYPE_ERROR, Constants::REVIEW_TYPE_COMBINED];
 
         if (false === in_array($reviewType, $allowed)) {
             throw new \DomainException($reviewType . 'is not a valid reviewType. [Allowed: '.implode(',', $allowed).']');

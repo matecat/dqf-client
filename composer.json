@@ -1,12 +1,12 @@
 {
-  "name": "matecat/dqf-client",
+  "name": "matecat/dqf-integrator",
   "type": "library",
-  "description": "A simple Client for DQF written in PHP",
+  "description": "A library for an easy integrator of DQF in PHP applications",
   "keywords": ["dqf", "client", "php"],
-  "homepage": "https://github.com/matecat/dqf-client",
+  "homepage": "https://github.com/matecat/dqf-integrator",
   "license": "MIT",
   "support": {
-    "issues": "https://github.com/matecat/dqf-client/issues"
+    "issues": "https://github.com/matecat/dqf-integrator/issues"
   },
   "authors": [
     {

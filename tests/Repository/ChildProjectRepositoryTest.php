@@ -57,7 +57,7 @@ class ChildProjectRepositoryTest extends BaseTest
         $masterProject->assocTargetLanguageToFile('fr-FR', $file);
 
         // review settings
-        $reviewSettings = new ReviewSettings(Constants::PROJECT_TYPE_COMBINED);
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
@@ -105,7 +105,7 @@ class ChildProjectRepositoryTest extends BaseTest
         $childProject->assocTargetLanguageToFile('en-US', $masterProject->getFiles()[0]);
 
         // review settings
-        $reviewSettings = new ReviewSettings(Constants::PROJECT_TYPE_COMBINED);
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);

@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Tests\SessionProvider;
 
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\AbstractProject;
@@ -56,7 +57,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $masterProject->assocTargetLanguageToFile('fr-FR', $file);
 
         // review settings
-        $reviewSettings = new ReviewSettings('combined');
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);

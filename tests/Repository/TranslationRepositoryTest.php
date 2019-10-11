@@ -24,7 +24,6 @@ use Ramsey\Uuid\Uuid;
 
 class TranslationRepositoryTest extends BaseTest
 {
-
     /**
      * @var MasterProjectRepository
      */
@@ -76,7 +75,7 @@ class TranslationRepositoryTest extends BaseTest
         $masterProject->assocTargetLanguageToFile('fr-FR', $file);
 
         // review settings
-        $reviewSettings = new ReviewSettings(Constants::PROJECT_TYPE_COMBINED);
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
@@ -102,7 +101,7 @@ class TranslationRepositoryTest extends BaseTest
         $childProject->assocTargetLanguageToFile('fr-FR', $masterProject->getFiles()[ 0 ]);
 
         // review settings
-        $reviewSettings = new ReviewSettings(Constants::PROJECT_TYPE_COMBINED);
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
@@ -133,8 +132,13 @@ class TranslationRepositoryTest extends BaseTest
             $this->assertNotNull($segment->getDqfId());
         }
 
-        //$this->update_a_single_segment_translation($translationBatch->getSegments()[0]);
-        $this->create_a_review_child_project_and_then_submit_a_revision($translationBatch->getSegments()[0], $file);
+        $firstSegment = $translationBatch->getSegments()[0];
+
+        // update a single segment translation
+        //$this->update_a_single_segment_translation($firstSegment);
+
+        // create a review project and then submit revision(s)
+        $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
     }
 
     /**
@@ -163,8 +167,14 @@ class TranslationRepositoryTest extends BaseTest
         $childProject->assocTargetLanguageToFile('en-US', $file);
         $childProject->assocTargetLanguageToFile('fr-FR', $file);
 
+        try {
+            $this->childProjectRepo->save($childProject);
+        } catch (\DomainException $e) {
+            $this->assertEquals('A \'review\' ChildProject MUST have set review settings', $e->getMessage());
+        }
+
         // review settings
-        $reviewSettings = new ReviewSettings(Constants::PROJECT_TYPE_COMBINED);
+        $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
         $reviewSettings->setErrorCategoryIds0(9);
         $reviewSettings->setErrorCategoryIds1(10);
         $reviewSettings->setErrorCategoryIds2(11);

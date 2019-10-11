@@ -65,6 +65,6 @@ class Constants {
      * **********************************************
      */
     const REVIEW_TYPE_CORRECTION = 'correction';
-    const PROJECT_TYPE_ERROR     = 'error_typology';
-    const PROJECT_TYPE_COMBINED  = 'combined';
+    const REVIEW_TYPE_ERROR      = 'error_typology';
+    const REVIEW_TYPE_COMBINED   = 'combined';
 }

@@ -56,6 +56,7 @@ use Matecat\Dqf\Utils\HandlerStackFactory;
  * @method mixed getMasterProjectFiles( array $input ) - Find the files of a master Project
  * @method mixed getMasterProjectTargetLanguage( array $input ) - Find a target language of a master project
  * @method mixed getMasterProjectTargetLanguages( array $input ) - Find the target languages of a master Project
+ * @method mixed getProjectFileTargetLang( array $input ) - Find the target languages of a master Project
  * @method mixed getProjectId( array $input ) - Return the DQF project id
  * @method mixed getProjectReviewCycle( array $input ) - Get review children projects
  * @method mixed getProjectReviewSettings( array $input ) - Return the review preferences of a child project
