@@ -5,6 +5,7 @@ namespace Matecat\Dqf\Tests;
 use Matecat\Dqf\Client;
 use Matecat\Dqf\Repository\Persistence\PDODqfUserRepository;
 use Matecat\Dqf\SessionProvider;
+use Ramsey\Uuid\Uuid;
 
 abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,6 +40,16 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected $genericEmail;
 
     /**
+     * @var array
+     */
+    protected $sourceFile;
+
+    /**
+     * @var array
+     */
+    protected $targetFile;
+
+    /**
      * @throws \Matecat\Dqf\Exceptions\SessionProviderException
      */
     protected function setUp()
@@ -62,5 +73,90 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
         $this->sessionProvider  = new SessionProvider($this->client, $repo);
         $this->sessionId        = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
         $this->genericSessionId = $this->sessionProvider->createAnonymous('mauro@translated.net', $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
+
+        $this->sourceFile = $this->getSourceFile();
+        $this->targetFile = $this->getTranslationFile();
+    }
+
+    /**
+     * This array represents an hypothetical source file
+     *
+     * @return array
+     * @throws \Exception
+     */
+    protected function getSourceFile()
+    {
+        return [
+                'uuid'     => Uuid::uuid4()->toString(),
+                'name'     => 'original-filename',
+                'lang'     => 'it-IT',
+                'segments' => [
+                        [
+                                "sourceSegment" => "La rana in Spagna",
+                                "index"         => 1,
+                                "clientId"      => Uuid::uuid4()->toString()
+                        ],
+                        [
+                                "sourceSegment" => "gracida in campagna.",
+                                "index"         => 2,
+                                "clientId"      => Uuid::uuid4()->toString()
+                        ],
+                        [
+                                "sourceSegment" => "Questo è solo uno scioglilingua",
+                                "index"         => 3,
+                                "clientId"      => Uuid::uuid4()->toString()
+                        ]
+                ]
+        ];
+    }
+
+    /**
+     * This represents an hypothetical translated file
+     *
+     * @return array
+     * @throws \Exception
+     */
+    protected function getTranslationFile()
+    {
+        return [
+                'uuid'         => Uuid::uuid4()->toString(),
+                'name'         => 'translated-filename',
+                'lang'         => 'en-US',
+                'segmentPairs' => [
+                        [
+                                "sourceSegmentId"   => 1,
+                                "clientId"          => Uuid::uuid4()->toString(),
+                                "targetSegment"     => "",
+                                "editedSegment"     => "The frog in Spain",
+                                "time"              => 6582,
+                                "segmentOriginId"   => 1,
+                                "mtEngineId"        => 22,
+                                "mtEngineOtherName" => null,
+                                "matchRate"         => 0
+                        ],
+                        [
+                                "sourceSegmentId"   => 2,
+                                "clientId"          => Uuid::uuid4()->toString(),
+                                "targetSegment"     => "croaks in countryside.",
+                                "editedSegment"     => "croaks in countryside matus.",
+                                "time"              => 5530,
+                                "segmentOriginId"   => 2,
+                                "mtEngineId"        => 22,
+                                "mtEngineOtherName" => null,
+                                "matchRate"         => 100
+                        ],
+                        [
+                                "sourceSegmentId"   => 3,
+                                "clientId"          => Uuid::uuid4()->toString(),
+                                "targetSegment"     => "This is just a tongue twister",
+                                "editedSegment"     => "",
+                                "time"              => 63455,
+                                "segmentOriginId"   => 3,
+                                "mtEngineId"        => 22,
+                                "mtEngineOtherName" => null,
+                                "matchRate"         => 50
+                        ],
+                ]
+        ];
     }
 }

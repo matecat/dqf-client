@@ -123,10 +123,10 @@ class ChildProjectRepositoryTest extends BaseTest
         $this->update_a_child_project($childProject->getDqfId(), $childProject->getDqfUuid(), $masterProject);
 
         // delete the child project
-        $this->delete_a_child_project($childProject->getDqfId(), $childProject->getDqfUuid());
+        $this->delete_a_child_project($childProject);
 
         // delete the master project
-        $this->delete_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+        $this->delete_a_master_project($masterProject);
     }
 
     /**
@@ -190,27 +190,25 @@ class ChildProjectRepositoryTest extends BaseTest
     /**
      * Delete a child project
      *
-     * @param $dqfId
-     * @param $dqfUuid
+     * @param ChildProject $childProject
      */
-    public function delete_a_child_project($dqfId, $dqfUuid)
+    public function delete_a_child_project(ChildProject $childProject)
     {
-        $masterProject = $this->childProjectRepo->delete($dqfId, $dqfUuid);
+        $deletedProject = $this->childProjectRepo->delete($childProject);
 
-        $this->assertEquals(1, $masterProject);
+        $this->assertEquals(1, $deletedProject);
     }
 
     /**
      * Delete a master project
      *
-     * @param $dqfId
-     * @param $dqfUuid
+     * @param MasterProject $masterProject
      */
-    public function delete_a_master_project($dqfId, $dqfUuid)
+    public function delete_a_master_project(MasterProject $masterProject)
     {
-        $masterProject = $this->masterProjectRepo->delete($dqfId, $dqfUuid);
+        $deletedProject = $this->masterProjectRepo->delete($masterProject);
 
-        $this->assertEquals(1, $masterProject);
+        $this->assertEquals(1, $deletedProject);
     }
 
     /**

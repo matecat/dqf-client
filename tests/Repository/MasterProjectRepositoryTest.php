@@ -80,7 +80,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $this->update_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
 
         // delete the master project
-        $this->delete_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
+        $this->delete_a_master_project($masterProject);
     }
 
     /**
@@ -129,14 +129,13 @@ class MasterProjectRepositoryTest extends BaseTest
     /**
      * Delete a master project
      *
-     * @param $dqfId
-     * @param $dqfUuid
+     * @param MasterProject $masterProject
      */
-    public function delete_a_master_project($dqfId, $dqfUuid)
+    public function delete_a_master_project(MasterProject $masterProject)
     {
-        $masterProject = $this->repo->delete($dqfId, $dqfUuid);
+        $deletedProject = $this->repo->delete($masterProject);
 
-        $this->assertEquals(1, $masterProject);
+        $this->assertEquals(1, $deletedProject);
     }
 
     /**

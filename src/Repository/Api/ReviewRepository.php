@@ -25,37 +25,39 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
         $corrections = [];
         $errors = [];
 
-        foreach ($reviewedSegments as $reviewedSegment){
-            // errors
-            foreach ($reviewedSegment->getErrors() as $error) {
-                $errors[] = [
-                        "errorCategoryId" => $error->getErrorCategoryId(),
-                        "severityId"      => $error->getSeverityId(),
-                        "charPosStart"    => $error->getCharPosStart(),
-                        "charPosEnd"      => $error->getCharPosEnd(),
-                        "isRepeated"      => $error->isRepeated()
+        if(false === empty($reviewedSegments)){
+            foreach ($reviewedSegments as $reviewedSegment){
+                // errors
+                foreach ($reviewedSegment->getErrors() as $error) {
+                    $errors[] = [
+                            "errorCategoryId" => $error->getErrorCategoryId(),
+                            "severityId"      => $error->getSeverityId(),
+                            "charPosStart"    => $error->getCharPosStart(),
+                            "charPosEnd"      => $error->getCharPosEnd(),
+                            "isRepeated"      => $error->isRepeated()
+                    ];
+                }
+
+                // detailList
+                $detailList = [];
+                foreach ($reviewedSegment->getCorrection()->getDetailList() as $correctionItem) {
+                    $detailList[] = [
+                            "subContent" => $correctionItem->getSubContent(),
+                            "type"       => $correctionItem->getType()
+                    ];
+                }
+
+                $corrections[] = [
+                        "clientId" => (false === empty($reviewedSegment->getClientId())) ? $reviewedSegment->getClientId() : Uuid::uuid4()->toString(),
+                        "comment"  => $reviewedSegment->getComment(),
+                        "errors"   => $errors,
+                        "correction" => [
+                                "content"    => $reviewedSegment->getCorrection()->getContent(),
+                                "time"       => $reviewedSegment->getCorrection()->getTime(),
+                                "detailList" => $detailList
+                        ]
                 ];
             }
-
-            // detailList
-            $detailList = [];
-            foreach ($reviewedSegment->getCorrection()->getDetailList() as $correctionItem) {
-                $detailList[] = [
-                        "subContent" => $correctionItem->getSubContent(),
-                        "type"       => $correctionItem->getType()
-                ];
-            }
-
-            $corrections[] = [
-                    "clientId" => (false === empty($reviewedSegment->getClientId())) ? $reviewedSegment->getClientId() : Uuid::uuid4()->toString(),
-                    "comment"  => $reviewedSegment->getComment(),
-                    "errors"   => $errors,
-                    "correction" => [
-                            "content"    => $reviewedSegment->getCorrection()->getContent(),
-                            "time"       => $reviewedSegment->getCorrection()->getTime(),
-                            "detailList" => $detailList
-                    ]
-            ];
         }
 
         $updateReviewInBatch = $this->client->updateReviewInBatch([
@@ -70,8 +72,10 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                 'body'           => $corrections,
         ]);
 
-        foreach ($reviewedSegments as $key => $reviewedSegment){
-            $reviewedSegment->setClientId($updateReviewInBatch->createdReviewIds[$key]->clientId);
+        if(false === empty($reviewedSegments)){
+            foreach ($reviewedSegments as $key => $reviewedSegment){
+                $reviewedSegment->setClientId($updateReviewInBatch->createdReviewIds[$key]->clientId);
+            }
         }
 
         return $batch;

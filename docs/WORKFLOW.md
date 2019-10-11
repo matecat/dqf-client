@@ -1,7 +1,5 @@
 # Submitting data to DQF: a complete workflow
 
-## Standard approach (Client approach)
-
 Here is a typical, complete and detailed workflow. These are the principal steps:
  
 * creation of a master project;
@@ -11,6 +9,8 @@ Here is a typical, complete and detailed workflow. These are the principal steps
 * creation of a revision child;
 * submitting a revision for a segment translation;
 * deleting of projects.
+
+## Standard approach (Client approach)
 
 ```php
 // ...
@@ -455,3 +455,170 @@ $deleteMasterProject = $client->deleteMasterProject([
 ```
 
 ## Abstraction layer approach (OOP approach)
+
+```php
+//...
+
+/**
+****************************************************************************
+* create the master project
+****************************************************************************
+*/
+
+$masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
+
+// file(s)
+$file = new File('test-file', 3);
+$file->setClientId(Uuid::uuid4()->toString());
+$masterProject->addFile($file);
+
+// assoc targetLang to file(s)
+$masterProject->assocTargetLanguageToFile('en-US', $file);
+$masterProject->assocTargetLanguageToFile('fr-FR', $file);
+
+// review settings
+$reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
+$reviewSettings->setErrorCategoryIds0(1);
+$reviewSettings->setErrorCategoryIds1(2);
+$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+$reviewSettings->setPassFailThreshold(0.00);
+$masterProject->setReviewSettings($reviewSettings);
+
+// source segments
+foreach ($this->getSourceSegments($file) as $sourceSegment) {
+    $masterProject->addSourceSegment($sourceSegment);
+}
+
+// save the master project
+$this->masterProjectRepo->save($masterProject);
+
+/**
+****************************************************************************
+* create the child project (translation)
+****************************************************************************
+*/
+
+$childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
+$childProject->setParentProject($masterProject);
+$childProject->setName('Translation Job');
+
+// assoc targetLang to file(s)
+$childProject->assocTargetLanguageToFile('en-US', $masterProject->getFiles()[ 0 ]);
+$childProject->assocTargetLanguageToFile('fr-FR', $masterProject->getFiles()[ 0 ]);
+
+// review settings
+$reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
+$reviewSettings->setErrorCategoryIds0(1);
+$reviewSettings->setErrorCategoryIds1(2);
+$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+$reviewSettings->setPassFailThreshold(0.00);
+$childProject->setReviewSettings($reviewSettings);
+
+// save the child project
+$this->childProjectRepo->save($childProject);
+ 
+/**
+****************************************************************************
+* build the translation batch
+****************************************************************************
+*/
+
+$translationBatch = new TranslationBatch($childProject, $file, 'en-US');
+$segmTrans1       = new TranslatedSegment($childProject, $file, 22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ], '', 'The frog in Spain');
+$segmTrans2       = new TranslatedSegment($childProject, $file, 22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ], 'croaks in countryside matus.', 'croaks in countryside.');
+$segmTrans3       = new TranslatedSegment($childProject, $file, 22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ], 'This is just a tongue twister', '');
+
+$translationBatch->addSegment($segmTrans1);
+$translationBatch->addSegment($segmTrans2);
+$translationBatch->addSegment($segmTrans3);
+
+// save the translation batch
+$translationBatch = $this->translationRepository->save($translationBatch);
+
+/**
+****************************************************************************
+* update a segment translation
+****************************************************************************
+*/
+
+// update a segment translation
+$firstSegment = $translationBatch->getSegments()[0];
+$segment->setTargetSegment( 'The frog in Spain' );
+$segment->setEditedSegment( 'The frog in Spain (from Barcelona)' );
+$this->translationRepository->update( $segment );
+
+/**
+****************************************************************************
+* create the child project (review)
+****************************************************************************
+*/
+
+$childProject = new ChildProject(Constants::PROJECT_TYPE_REVIEW);
+$childProject->setParentProject($segment->getChildProject());
+$childProject->setName('Review Job');
+
+// assoc targetLang to file(s)
+$childProject->assocTargetLanguageToFile('en-US', $file);
+$childProject->assocTargetLanguageToFile('fr-FR', $file);
+
+// review settings
+$reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
+$reviewSettings->setErrorCategoryIds0(9);
+$reviewSettings->setErrorCategoryIds1(10);
+$reviewSettings->setErrorCategoryIds2(11);
+$reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+$reviewSettings->setPassFailThreshold(0.00);
+$childProject->setReviewSettings($reviewSettings);
+
+// save the child project
+$childReview = $this->childProjectRepo->save($childProject);
+
+/**
+****************************************************************************
+* create a segment review batch
+****************************************************************************
+*/
+
+$correction = new RevisionCorrection('Another review comment', 10000);
+$correction->addItem(new RevisionCorrectionItem('review', 'deleted'));
+$correction->addItem(new RevisionCorrectionItem('Another comment', 'unchanged'));
+
+$reviewedSegment = new ReviewedSegment('this is a comment');
+$reviewedSegment->addError(new RevisionError(11, 2));
+$reviewedSegment->addError(new RevisionError(9, 1, 1, 5));
+$reviewedSegment->setCorrection($correction);
+
+$reviewedSegment2 = new ReviewedSegment('this is another comment');
+$reviewedSegment2->addError(new RevisionError(10, 2));
+$reviewedSegment2->addError(new RevisionError(11, 1, 1, 5));
+$reviewedSegment2->setCorrection($correction);
+
+$batchId = Uuid::uuid4()->toString();
+$reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
+$reviewBatch->addReviewedSegment($reviewedSegment);
+$reviewBatch->addReviewedSegment($reviewedSegment2);
+
+$batch = $this->reviewRepository->save($reviewBatch);
+
+/**
+****************************************************************************
+* delete the master and child nodes
+****************************************************************************
+*/
+
+// resetting reviews before deleting all the project and child nodes
+$emptyReviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
+$emptyBatch = $this->reviewRepository->save($emptyReviewBatch);
+
+// deleting the review project
+$this->childProjectRepo->delete($childReview);
+
+// deleting the translation project
+$this->childProjectRepo->delete($childProject);
+
+// deleting the master project
+$this->masterProjectRepo->delete($masterProject);
+
+```

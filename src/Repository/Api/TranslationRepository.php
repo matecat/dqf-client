@@ -31,26 +31,28 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         // build $segmentPairs
         $segmentPairs = [];
 
-        foreach ($batch->getSegments() as $segment) {
-            foreach ($sourceSegmentIds->sourceSegmentList as $item) {
-                if ($item->index === $segment->getSourceSegment()->getIndex()) {
-                    $segment->getSourceSegment()->setDqfId($item->dqfId);
-                    $segment->getSourceSegment()->setClientId($item->clientId);
-                    if (empty($segment->getClientId())) {
-                        $segment->setClientId(Uuid::uuid4()->toString());
-                    }
+        if(false === empty($batch->getSegments())){
+            foreach ($batch->getSegments() as $segment) {
+                foreach ($sourceSegmentIds->sourceSegmentList as $item) {
+                    if ($item->index === $segment->getSourceSegment()->getIndex()) {
+                        $segment->getSourceSegment()->setDqfId($item->dqfId);
+                        $segment->getSourceSegment()->setClientId($item->clientId);
+                        if (empty($segment->getClientId())) {
+                            $segment->setClientId(Uuid::uuid4()->toString());
+                        }
 
-                    $segmentPairs[] = [
-                            "sourceSegmentId"   => $item->dqfId,
-                            "clientId"          => $segment->getClientId(),
-                            "targetSegment"     => $segment->getTargetSegment(),
-                            "editedSegment"     => $segment->getEditedSegment(),
-                            "time"              => $segment->getTime(),
-                            "segmentOriginId"   => $segment->getSegmentOriginId(),
-                            "mtEngineId"        => $segment->getMtEngineId(),
-                            "mtEngineOtherName" => $segment->getMtEngineOtherName(),
-                            "matchRate"         => $segment->getMatchRate()
-                    ];
+                        $segmentPairs[] = [
+                                "sourceSegmentId"   => $item->dqfId,
+                                "clientId"          => $segment->getClientId(),
+                                "targetSegment"     => $segment->getTargetSegment(),
+                                "editedSegment"     => $segment->getEditedSegment(),
+                                "time"              => $segment->getTime(),
+                                "segmentOriginId"   => $segment->getSegmentOriginId(),
+                                "mtEngineId"        => $segment->getMtEngineId(),
+                                "mtEngineOtherName" => $segment->getMtEngineOtherName(),
+                                "matchRate"         => $segment->getMatchRate()
+                        ];
+                    }
                 }
             }
         }

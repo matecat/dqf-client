@@ -64,7 +64,7 @@ $masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
 // save the project
 $masterProjectRepo->save($masterProject);
 
-// retrive the project
+// retrieve the project
 $retrivedMasterProject = $masterProjectRepo->get($masterProject->getDqfId(), $masterProject->getDqfUuid());
 
 // add a file to project

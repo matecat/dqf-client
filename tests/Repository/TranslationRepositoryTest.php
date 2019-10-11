@@ -84,7 +84,7 @@ class TranslationRepositoryTest extends BaseTest
         $masterProject->setReviewSettings($reviewSettings);
 
         // source segments
-        foreach ($this->getSourceSegments($file) as $sourceSegment) {
+        foreach ( $this->getSourceSegmentsArray($file) as $sourceSegment) {
             $masterProject->addSourceSegment($sourceSegment);
         }
 
@@ -114,13 +114,10 @@ class TranslationRepositoryTest extends BaseTest
 
         // build the translation batch
         $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
-        $segmTrans1       = new TranslatedSegment($childProject, $file, 22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ], '', 'The frog in Spain');
-        $segmTrans2       = new TranslatedSegment($childProject, $file, 22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ], 'croaks in countryside matus.', 'croaks in countryside.');
-        $segmTrans3       = new TranslatedSegment($childProject, $file, 22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ], 'This is just a tongue twister', '');
 
-        $translationBatch->addSegment($segmTrans1);
-        $translationBatch->addSegment($segmTrans2);
-        $translationBatch->addSegment($segmTrans3);
+        foreach ($this->getTargetSegmentsArray($childProject, $file) as $segmTrans){
+            $translationBatch->addSegment($segmTrans);
+        }
 
         // save the translation batch
         $translationBatch = $this->translationRepository->save($translationBatch);
@@ -135,10 +132,18 @@ class TranslationRepositoryTest extends BaseTest
         $firstSegment = $translationBatch->getSegments()[0];
 
         // update a single segment translation
-        //$this->update_a_single_segment_translation($firstSegment);
+        $this->update_a_single_segment_translation($firstSegment);
 
         // create a review project and then submit revision(s)
         $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
+
+        // delete child project
+        $deleteChildProject = $this->childProjectRepo->delete($childProject);
+        $this->assertEquals(1, $deleteChildProject);
+
+        // delete master project
+        $deleteMasterProject = $this->masterProjectRepo->delete($masterProject);
+        $this->assertEquals(1, $deleteMasterProject);
     }
 
     /**
@@ -212,6 +217,17 @@ class TranslationRepositoryTest extends BaseTest
         foreach ($batch->getReviewedSegments() as $reviewedSegment){
             $this->assertNotNull($reviewedSegment->getClientId());
         }
+
+        // resetting reviews before deleting all the project and child nodes
+        $emptyReviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
+        $emptyBatch = $this->reviewRepository->save($emptyReviewBatch);
+
+        $this->assertNull($emptyBatch->getReviewedSegments());
+
+        // deleting the review project
+        $delete = $this->childProjectRepo->delete($childReview);
+
+        $this->assertEquals(1, $delete);
     }
 
     /**
@@ -220,17 +236,43 @@ class TranslationRepositoryTest extends BaseTest
      * @return array
      * @throws \Exception
      */
-    private function getSourceSegments(File $file)
+    private function getSourceSegmentsArray( File $file)
     {
         $segments = [];
-        $faker    = \Faker\Factory::create();
 
-        for ($i = 1; $i < 4; $i++) {
-            $sourceSegment = new SourceSegment($file, $i, $faker->realText(100));
-            $sourceSegment->setClientId(Uuid::uuid4()->toString());
+        foreach ($this->sourceFile[ 'segments' ] as $segment) {
+            $sourceSegment = new SourceSegment($file, $segment['index'], $segment['sourceSegment']);
+            $sourceSegment->setClientId($segment['clientId']);
             $segments[] = $sourceSegment;
         }
 
         return $segments;
+    }
+
+    /**
+     * @param ChildProject $childProject
+     * @param File         $file
+     *
+     * @return array
+     * @throws \Exception
+     */
+    protected function getTargetSegmentsArray(ChildProject $childProject, File $file)
+    {
+        $translations = [];
+
+        foreach ($this->targetFile['segmentPairs'] as $key => $segment) {
+            $translations[] = new TranslatedSegment(
+                    $childProject,
+                    $file,
+                    $segment['mtEngineId'],
+                    $segment['segmentOriginId'],
+                    $this->targetFile['lang'],
+                    $this->getSourceSegmentsArray($file)[$key],
+                    $segment['targetSegment'],
+                    $segment['editedSegment']
+            );
+        }
+
+        return $translations;
     }
 }

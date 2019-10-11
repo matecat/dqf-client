@@ -17,18 +17,26 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     /**
      * Delete a record
      *
-     * @param int  $dqfId
-     * @param null $dqfUuid
+     * @param BaseApiEntity $baseEntity
      *
      * @return int
      */
-    public function delete($dqfId, $dqfUuid = null)
+    public function delete(BaseApiEntity $baseEntity)
     {
+        /** @var $baseEntity AbstractProject */
+        if (false === $baseEntity instanceof AbstractProject) {
+            throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
+        }
+
+        if (empty($baseEntity->getDqfId())) {
+            throw new \DomainException('MasterProject have not a DQF id and cannot be deleted');
+        }
+
         $masterProject = $this->client->deleteMasterProject([
                 'generic_email' => $this->genericEmail,
                 'sessionId'     => $this->sessionId,
-                'projectKey'    => $dqfUuid,
-                'projectId'     => $dqfId,
+                'projectKey'    => $baseEntity->getDqfUuid(),
+                'projectId'     => $baseEntity->getDqfId(),
         ]);
 
         return ($masterProject->status === 'OK') ? 1 : 0;

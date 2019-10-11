@@ -32,7 +32,7 @@ $app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
 $app->run();
 ```
 
-You get this output:
+And this is the output that you get:
 
 ```
 +--------------------------+---------------+---------+----------+

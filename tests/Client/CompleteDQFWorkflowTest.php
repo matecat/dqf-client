@@ -8,96 +8,11 @@ use Ramsey\Uuid\Uuid;
 class CompleteDQFWorkflowTest extends BaseTest
 {
     /**
-     * This array represents an hypothetical source file
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getSourceFile()
-    {
-        return [
-                'uuid'     => Uuid::uuid4()->toString(),
-                'name'     => 'original-filename',
-                'lang'     => 'it-IT',
-                'segments' => [
-                        [
-                                "sourceSegment" => "La rana in Spagna",
-                                "index"         => 1,
-                                "clientId"      => Uuid::uuid4()->toString()
-                        ],
-                        [
-                                "sourceSegment" => "gracida in campagna.",
-                                "index"         => 2,
-                                "clientId"      => Uuid::uuid4()->toString()
-                        ],
-                        [
-                                "sourceSegment" => "Questo è solo uno scioglilingua",
-                                "index"         => 3,
-                                "clientId"      => Uuid::uuid4()->toString()
-                        ]
-                ]
-        ];
-    }
-
-    /**
-     * This represents an hypothetical translated file
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getTranslationFile()
-    {
-        return [
-                'uuid'         => Uuid::uuid4()->toString(),
-                'name'         => 'translated-filename',
-                'lang'         => 'en-US',
-                'segmentPairs' => [
-                        [
-                                "sourceSegmentId"   => 1,
-                                "clientId"          => Uuid::uuid4()->toString(),
-                                "targetSegment"     => "",
-                                "editedSegment"     => "The frog in Spain",
-                                "time"              => 6582,
-                                "segmentOriginId"   => 1,
-                                "mtEngineId"        => 22,
-                                "mtEngineOtherName" => null,
-                                "matchRate"         => 0
-                        ],
-                        [
-                                "sourceSegmentId"   => 2,
-                                "clientId"          => Uuid::uuid4()->toString(),
-                                "targetSegment"     => "croaks in countryside.",
-                                "editedSegment"     => "croaks in countryside matus.",
-                                "time"              => 5530,
-                                "segmentOriginId"   => 2,
-                                "mtEngineId"        => 22,
-                                "mtEngineOtherName" => null,
-                                "matchRate"         => 100
-                        ],
-                        [
-                                "sourceSegmentId"   => 3,
-                                "clientId"          => Uuid::uuid4()->toString(),
-                                "targetSegment"     => "This is just a tongue twister",
-                                "editedSegment"     => "",
-                                "time"              => 63455,
-                                "segmentOriginId"   => 3,
-                                "mtEngineId"        => 22,
-                                "mtEngineOtherName" => null,
-                                "matchRate"         => 50
-                        ],
-                ]
-        ];
-    }
-
-    /**
      * @throws \Exception
      * @test
      */
     public function test_the_complete_workflow()
     {
-        $sourceFile = $this->getSourceFile();
-        $targetFile = $this->getTranslationFile();
-
         /**
          ****************************************************************************
          * create a project
@@ -106,7 +21,7 @@ class CompleteDQFWorkflowTest extends BaseTest
 
         // checking if the sourceLanguageCode is valid first
         $languageCode = $this->client->checkLanguageCode([
-                'languageCode' => $sourceFile[ 'lang' ],
+                'languageCode' => $this->sourceFile[ 'lang' ],
         ]);
 
         $this->assertEquals('OK', $languageCode->status);
@@ -115,7 +30,7 @@ class CompleteDQFWorkflowTest extends BaseTest
         $masterProject         = $this->client->createMasterProject([
                 'sessionId'          => $this->sessionId,
                 'name'               => 'master-workflow-test',
-                'sourceLanguageCode' => $sourceFile[ 'lang' ],
+                'sourceLanguageCode' => $this->sourceFile[ 'lang' ],
                 'contentTypeId'      => 1,
                 'industryId'         => 2,
                 'processId'          => 1,
@@ -174,9 +89,9 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'sessionId'        => $this->sessionId,
                 'projectKey'       => $masterProject->dqfUUID,
                 'projectId'        => $masterProject->dqfId,
-                'name'             => $sourceFile[ 'name' ],
-                'numberOfSegments' => count($sourceFile[ 'segments' ]),
-                'clientId'         => $sourceFile[ 'uuid' ],
+                'name'             => $this->sourceFile[ 'name' ],
+                'numberOfSegments' => count($this->sourceFile[ 'segments' ]),
+                'clientId'         => $this->sourceFile[ 'uuid' ],
         ]);
 
         /**
@@ -186,7 +101,7 @@ class CompleteDQFWorkflowTest extends BaseTest
          */
 
         $languageCode = $this->client->checkLanguageCode([
-                'languageCode' => $targetFile[ 'lang' ],
+                'languageCode' => $this->targetFile[ 'lang' ],
         ]);
 
         $this->assertEquals('OK', $languageCode->status);
@@ -197,7 +112,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'         => $masterProject->dqfUUID,
                 'projectId'          => $masterProject->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
-                'targetLanguageCode' => $targetFile[ 'lang' ],
+                'targetLanguageCode' => $this->targetFile[ 'lang' ],
         ]);
 
         /**
@@ -233,7 +148,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey' => $masterProject->dqfUUID,
                 'projectId'  => $masterProject->dqfId,
                 'fileId'     => $masterProjectFile->dqfId,
-                'body'       => $sourceFile[ 'segments' ]
+                'body'       => $this->sourceFile[ 'segments' ]
         ]);
 
         /**
@@ -281,7 +196,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'         => $childTranslation->dqfUUID,
                 'projectId'          => $childTranslation->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
-                'targetLanguageCode' => $targetFile[ 'lang' ],
+                'targetLanguageCode' => $this->targetFile[ 'lang' ],
         ]);
 
         /**
@@ -293,12 +208,12 @@ class CompleteDQFWorkflowTest extends BaseTest
         $this->assertNotEmpty($childTranslationTargetLang->dqfId);
         $this->assertEquals($childTranslationTargetLang->message, "TargetLang successfully created");
 
-        // update the fake $targetFile with real DQL ids for 'sourceSegmentId'
-        $segmentPairs = $targetFile[ 'segmentPairs' ];
+        // update the fake $this->targetFile with real DQL ids for 'sourceSegmentId'
+        $segmentPairs = $this->targetFile[ 'segmentPairs' ];
         foreach ($segmentPairs as $key => $segmentPair) {
             $segmentPairs[ $key ][ 'sourceSegmentId' ] = $this->client->getSegmentId([
                     'sessionId' => $this->sessionId,
-                    'clientId'  => $sourceFile[ 'segments' ][ $key ][ 'clientId' ],
+                    'clientId'  => $this->sourceFile[ 'segments' ][ $key ][ 'clientId' ],
             ])->dqfId;
         }
 
@@ -307,7 +222,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'     => $childTranslation->dqfUUID,
                 'projectId'      => $childTranslation->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
-                'targetLangCode' => $targetFile[ 'lang' ],
+                'targetLangCode' => $this->targetFile[ 'lang' ],
                 'body'           => $segmentPairs,
         ]);
 
@@ -321,12 +236,12 @@ class CompleteDQFWorkflowTest extends BaseTest
 
         $firstSegmentId = $this->client->getSegmentId([
                 'sessionId' => $this->sessionId,
-                'clientId'  => $sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
+                'clientId'  => $this->sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
         ]);
 
         $firstTranslationId = $this->client->getTranslationId([
                 'sessionId' => $this->sessionId,
-                'clientId'  => $targetFile[ 'segmentPairs' ][ 0 ][ 'clientId' ],
+                'clientId'  => $this->targetFile[ 'segmentPairs' ][ 0 ][ 'clientId' ],
         ]);
 
         $this->assertNotEmpty($firstSegmentId->dqfId);
@@ -337,7 +252,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'      => $childTranslation->dqfUUID,
                 'projectId'       => $childTranslation->dqfId,
                 'fileId'          => $masterProjectFile->dqfId,
-                'targetLangCode'  => $targetFile[ 'lang' ],
+                'targetLangCode'  => $this->targetFile[ 'lang' ],
                 'sourceSegmentId' => $firstSegmentId->dqfId,
                 'translationId'   => $firstTranslationId->dqfId,
                 'segmentOriginId' => $this->getSegmentOrigin('HT'),
@@ -359,7 +274,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'      => $childTranslation->dqfUUID,
                 'projectId'       => $childTranslation->dqfId,
                 'fileId'          => $masterProjectFile->dqfId,
-                'targetLangCode'  => $targetFile[ 'lang' ],
+                'targetLangCode'  => $this->targetFile[ 'lang' ],
                 'sourceSegmentId' => $firstSegmentId->dqfId,
                 'translationId'   => $firstTranslationId->dqfId,
         ]);
@@ -409,7 +324,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'         => $childReview->dqfUUID,
                 'projectId'          => $childReview->dqfId,
                 'fileId'             => $masterProjectFile->dqfId,
-                'targetLanguageCode' => $targetFile[ 'lang' ],
+                'targetLanguageCode' => $this->targetFile[ 'lang' ],
         ]);
 
         $this->assertNotEmpty($childReviewTargetLang->dqfId);
@@ -489,7 +404,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
-                'targetLangCode' => $targetFile[ 'lang' ],
+                'targetLangCode' => $this->targetFile[ 'lang' ],
         ]);
 
         $this->assertEquals($sourceSegmentIds->message, "Source Segments successfully fetched");
@@ -552,7 +467,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
-                'targetLangCode' => $targetFile[ 'lang' ],
+                'targetLangCode' => $this->targetFile[ 'lang' ],
                 'translationId'  => $firstTranslationId->dqfId,
                 'batchId'        => $batchId,
                 'overwrite'      => true,
@@ -574,7 +489,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectKey'     => $childReview->dqfUUID,
                 'projectId'      => $childReview->dqfId,
                 'fileId'         => $masterProjectFile->dqfId,
-                'targetLangCode' => $targetFile[ 'lang' ],
+                'targetLangCode' => $this->targetFile[ 'lang' ],
                 'translationId'  => $firstTranslationId->dqfId,
                 'batchId'        => $batchId,
                 'overwrite'      => true,

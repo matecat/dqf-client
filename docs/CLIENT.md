@@ -103,7 +103,22 @@ If validation fails, a `ParamsValidatorException` is raised and **the request is
 
 ## Example
 
+Here is a typical example of Client call:
 
+```php
+//...
+
+$masterProject = $client->createMasterProject([
+    'sessionId'          => $sessionId,
+    'name'               => 'master-workflow-test',
+    'sourceLanguageCode' => 'it-IT',
+    'contentTypeId'      => 1,
+    'industryId'         => 2,
+    'processId'          => 1,
+    'qualityLevelId'     => 1,
+    'clientId'           => 'XXXXYYYY',
+]);
+```
 
 ## Working with generic sessions
 

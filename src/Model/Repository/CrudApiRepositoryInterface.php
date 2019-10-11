@@ -9,12 +9,11 @@ interface CrudApiRepositoryInterface
     /**
      * Delete a record
      *
-     * @param int $dqfId
-     * @param null $dqfUuid
+     * @param BaseApiEntity $baseEntity
      *
-     * @return int
+     * @return mixed
      */
-    public function delete($dqfId, $dqfUuid = null);
+    public function delete(BaseApiEntity $baseEntity);
 
     /**
      * Retrieve a record

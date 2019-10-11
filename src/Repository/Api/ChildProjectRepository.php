@@ -10,24 +10,33 @@ use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class ChildProjectRepository extends AbstractApiRepository implements CrudApiRepositoryInterface
 {
     /**
      * Delete a record
      *
-     * @param int  $dqfId
-     * @param null $dqfUuid
+     * @param BaseApiEntity $baseEntity
      *
      * @return int
      */
-    public function delete($dqfId, $dqfUuid = null)
+    public function delete(BaseApiEntity $baseEntity)
     {
+        /** @var $baseEntity AbstractProject */
+        if (false === $baseEntity instanceof AbstractProject) {
+            throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
+        }
+
+        if (empty($baseEntity->getDqfId())) {
+            throw new \DomainException('MasterProject have not a DQF id and cannot be deleted');
+        }
+
         $childProject = $this->client->deleteChildProject([
                 'generic_email' => $this->genericEmail,
                 'sessionId'     => $this->sessionId,
-                'projectKey'    => $dqfUuid,
-                'projectId'     => $dqfId,
+                'projectKey'    => $baseEntity->getDqfUuid(),
+                'projectId'     => $baseEntity->getDqfId(),
         ]);
 
         return ($childProject->status === 'OK') ? 1 : 0;
