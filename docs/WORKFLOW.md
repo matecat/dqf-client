@@ -486,7 +486,7 @@ $reviewSettings->setPassFailThreshold(0.00);
 $masterProject->setReviewSettings($reviewSettings);
 
 // source segments
-foreach ($this->getSourceSegments($file) as $sourceSegment) {
+foreach ($sourceSegments as $sourceSegment) {
     $masterProject->addSourceSegment($sourceSegment);
 }
 
