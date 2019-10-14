@@ -97,17 +97,27 @@ class SessionProvider
      */
     public function getByGenericEmail($genericEmail)
     {
-        $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
-
-        if (!$dqfUser) {
+        if (!$this->hasGenericEmail($genericEmail)) {
             throw new SessionProviderException("Generic user with email " . $genericEmail . " does not exists");
         }
+
+        $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
 
         if ($this->isSessionStillValid((int)$dqfUser->getSessionExpiresAt())) {
             return $dqfUser->getSessionId();
         }
 
         return $this->createAnonymous($genericEmail, $dqfUser->getUsername(), $dqfUser->getPassword());
+    }
+
+    /**
+     * @param $genericEmail
+     *
+     * @return bool
+     */
+    public function hasGenericEmail($genericEmail)
+    {
+        return (null !== $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail)));
     }
 
     /**
@@ -123,9 +133,9 @@ class SessionProvider
         try {
             $login = $this->client->login(
                 [
-                            'username' => $username,
-                            'password' => $password,
-                    ]
+                    'username' => $username,
+                    'password' => $password,
+                ]
             );
         } catch (\Exception $e) {
             throw new SessionProviderException('Login to DQF failed.' . $e->getMessage());
@@ -176,19 +186,29 @@ class SessionProvider
      */
     public function getById($externalReferenceId)
     {
+        if (false === $this->hasId($externalReferenceId)) {
+            throw new SessionProviderException("User with id " . $externalReferenceId . " does not exists");
+        }
+
         $dqfUser = $this->dqfUserRepository->getByExternalId($externalReferenceId);
         $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
         $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
-
-        if (!$dqfUser) {
-            throw new SessionProviderException("User with id " . $externalReferenceId . " does not exists");
-        }
 
         if ($this->isSessionStillValid((int)$dqfUser->getSessionExpiresAt())) {
             return $dqfUser->getSessionId();
         }
 
         return $this->createByCredentials($dqfUser->getExternalReferenceId(), $dqfUser->getUsername(), $dqfUser->getPassword());
+    }
+
+    /**
+     * @param $externalReferenceId
+     *
+     * @return bool
+     */
+    public function hasId($externalReferenceId)
+    {
+        return (null !== $this->dqfUserRepository->getByExternalId($externalReferenceId));
     }
 
     /**

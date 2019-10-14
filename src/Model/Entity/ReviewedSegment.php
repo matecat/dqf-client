@@ -36,6 +36,13 @@ class ReviewedSegment extends BaseApiEntity
     }
 
     /**
+     * @param string $comment
+     */
+    public function setComment( $comment ) {
+        $this->comment = $comment;
+    }
+
+    /**
      * @return RevisionError[]
      */
     public function getErrors()
