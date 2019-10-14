@@ -63,11 +63,25 @@ class Template extends BaseApiEntity
     }
 
     /**
+     * @param string $name
+     */
+    public function setName( $name ) {
+        $this->name = $name;
+    }
+
+    /**
      * @return int
      */
     public function getContentTypeId()
     {
         return $this->contentTypeId;
+    }
+
+    /**
+     * @param int $contentTypeId
+     */
+    public function setContentTypeId( $contentTypeId ) {
+        $this->contentTypeId = $contentTypeId;
     }
 
     /**
@@ -79,11 +93,25 @@ class Template extends BaseApiEntity
     }
 
     /**
+     * @param int $industryId
+     */
+    public function setIndustryId( $industryId ) {
+        $this->industryId = $industryId;
+    }
+
+    /**
      * @return int
      */
     public function getProcessId()
     {
         return $this->processId;
+    }
+
+    /**
+     * @param int $processId
+     */
+    public function setProcessId( $processId ) {
+        $this->processId = $processId;
     }
 
     /**
@@ -95,10 +123,19 @@ class Template extends BaseApiEntity
     }
 
     /**
+     * @param int $qualityLevelId
+     */
+    public function setQualityLevelId( $qualityLevelId ) {
+        $this->qualityLevelId = $qualityLevelId;
+    }
+
+    /**
      * @return bool
      */
     public function isPublic()
     {
         return $this->isPublic;
     }
+
+
 }
