@@ -102,6 +102,8 @@ class SessionProvider
         }
 
         $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
+        $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
+        $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
 
         if ($this->isSessionStillValid((int)$dqfUser->getSessionExpiresAt())) {
             return $dqfUser->getSessionId();
