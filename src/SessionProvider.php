@@ -117,7 +117,7 @@ class SessionProvider
      */
     public function hasGenericEmail($genericEmail)
     {
-        return (null !== $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail)));
+        return ($this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail)) instanceof DqfUser);
     }
 
     /**
@@ -208,7 +208,7 @@ class SessionProvider
      */
     public function hasId($externalReferenceId)
     {
-        return (null !== $this->dqfUserRepository->getByExternalId($externalReferenceId));
+        return ($this->dqfUserRepository->getByExternalId($externalReferenceId) instanceof DqfUser);
     }
 
     /**

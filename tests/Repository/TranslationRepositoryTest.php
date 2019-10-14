@@ -138,12 +138,12 @@ class TranslationRepositoryTest extends BaseTest
         $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
 
         // delete child project
-        $deleteChildProject = $this->childProjectRepo->delete($childProject);
-        $this->assertEquals(1, $deleteChildProject);
+//        $deleteChildProject = $this->childProjectRepo->delete($childProject);
+//        $this->assertEquals(1, $deleteChildProject);
 
         // delete master project
-        $deleteMasterProject = $this->masterProjectRepo->delete($masterProject);
-        $this->assertEquals(1, $deleteMasterProject);
+//        $deleteMasterProject = $this->masterProjectRepo->delete($masterProject);
+//        $this->assertEquals(1, $deleteMasterProject);
     }
 
     /**
