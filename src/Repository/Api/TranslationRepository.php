@@ -9,7 +9,6 @@ use Ramsey\Uuid\Uuid;
 
 class TranslationRepository extends AbstractApiRepository implements TranslationRepositoryInterface
 {
-
     /**
      * @param TranslationBatch $batch
      *
@@ -18,7 +17,6 @@ class TranslationRepository extends AbstractApiRepository implements Translation
      */
     public function save(TranslationBatch $batch)
     {
-
         // get the source segments for the child project
         $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile([
                 'sessionId'      => $this->sessionId,
@@ -76,7 +74,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     /**
      * @param TranslatedSegment $translatedSegment
      *
-     * @return mixed
+     * @return bool
      */
     public function update(TranslatedSegment $translatedSegment)
     {
@@ -101,7 +99,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                     'clientId'            => $translatedSegment->getClientId(),
             ]);
 
-            return $updateSingleSegmentTranslation->model;
+            return $updateSingleSegmentTranslation->status === 'OK';
         }
     }
 

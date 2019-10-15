@@ -525,7 +525,7 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
      */
     private function hydrateSourceLanguage(MasterProject $masterProject)
     {
-        if (false === empty($masterProject->getSourceLanguage())) {
+        if (empty($masterProject->getSourceLanguage())) {
             return;
         }
 

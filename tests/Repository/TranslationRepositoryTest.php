@@ -63,10 +63,10 @@ class TranslationRepositoryTest extends BaseTest
     public function save_a_translation_batch()
     {
         // create the master project
-        $masterProject = new MasterProject('master-project-test', 'it-IT', 1, 2, 3, 1);
+        $masterProject = new MasterProject('master-workflow-test', 'it-IT', 1, 2, 3, 1);
 
         // file(s)
-        $file = new File('test-file', 3);
+        $file = new File('original-filename', 3);
         $file->setClientId(Uuid::uuid4()->toString());
         $masterProject->addFile($file);
 
@@ -94,7 +94,8 @@ class TranslationRepositoryTest extends BaseTest
         // create the child project
         $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
         $childProject->setParentProject($masterProject);
-        $childProject->setName('Translation Job');
+        $childProject->setName('child-workflow-test');
+        $childProject->setIsDummy(true);
 
         // assoc targetLang to file(s)
         $childProject->assocTargetLanguageToFile('en-US', $masterProject->getFiles()[ 0 ]);
@@ -132,18 +133,18 @@ class TranslationRepositoryTest extends BaseTest
         $firstSegment = $translationBatch->getSegments()[0];
 
         // update a single segment translation
-        //$this->update_a_single_segment_translation($firstSegment);
+        $this->update_a_single_segment_translation($firstSegment);
 
         // create a review project and then submit revision(s)
         $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
 
         // delete child project
-//        $deleteChildProject = $this->childProjectRepo->delete($childProject);
-//        $this->assertEquals(1, $deleteChildProject);
+        $deleteChildProject = $this->childProjectRepo->delete($childProject);
+        $this->assertEquals(1, $deleteChildProject);
 
         // delete master project
-//        $deleteMasterProject = $this->masterProjectRepo->delete($masterProject);
-//        $this->assertEquals(1, $deleteMasterProject);
+        $deleteMasterProject = $this->masterProjectRepo->delete($masterProject);
+        $this->assertEquals(1, $deleteMasterProject);
     }
 
     /**
@@ -154,7 +155,9 @@ class TranslationRepositoryTest extends BaseTest
         $segment->setTargetSegment('The frog in Spain');
         $segment->setEditedSegment('The frog in Spain (from Barcelona)');
 
-        $this->translationRepository->update($segment);
+        $update = $this->translationRepository->update($segment);
+
+        $this->assertTrue($update);
     }
 
     /**

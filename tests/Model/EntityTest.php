@@ -35,7 +35,33 @@ class EntityTest extends BaseTest
 
         $clientId = Uuid::uuid4()->toString();
 
-        $masterProject = new MasterProject('test-project', 'it-IT', 1, 2, 3, 4);
+
+
+        try {
+            new MasterProject('test-project', 'it-IT', 43242, 2, 1, 1);
+        } catch (\DomainException $e){
+            $this->assertEquals($e->getMessage(), '43242 is not a valid value. [Allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]');
+        }
+
+        try {
+            new MasterProject('test-project', 'it-IT', 1, 432432432, 3, 1);
+        } catch (\DomainException $e){
+            $this->assertEquals($e->getMessage(), '432432432 is not a valid value. [Allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]');
+        }
+
+        try {
+            new MasterProject('test-project', 'it-IT', 1, 2, 43243, 1);
+        } catch (\DomainException $e){
+            $this->assertEquals($e->getMessage(), '43243 is not a valid value. [Allowed: 1,2,3,4,5]');
+        }
+
+        try {
+            new MasterProject('test-project', 'it-IT', 1, 2, 3, 4);
+        } catch (\DomainException $e){
+            $this->assertEquals($e->getMessage(), '4 is not a valid value. [Allowed: 1,2]');
+        }
+
+        $masterProject = new MasterProject('test-project', 'it-IT', 1, 2, 3, 1);
         $masterProject->setClientId($clientId);
 
         // add review settings
@@ -157,7 +183,7 @@ class EntityTest extends BaseTest
             $childReview->setClientId($clientId);
             $childReview->setIsDummy(true);
         } catch (\DomainException $e) {
-            $this->assertEquals($e->getMessage(), '\'isDummy\' MUST be set to false if project tpye is \'review\'');
+            $this->assertEquals($e->getMessage(), '\'isDummy\' MUST be set to false if project type is \'review\'');
         }
 
         $childReview = new ChildProject('review');

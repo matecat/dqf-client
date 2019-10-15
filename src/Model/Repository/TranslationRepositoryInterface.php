@@ -18,7 +18,7 @@ interface TranslationRepositoryInterface
     /**
      * @param TranslatedSegment $translatedSegment
      *
-     * @return mixed
+     * @return bool
      */
     public function update(TranslatedSegment $translatedSegment);
 }

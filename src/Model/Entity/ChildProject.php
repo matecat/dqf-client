@@ -151,7 +151,7 @@ class ChildProject extends AbstractProject
     public function setIsDummy($isDummy)
     {
         if (true === $isDummy and $this->type === 'review') {
-            throw new \DomainException('\'isDummy\' MUST be set to false if project tpye is \'review\'');
+            throw new \DomainException('\'isDummy\' MUST be set to false if project type is \'review\'');
         }
 
         $this->isDummy = $isDummy;

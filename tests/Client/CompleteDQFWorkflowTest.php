@@ -235,30 +235,30 @@ class CompleteDQFWorkflowTest extends BaseTest
          */
 
         $firstSegmentId = $this->client->getSegmentId([
-                'sessionId' => $this->sessionId,
-                'clientId'  => $this->sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
+            'sessionId' => $this->sessionId,
+            'clientId'  => $this->sourceFile[ 'segments' ][ 0 ][ 'clientId' ],
         ]);
 
         $firstTranslationId = $this->client->getTranslationId([
-                'sessionId' => $this->sessionId,
-                'clientId'  => $this->targetFile[ 'segmentPairs' ][ 0 ][ 'clientId' ],
+            'sessionId' => $this->sessionId,
+            'clientId'  => $this->targetFile[ 'segmentPairs' ][ 0 ][ 'clientId' ],
         ]);
 
         $this->assertNotEmpty($firstSegmentId->dqfId);
         $this->assertNotEmpty($firstTranslationId->dqfId);
 
         $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
-                'sessionId'       => $this->sessionId,
-                'projectKey'      => $childTranslation->dqfUUID,
-                'projectId'       => $childTranslation->dqfId,
-                'fileId'          => $masterProjectFile->dqfId,
-                'targetLangCode'  => $this->targetFile[ 'lang' ],
-                'sourceSegmentId' => $firstSegmentId->dqfId,
-                'translationId'   => $firstTranslationId->dqfId,
-                'segmentOriginId' => $this->getSegmentOrigin('HT'),
-                'targetSegment'   => "The frog in Spain",
-                'editedSegment'   => "The frog in Spain (from Barcelona)",
-                'time'            => 5435435,
+            'sessionId'       => $this->sessionId,
+            'projectKey'      => $childTranslation->dqfUUID,
+            'projectId'       => $childTranslation->dqfId,
+            'fileId'          => $masterProjectFile->dqfId,
+            'targetLangCode'  => $this->targetFile[ 'lang' ],
+            'sourceSegmentId' => $firstSegmentId->dqfId,
+            'translationId'   => $firstTranslationId->dqfId,
+            'segmentOriginId' => $this->getSegmentOrigin('HT'),
+            'targetSegment'   => "The frog in Spain",
+            'editedSegment'   => "The frog in Spain (from Barcelona)",
+            'time'            => 5435435,
         ]);
 
         $this->assertEquals($updateSingleSegmentTranslation->message, "Segments successfully updated");
