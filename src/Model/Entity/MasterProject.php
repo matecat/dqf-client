@@ -63,10 +63,10 @@ class MasterProject extends AbstractProject
     {
         $this->name = $name;
         $this->sourceLanguage = new Language($sourceLanguageCode);
-        $this->contentTypeId = $contentTypeId;
-        $this->industryId = $industryId;
-        $this->processId = $processId;
-        $this->qualityLevelId = $qualityLevelId;
+        $this->setContentTypeId($contentTypeId);
+        $this->setIndustryId($industryId);
+        $this->setProcessId($processId);
+        $this->setQualityLevelId($qualityLevelId);
     }
 
     /**
@@ -114,6 +114,12 @@ class MasterProject extends AbstractProject
      */
     public function setContentTypeId($contentTypeId)
     {
+        $allowed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+        if(false === in_array($contentTypeId, $allowed)){
+            throw new \DomainException($contentTypeId . 'is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
+
         $this->contentTypeId = $contentTypeId;
     }
 
@@ -130,6 +136,12 @@ class MasterProject extends AbstractProject
      */
     public function setIndustryId($industryId)
     {
+        $allowed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+
+        if(false === in_array($industryId, $allowed)){
+            throw new \DomainException($industryId . 'is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
+
         $this->industryId = $industryId;
     }
 
@@ -146,6 +158,12 @@ class MasterProject extends AbstractProject
      */
     public function setProcessId($processId)
     {
+        $allowed = [1, 2, 3, 4, 5];
+
+        if(false === in_array($processId, $allowed)){
+            throw new \DomainException($processId . 'is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
+
         $this->processId = $processId;
     }
 
@@ -162,6 +180,12 @@ class MasterProject extends AbstractProject
      */
     public function setQualityLevelId($qualityLevelId)
     {
+        $allowed = [1, 2];
+
+        if(false === in_array($qualityLevelId, $allowed)){
+            throw new \DomainException($qualityLevelId . 'is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
+
         $this->qualityLevelId = $qualityLevelId;
     }
 
