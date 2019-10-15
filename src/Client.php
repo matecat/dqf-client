@@ -48,9 +48,9 @@ use Matecat\Dqf\Utils\HandlerStackFactory;
  * @method mixed getChildProjectFile( array $input ) - Find the details of a file
  * @method mixed getChildProjectFiles( array $input ) - Find the files of a child Project
  * @method mixed getChildProjectStatus( array $input ) - Get the project status
- * @method mixed getFileId( array $input ) - Return the DQF file id
  * @method mixed getChildProjectTargetLanguage( array $input ) - Find a target language of a child project
  * @method mixed getChildProjectTargetLanguages( array $input ) - Find the target languages of a child Project
+ * @method mixed getFileId( array $input ) - Return the DQF file id
  * @method mixed getMasterProject( array $input ) - Find the properties of a master Project
  * @method mixed getMasterProjectFile( array $input ) - Find a file of a master Project
  * @method mixed getMasterProjectFiles( array $input ) - Find the files of a master Project

@@ -44,7 +44,7 @@ class ChildProject extends AbstractProject
     /**
      * ChildProject constructor.
      *
-     * @param $type
+     * @param string $type
      */
     public function __construct($type)
     {

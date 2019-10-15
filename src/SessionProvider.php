@@ -113,7 +113,7 @@ class SessionProvider
     }
 
     /**
-     * @param $genericEmail
+     * @param string $genericEmail
      *
      * @return bool
      */
@@ -204,7 +204,7 @@ class SessionProvider
     }
 
     /**
-     * @param $externalReferenceId
+     * @param mixed $externalReferenceId
      *
      * @return bool
      */

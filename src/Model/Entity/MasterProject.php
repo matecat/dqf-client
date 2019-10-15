@@ -52,12 +52,12 @@ class MasterProject extends AbstractProject
     /**
      * MasterProject constructor.
      *
-     * @param $name
-     * @param $sourceLanguageCode
-     * @param $contentTypeId
-     * @param $industryId
-     * @param $processId
-     * @param $qualityLevelId
+     * @param string $name
+     * @param string $sourceLanguageCode
+     * @param int    $contentTypeId
+     * @param int    $industryId
+     * @param int    $processId
+     * @param int    $qualityLevelId
      */
     public function __construct($name, $sourceLanguageCode, $contentTypeId, $industryId, $processId, $qualityLevelId)
     {

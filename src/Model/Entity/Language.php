@@ -17,7 +17,7 @@ class Language extends BaseApiEntity
     /**
      * Language constructor.
      *
-     * @param $localeCode
+     * @param string $localeCode
      */
     public function __construct($localeCode)
     {
@@ -32,7 +32,7 @@ class Language extends BaseApiEntity
      * Check it on:
      * https://dqf-api.stag.taus.net/v3/language
      *
-     * @param $localeCode
+     * @param string $localeCode
      *
      * @return bool
      */

@@ -93,8 +93,8 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
     }
 
     /**
-     * @param $dqfId
-     * @param $dqfUuid
+     * @param int    $dqfId
+     * @param string $dqfUuid
      *
      * @return ReviewSettings|mixed
      */

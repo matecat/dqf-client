@@ -65,7 +65,8 @@ class Template extends BaseApiEntity
     /**
      * @param string $name
      */
-    public function setName( $name ) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
@@ -80,7 +81,8 @@ class Template extends BaseApiEntity
     /**
      * @param int $contentTypeId
      */
-    public function setContentTypeId( $contentTypeId ) {
+    public function setContentTypeId($contentTypeId)
+    {
         $this->contentTypeId = $contentTypeId;
     }
 
@@ -95,7 +97,8 @@ class Template extends BaseApiEntity
     /**
      * @param int $industryId
      */
-    public function setIndustryId( $industryId ) {
+    public function setIndustryId($industryId)
+    {
         $this->industryId = $industryId;
     }
 
@@ -110,7 +113,8 @@ class Template extends BaseApiEntity
     /**
      * @param int $processId
      */
-    public function setProcessId( $processId ) {
+    public function setProcessId($processId)
+    {
         $this->processId = $processId;
     }
 
@@ -125,7 +129,8 @@ class Template extends BaseApiEntity
     /**
      * @param int $qualityLevelId
      */
-    public function setQualityLevelId( $qualityLevelId ) {
+    public function setQualityLevelId($qualityLevelId)
+    {
         $this->qualityLevelId = $qualityLevelId;
     }
 
@@ -136,6 +141,4 @@ class Template extends BaseApiEntity
     {
         return $this->isPublic;
     }
-
-
 }

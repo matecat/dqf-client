@@ -127,7 +127,7 @@ class ClientHelperCommand extends Command
     }
 
     /**
-     * @param $method
+     * @param string $method
      *
      * @return CommandHandler
      * @throws \ReflectionException

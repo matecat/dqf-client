@@ -36,7 +36,7 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return File
      */
@@ -78,7 +78,7 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
     }
 
     /**
-     * @param File
+     * @param File $file
      */
     public function addFile(File $file)
     {

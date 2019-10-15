@@ -98,6 +98,7 @@ class MasterProjectRepositoryTest extends BaseTest
         $this->assertEquals($masterProject->getDqfUuid(), $dqfUuid);
         $this->assertInstanceOf(ReviewSettings::class, $masterProject->getReviewSettings());
         $this->assertNotNull($masterProject->getReviewSettings()->getDqfId());
+        $this->assertNotNull($masterProject->getSourceLanguage()->getDqfId());
     }
 
     /**

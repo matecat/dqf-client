@@ -74,12 +74,12 @@ class TranslatedSegment extends BaseApiEntity
      *
      * @param ChildProject  $childProject
      * @param File          $file
-     * @param               $mtEngineId
-     * @param               $segmentOriginId
-     * @param               $targetLanguageCode
+     * @param int           $mtEngineId
+     * @param int           $segmentOriginId
+     * @param string        $targetLanguageCode
      * @param SourceSegment $sourceSegment
-     * @param               $targetSegment
-     * @param               $editedSegment
+     * @param string        $targetSegment
+     * @param string        $editedSegment
      */
     public function __construct(
         ChildProject $childProject,

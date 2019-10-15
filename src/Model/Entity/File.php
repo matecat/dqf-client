@@ -22,8 +22,8 @@ class File extends BaseApiEntity
     /**
      * File constructor.
      *
-     * @param $name
-     * @param $numberOfSegments
+     * @param string $name
+     * @param int    $numberOfSegments
      */
     public function __construct($name, $numberOfSegments)
     {

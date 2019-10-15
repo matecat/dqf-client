@@ -74,6 +74,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
         $masterProject->setDqfId($dqfId);
         $masterProject->setDqfUuid($dqfUuid);
 
+        // set source language
+        $this->hydrateSourceLanguage($masterProject);
+
         // file(s)
         if (false === empty($model->files)) {
             foreach ($model->files as $f) {
@@ -98,8 +101,8 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param $dqfId
-     * @param $dqfUuid
+     * @param int $dqfId
+     * @param string $dqfUuid
      *
      * @return ReviewSettings|mixed
      */
@@ -154,8 +157,8 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
      */
     public function save(BaseApiEntity $baseEntity)
     {
-        /** @var $baseEntity AbstractProject */
-        if (false === $baseEntity instanceof AbstractProject) {
+        /** @var $baseEntity MasterProject */
+        if (false === $baseEntity instanceof MasterProject) {
             throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
         }
 
@@ -178,9 +181,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function createProject(AbstractProject $baseEntity)
+    private function createProject(MasterProject $baseEntity)
     {
         $masterProject = $this->client->createMasterProject([
                 'generic_email'      => $this->genericEmail,
@@ -198,12 +201,15 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
 
         $baseEntity->setDqfId($masterProject->dqfId);
         $baseEntity->setDqfUuid($masterProject->dqfUUID);
+
+        // set source language
+        $this->hydrateSourceLanguage($baseEntity);
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function saveFiles(AbstractProject $baseEntity)
+    private function saveFiles(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getFiles())) {
             foreach ($baseEntity->getFiles() as $file) {
@@ -223,9 +229,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function saveTargetLanguageAssoc(AbstractProject $baseEntity)
+    private function saveTargetLanguageAssoc(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getTargetLanguageAssoc())) {
             foreach ($baseEntity->getTargetLanguageAssoc() as $targetLanguageCode => $fileTargetLangs) {
@@ -250,9 +256,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function saveReviewSettings(AbstractProject $baseEntity)
+    private function saveReviewSettings(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getReviewSettings())) {
             $projectReviewSettings = $this->client->addProjectReviewSettings([
@@ -281,13 +287,16 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
      */
     public function update(BaseApiEntity $baseEntity)
     {
-        /** @var $baseEntity AbstractProject */
-        if (false === $baseEntity instanceof AbstractProject) {
+        /** @var $baseEntity MasterProject */
+        if (false === $baseEntity instanceof MasterProject) {
             throw new InvalidTypeException('Entity provided is not an instance of MasterProject');
         }
 
         // update project
         $masterProject = $this->updateProject($baseEntity);
+
+        // set source language
+        $this->hydrateSourceLanguage($baseEntity);
 
         // file(s)
         $this->updateFiles($baseEntity);
@@ -305,11 +314,11 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      *
      * @return mixed
      */
-    private function updateProject(AbstractProject $baseEntity)
+    private function updateProject(MasterProject $baseEntity)
     {
         return $this->client->updateMasterProject([
                 'generic_email'      => $this->genericEmail,
@@ -329,9 +338,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function updateFiles(AbstractProject $baseEntity)
+    private function updateFiles(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getFiles())) {
             foreach ($baseEntity->getFiles() as $file) {
@@ -364,9 +373,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function updateTargetLanguageAssoc(AbstractProject $baseEntity)
+    private function updateTargetLanguageAssoc(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getTargetLanguageAssoc())) {
 
@@ -412,9 +421,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function updateReviewSettings(AbstractProject $baseEntity)
+    private function updateReviewSettings(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getReviewSettings())) {
             if (false === empty($baseEntity->getReviewSettings()->getDqfId())) {
@@ -450,9 +459,9 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
     }
 
     /**
-     * @param AbstractProject $baseEntity
+     * @param MasterProject $baseEntity
      */
-    private function saveSourceSegments(AbstractProject $baseEntity)
+    private function saveSourceSegments(MasterProject $baseEntity)
     {
         if (false === empty($baseEntity->getSourceSegments())) {
             $bodies = [];
@@ -507,6 +516,26 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * @param MasterProject $masterProject
+     */
+    private function hydrateSourceLanguage(MasterProject $masterProject)
+    {
+        if (false === empty($masterProject->getSourceLanguage())) {
+            return;
+        }
+
+        $attr = $this->client->getBasicAttributesAggregate([]);
+
+        foreach ($attr['language'] as $language) {
+            if ($language->localeCode === $masterProject->getSourceLanguage()->getLocaleCode()) {
+                $masterProject->getSourceLanguage()->setName($language->name);
+                $masterProject->getSourceLanguage()->setDqfId($language->id);
+                break;
             }
         }
     }
