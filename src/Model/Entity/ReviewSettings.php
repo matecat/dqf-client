@@ -37,6 +37,11 @@ class ReviewSettings extends BaseApiEntity
     private $passFailThreshold;
 
     /**
+     * @var float
+     */
+    private $sampling;
+
+    /**
      * ReviewSettings constructor.
      *
      * @param string $reviewType
@@ -146,5 +151,21 @@ class ReviewSettings extends BaseApiEntity
     public function setPassFailThreshold($passFailThreshold)
     {
         $this->passFailThreshold = $passFailThreshold;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSampling()
+    {
+        return $this->sampling;
+    }
+
+    /**
+     * @param float $sampling
+     */
+    public function setSampling($sampling)
+    {
+        $this->sampling = $sampling;
     }
 }
