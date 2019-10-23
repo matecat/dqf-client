@@ -10,6 +10,7 @@ use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
+use Matecat\Dqf\Model\ValueObject\Severity;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class MasterProjectRepository extends AbstractApiRepository implements CrudApiRepositoryInterface
@@ -121,19 +122,12 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
         $reviewSettings->setDqfId($model->id);
         $reviewSettings->setPassFailThreshold($model->threshold);
 
-        $errorSeveritySetting      = '[';
-        $errorSeveritySettingArray = [];
-
         if (false === empty($model->errorSeveritySetting)) {
             foreach ($model->errorSeveritySetting as $setting) {
-                $errorSeveritySettingArray[] = '{"severityId":' . $setting->value . ',"weight":' . $setting->errorSeverity->id . '}';
+                $reviewSettings->addSeverityWeight(new Severity($setting->value, $setting->errorSeverity->id));
             }
         }
 
-        $errorSeveritySetting .= implode(',', $errorSeveritySettingArray);
-        $errorSeveritySetting .= ']';
-
-        $reviewSettings->setSeverityWeights($errorSeveritySetting);
         if (false === empty($model->errorTypologySetting[ 0 ]->errorCategory->id)) {
             $reviewSettings->setErrorCategoryIds0($model->errorTypologySetting[ 0 ]->errorCategory->id);
         }

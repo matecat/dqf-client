@@ -9,6 +9,7 @@ use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
+use Matecat\Dqf\Model\ValueObject\Severity;
 use Matecat\Dqf\Repository\Api\MasterProjectRepository;
 use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
@@ -61,7 +62,17 @@ class MasterProjectRepositoryTest extends BaseTest
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+
+        $sev1 = new Severity(1,1);
+        $sev2 = new Severity(2,2);
+        $sev3 = new Severity(3,3);
+        $sev4 = new Severity(4,4);
+
+        $reviewSettings->addSeverityWeight($sev1);
+        $reviewSettings->addSeverityWeight($sev2);
+        $reviewSettings->addSeverityWeight($sev3);
+        $reviewSettings->addSeverityWeight($sev4);
+
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
 

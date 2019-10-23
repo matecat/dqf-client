@@ -14,6 +14,7 @@ use Matecat\Dqf\Model\ValueObject\ReviewBatch;
 use Matecat\Dqf\Model\ValueObject\RevisionCorrection;
 use Matecat\Dqf\Model\ValueObject\RevisionCorrectionItem;
 use Matecat\Dqf\Model\ValueObject\RevisionError;
+use Matecat\Dqf\Model\ValueObject\Severity;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 use Matecat\Dqf\Repository\Api\ChildProjectRepository;
 use Matecat\Dqf\Repository\Api\MasterProjectRepository;
@@ -79,7 +80,17 @@ class TranslationRepositoryTest extends BaseTest
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+
+        $sev1 = new Severity(1,1);
+        $sev2 = new Severity(2,2);
+        $sev3 = new Severity(3,3);
+        $sev4 = new Severity(4,4);
+
+        $reviewSettings->addSeverityWeight($sev1);
+        $reviewSettings->addSeverityWeight($sev2);
+        $reviewSettings->addSeverityWeight($sev3);
+        $reviewSettings->addSeverityWeight($sev4);
+
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
 
@@ -106,7 +117,17 @@ class TranslationRepositoryTest extends BaseTest
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+
+        $sev1 = new Severity(1,1);
+        $sev2 = new Severity(2,2);
+        $sev3 = new Severity(3,3);
+        $sev4 = new Severity(4,4);
+
+        $reviewSettings->addSeverityWeight($sev1);
+        $reviewSettings->addSeverityWeight($sev2);
+        $reviewSettings->addSeverityWeight($sev3);
+        $reviewSettings->addSeverityWeight($sev4);
+
         $reviewSettings->setPassFailThreshold(0.00);
         $childProject->setReviewSettings($reviewSettings);
 
@@ -184,10 +205,20 @@ class TranslationRepositoryTest extends BaseTest
 
         // review settings
         $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
-        $reviewSettings->setErrorCategoryIds0(9);
-        $reviewSettings->setErrorCategoryIds1(10);
-        $reviewSettings->setErrorCategoryIds2(11);
-        $reviewSettings->setSeverityWeights('[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]');
+        $reviewSettings->setErrorCategoryIds0(1);
+        $reviewSettings->setErrorCategoryIds1(2);
+        $reviewSettings->setErrorCategoryIds2(3);
+
+        $sev1 = new Severity(1,1);
+        $sev2 = new Severity(2,2);
+        $sev3 = new Severity(3,3);
+        $sev4 = new Severity(4,4);
+
+        $reviewSettings->addSeverityWeight($sev1);
+        $reviewSettings->addSeverityWeight($sev2);
+        $reviewSettings->addSeverityWeight($sev3);
+        $reviewSettings->addSeverityWeight($sev4);
+
         $reviewSettings->setPassFailThreshold(0.00);
         $childProject->setReviewSettings($reviewSettings);
 
@@ -200,13 +231,13 @@ class TranslationRepositoryTest extends BaseTest
         $correction->addItem(new RevisionCorrectionItem('Another comment', 'unchanged'));
 
         $reviewedSegment = new ReviewedSegment('this is a comment');
-        $reviewedSegment->addError(new RevisionError(11, 2));
-        $reviewedSegment->addError(new RevisionError(9, 1, 1, 5));
+        $reviewedSegment->addError(new RevisionError(1, 2));
+        $reviewedSegment->addError(new RevisionError(1, 1, 1, 5));
         $reviewedSegment->setCorrection($correction);
 
         $reviewedSegment2 = new ReviewedSegment('this is another comment');
-        $reviewedSegment2->addError(new RevisionError(10, 2));
-        $reviewedSegment2->addError(new RevisionError(11, 1, 1, 5));
+        $reviewedSegment2->addError(new RevisionError(2, 2));
+        $reviewedSegment2->addError(new RevisionError(2, 1, 1, 5));
         $reviewedSegment2->setCorrection($correction);
 
         $batchId = Uuid::uuid4()->toString();

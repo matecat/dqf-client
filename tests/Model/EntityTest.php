@@ -15,6 +15,7 @@ use Matecat\Dqf\Model\ValueObject\ReviewBatch;
 use Matecat\Dqf\Model\ValueObject\RevisionCorrection;
 use Matecat\Dqf\Model\ValueObject\RevisionCorrectionItem;
 use Matecat\Dqf\Model\ValueObject\RevisionError;
+use Matecat\Dqf\Model\ValueObject\Severity;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 use Matecat\Dqf\Tests\BaseTest;
 use Ramsey\Uuid\Uuid;
@@ -69,7 +70,8 @@ class EntityTest extends BaseTest
         $reviewSettings->setErrorCategoryIds0(1);
         $reviewSettings->setErrorCategoryIds1(2);
         $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->setSeverityWeights('[]');
+        $reviewSettings->addSeverityWeight(new Severity(1,1));
+        $reviewSettings->addSeverityWeight(new Severity(2,2));
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
 
@@ -96,6 +98,7 @@ class EntityTest extends BaseTest
         $this->assertEquals($masterProject->getTargetLanguages()[ 1 ]->getLocaleCode(), 'fr-FR');
         $this->assertTrue($masterProject->hasTargetLanguage('fr-FR'));
         $this->assertFalse($masterProject->hasTargetLanguage('es-ES'));
+        $this->assertEquals('[{"severityId":1,"weight":1},{"severityId":2,"weight":2}]', $masterProject->getReviewSettings()->getSeverityWeights());
 
         try {
             $file3 = new File('test-file333', 3);

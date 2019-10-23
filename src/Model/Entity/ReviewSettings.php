@@ -3,6 +3,7 @@
 namespace Matecat\Dqf\Model\Entity;
 
 use Matecat\Dqf\Constants;
+use Matecat\Dqf\Model\ValueObject\Severity;
 
 class ReviewSettings extends BaseApiEntity
 {
@@ -12,7 +13,7 @@ class ReviewSettings extends BaseApiEntity
     private $reviewType;
 
     /**
-     * @var string
+     * @var array
      */
     private $severityWeights;
 
@@ -78,15 +79,25 @@ class ReviewSettings extends BaseApiEntity
      */
     public function getSeverityWeights()
     {
-        return $this->severityWeights;
+        $severities = [];
+
+        /** @var Severity $severityWeight */
+        foreach ($this->severityWeights as $severityWeight){
+            $severities[] = [
+                    'severityId' => $severityWeight->getSeverityId(),
+                    'weight' => $severityWeight->getWeight(),
+            ];
+        }
+
+        return json_encode($severities);
     }
 
     /**
-     * @param string $severityWeights
+     * @param Severity $severityWeight
      */
-    public function setSeverityWeights($severityWeights)
+    public function addSeverityWeight(Severity $severityWeight)
     {
-        $this->severityWeights = $severityWeights;
+        $this->severityWeights[] = $severityWeight;
     }
 
     /**
@@ -102,6 +113,7 @@ class ReviewSettings extends BaseApiEntity
      */
     public function setErrorCategoryIds0($errorCategoryIds0)
     {
+        $this->validateErrorCategoryId($errorCategoryIds0);
         $this->errorCategoryIds0 = $errorCategoryIds0;
     }
 
@@ -118,6 +130,7 @@ class ReviewSettings extends BaseApiEntity
      */
     public function setErrorCategoryIds1($errorCategoryIds1)
     {
+        $this->validateErrorCategoryId($errorCategoryIds1);
         $this->errorCategoryIds1 = $errorCategoryIds1;
     }
 
@@ -134,7 +147,20 @@ class ReviewSettings extends BaseApiEntity
      */
     public function setErrorCategoryIds2($errorCategoryIds2)
     {
+        $this->validateErrorCategoryId($errorCategoryIds2);
         $this->errorCategoryIds2 = $errorCategoryIds2;
+    }
+
+    /**
+     * @param int $errorCategoryId
+     */
+    private function validateErrorCategoryId($errorCategoryId)
+    {
+        $allowed = [1, 2, 3, 4, 5, 6, 7, 8];
+
+        if(false === in_array($errorCategoryId, $allowed)){
+            throw new \DomainException($errorCategoryId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
     }
 
     /**
