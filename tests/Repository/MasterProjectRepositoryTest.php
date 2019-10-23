@@ -1,6 +1,6 @@
 <?php
 
-namespace Matecat\Dqf\Tests\SessionProvider;
+namespace Matecat\Dqf\Tests\Repository;
 
 use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\File;
