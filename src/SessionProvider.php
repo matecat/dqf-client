@@ -105,7 +105,7 @@ class SessionProvider
         $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
         $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
 
-        if ($this->isSessionStillValid((int)$dqfUser->getSessionExpiresAt())) {
+        if ($dqfUser->isSessionStillValid()) {
             return $dqfUser->getSessionId();
         }
 
@@ -196,7 +196,7 @@ class SessionProvider
         $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
         $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
 
-        if ($this->isSessionStillValid((int)$dqfUser->getSessionExpiresAt())) {
+        if ($dqfUser->isSessionStillValid()) {
             return $dqfUser->getSessionId();
         }
 
@@ -211,15 +211,5 @@ class SessionProvider
     public function hasId($externalReferenceId)
     {
         return ($this->dqfUserRepository->getByExternalId($externalReferenceId) instanceof DqfUser);
-    }
-
-    /**
-     * @param int $dqf_session_expires
-     *
-     * @return bool
-     */
-    private function isSessionStillValid($dqf_session_expires)
-    {
-        return $dqf_session_expires >= strtotime("now");
     }
 }

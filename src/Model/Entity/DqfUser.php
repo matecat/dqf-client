@@ -112,11 +112,19 @@ class DqfUser
     }
 
     /**
-     * @param mixed $sessionExpiresAt
+     * @param int $sessionExpiresAt
      */
     public function setSessionExpiresAt($sessionExpiresAt)
     {
         $this->sessionExpiresAt = $sessionExpiresAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSessionStillValid()
+    {
+        return (int)$this->sessionExpiresAt >= strtotime("now");
     }
 
     /**
