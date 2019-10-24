@@ -261,6 +261,7 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
                     'projectKey'          => $baseEntity->getDqfUuid(),
                     'projectId'           => $baseEntity->getDqfId(),
                     'reviewType'          => $baseEntity->getReviewSettings()->getReviewType(),
+                    'templateName'        => $baseEntity->getReviewSettings()->getTemplateName(),
                     'severityWeights'     => $baseEntity->getReviewSettings()->getSeverityWeights(),
                     'errorCategoryIds[0]' => $baseEntity->getReviewSettings()->getErrorCategoryIds0(),
                     'errorCategoryIds[1]' => $baseEntity->getReviewSettings()->getErrorCategoryIds1(),
