@@ -13,6 +13,11 @@ class ReviewSettings extends BaseApiEntity
     private $reviewType;
 
     /**
+     * @var string
+     */
+    private $templateName;
+
+    /**
      * @var array
      */
     private $severityWeights;
@@ -72,6 +77,22 @@ class ReviewSettings extends BaseApiEntity
         }
 
         $this->reviewType = $reviewType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
+    }
+
+    /**
+     * @param string $templateName
+     */
+    public function setTemplateName($templateName)
+    {
+        $this->templateName = $templateName;
     }
 
     /**
