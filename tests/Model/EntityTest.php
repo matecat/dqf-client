@@ -36,29 +36,27 @@ class EntityTest extends BaseTest
 
         $clientId = Uuid::uuid4()->toString();
 
-
-
         try {
             new MasterProject('test-project', 'it-IT', 43242, 2, 1, 1);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '43242 is not a valid value. [Allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]');
         }
 
         try {
             new MasterProject('test-project', 'it-IT', 1, 432432432, 3, 1);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '432432432 is not a valid value. [Allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]');
         }
 
         try {
             new MasterProject('test-project', 'it-IT', 1, 2, 43243, 1);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '43243 is not a valid value. [Allowed: 1,2,3,4,5]');
         }
 
         try {
             new MasterProject('test-project', 'it-IT', 1, 2, 3, 4);
-        } catch (\DomainException $e){
+        } catch (\DomainException $e) {
             $this->assertEquals($e->getMessage(), '4 is not a valid value. [Allowed: 1,2]');
         }
 
@@ -67,11 +65,11 @@ class EntityTest extends BaseTest
 
         // add review settings
         $reviewSettings = new ReviewSettings('combined');
-        $reviewSettings->setErrorCategoryIds0(1);
-        $reviewSettings->setErrorCategoryIds1(2);
-        $reviewSettings->setErrorCategoryIds2(3);
-        $reviewSettings->addSeverityWeight(new Severity(1,1));
-        $reviewSettings->addSeverityWeight(new Severity(2,2));
+        $reviewSettings->addErrorCategoryId(1);
+        $reviewSettings->addErrorCategoryId(2);
+        $reviewSettings->addErrorCategoryId(3);
+        $reviewSettings->addSeverityWeight(new Severity(1, 1));
+        $reviewSettings->addSeverityWeight(new Severity(2, 2));
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
 
@@ -99,6 +97,7 @@ class EntityTest extends BaseTest
         $this->assertTrue($masterProject->hasTargetLanguage('fr-FR'));
         $this->assertFalse($masterProject->hasTargetLanguage('es-ES'));
         $this->assertEquals('[{"severityId":1,"weight":1},{"severityId":2,"weight":2}]', $masterProject->getReviewSettings()->getSeverityWeights());
+        $this->assertEquals([1,2,3], $masterProject->getReviewSettings()->getErrorCategoryIds());
 
         try {
             $file3 = new File('test-file333', 3);

@@ -59,14 +59,16 @@ class MasterProjectRepositoryTest extends BaseTest
 
         // review settings
         $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
-        $reviewSettings->setErrorCategoryIds0(1);
-        $reviewSettings->setErrorCategoryIds1(2);
-        $reviewSettings->setErrorCategoryIds2(3);
+        $reviewSettings->addErrorCategoryId(1);
+        $reviewSettings->addErrorCategoryId(2);
+        $reviewSettings->addErrorCategoryId(3);
+        $reviewSettings->addErrorCategoryId(4);
+        $reviewSettings->addErrorCategoryId(5);
 
-        $sev1 = new Severity(1,1);
-        $sev2 = new Severity(2,2);
-        $sev3 = new Severity(3,3);
-        $sev4 = new Severity(4,4);
+        $sev1 = new Severity(1, 1);
+        $sev2 = new Severity(2, 2);
+        $sev3 = new Severity(3, 3);
+        $sev4 = new Severity(4, 4);
 
         $reviewSettings->addSeverityWeight($sev1);
         $reviewSettings->addSeverityWeight($sev2);

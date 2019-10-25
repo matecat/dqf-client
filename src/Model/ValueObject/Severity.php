@@ -29,10 +29,11 @@ class Severity
     /**
      * @param $severityId
      */
-    private function setSeverityId($severityId) {
+    private function setSeverityId($severityId)
+    {
         $allowed = [1, 2, 3, 4];
 
-        if(false === in_array($severityId, $allowed)){
+        if (false === in_array($severityId, $allowed)) {
             throw new \DomainException($severityId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
         }
 
@@ -42,15 +43,16 @@ class Severity
     /**
      * @return int
      */
-    public function getSeverityId() {
+    public function getSeverityId()
+    {
         return $this->severityId;
     }
 
     /**
      * @return int
      */
-    public function getWeight() {
+    public function getWeight()
+    {
         return $this->weight;
     }
 }
-

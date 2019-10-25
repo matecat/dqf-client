@@ -33,18 +33,10 @@ class AddReviewTemplate extends CommandHandler
                         'type'        => Constants::DATA_TYPE_STRING,
                         'required_if' => [ 'reviewType', Constants::LOGICAL_OPERATOR_EQUALS, 'combined|error_typology' ]
                 ],
-                'errorCategoryIds[0]' => [
+                'errorCategoryIds' => [
                         'required'    => false,
-                        'type'        => Constants::DATA_TYPE_INTEGER,
+                        'type'        => Constants::DATA_TYPE_ARRAY,
                         'required_if' => [ 'reviewType', Constants::LOGICAL_OPERATOR_EQUALS, 'combined|error_typology' ]
-                ],
-                'errorCategoryIds[1]' => [
-                        'required' => false,
-                        'type'     => Constants::DATA_TYPE_INTEGER,
-                ],
-                'errorCategoryIds[2]' => [
-                        'required' => false,
-                        'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
                 'passFailThreshold'   => [
                         'required'    => false,
@@ -72,23 +64,27 @@ class AddReviewTemplate extends CommandHandler
      */
     public function handle($params = [])
     {
+        $errorCategoryIds = [];
+        foreach ($params[ 'errorCategoryIds'] as $i => $errorCategoryId) {
+            $errorCategoryIds['errorCategoryIds['.$i.']'] = $errorCategoryId;
+        }
+
+        $formParams = array_merge([
+                'templateName'        => $params[ 'templateName' ],
+                'reviewType'          => $params[ 'reviewType' ],
+                'severityWeights'     => isset($params[ 'severityWeights' ]) ? $params[ 'severityWeights' ] : null,
+                'passFailThreshold'   => isset($params[ 'passFailThreshold' ]) ? $params[ 'passFailThreshold' ] : null,
+                'sampling'            => isset($params[ 'sampling' ]) ? $params[ 'sampling' ] : null,
+                'isPublic'            => isset($params[ 'isPublic' ]) ? $params[ 'isPublic' ] : null,
+        ], $errorCategoryIds);
+
         $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('user/reviewTemplate', []), [
                 'headers'     => [
                         'projectKey' => $params[ 'projectKey' ],
                         'sessionId'  => $params[ 'sessionId' ],
                         'email'      => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
-                'form_params' => [
-                        'templateName'        => $params[ 'templateName' ],
-                        'reviewType'          => $params[ 'reviewType' ],
-                        'severityWeights'     => isset($params[ 'severityWeights' ]) ? $params[ 'severityWeights' ] : null,
-                        'errorCategoryIds[0]' => isset($params[ 'errorCategoryIds[0]' ]) ? $params[ 'errorCategoryIds[0]' ] : null,
-                        'errorCategoryIds[1]' => isset($params[ 'errorCategoryIds[1]' ]) ? $params[ 'errorCategoryIds[1]' ] : null,
-                        'errorCategoryIds[2]' => isset($params[ 'errorCategoryIds[2]' ]) ? $params[ 'errorCategoryIds[2]' ] : null,
-                        'passFailThreshold'   => isset($params[ 'passFailThreshold' ]) ? $params[ 'passFailThreshold' ] : null,
-                        'sampling'            => isset($params[ 'sampling' ]) ? $params[ 'sampling' ] : null,
-                        'isPublic'            => isset($params[ 'isPublic' ]) ? $params[ 'isPublic' ] : null,
-                ],
+                'form_params' => $formParams,
         ]);
 
         if ($response->getStatusCode() === StatusCode::CREATED) {

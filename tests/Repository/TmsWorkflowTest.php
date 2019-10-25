@@ -70,7 +70,7 @@ class TmsWorkflowTest extends BaseTest
         // cannot delete the root project
         try {
             $this->repo->delete($rootProject);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $error = json_decode($e->getMessage());
 
             $this->assertEquals("Error[Cannot delete or update a parent row: a foreign key constraint fails (`dqf_api`.`project`, CONSTRAINT `fk-project-project-tms` FOREIGN KEY (`tms_project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION)]", $error->exceptionMessage);

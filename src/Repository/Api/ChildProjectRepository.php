@@ -120,16 +120,8 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
             }
         }
 
-        if (false === empty($model->errorTypologySetting[ 0 ]->errorCategory->id)) {
-            $reviewSettings->setErrorCategoryIds0($model->errorTypologySetting[ 0 ]->errorCategory->id);
-        }
-
-        if (false === empty($model->errorTypologySetting[ 1 ]->errorCategory->id)) {
-            $reviewSettings->setErrorCategoryIds1($model->errorTypologySetting[ 1 ]->errorCategory->id);
-        }
-
-        if (false === empty($model->errorTypologySetting[ 2 ]->errorCategory->id)) {
-            $reviewSettings->setErrorCategoryIds2($model->errorTypologySetting[ 2 ]->errorCategory->id);
+        foreach ($model->errorTypologySetting as $item) {
+            $reviewSettings->addErrorCategoryId($item->errorCategory->id);
         }
 
         return $reviewSettings;
@@ -231,9 +223,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
                     'projectId'           => $baseEntity->getDqfId(),
                     'reviewType'          => $baseEntity->getReviewSettings()->getReviewType(),
                     'severityWeights'     => $baseEntity->getReviewSettings()->getSeverityWeights(),
-                    'errorCategoryIds[0]' => $baseEntity->getReviewSettings()->getErrorCategoryIds0(),
-                    'errorCategoryIds[1]' => $baseEntity->getReviewSettings()->getErrorCategoryIds1(),
-                    'errorCategoryIds[2]' => $baseEntity->getReviewSettings()->getErrorCategoryIds2(),
+                    'errorCategoryIds'    => $baseEntity->getReviewSettings()->getErrorCategoryIds(),
                     'passFailThreshold'   => $baseEntity->getReviewSettings()->getPassFailThreshold(),
             ]);
 
@@ -346,9 +336,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
                         'projectId'           => $baseEntity->getDqfId(),
                         'reviewType'          => $baseEntity->getReviewSettings()->getReviewType(),
                         'severityWeights'     => $baseEntity->getReviewSettings()->getSeverityWeights(),
-                        'errorCategoryIds[0]' => $baseEntity->getReviewSettings()->getErrorCategoryIds0(),
-                        'errorCategoryIds[1]' => $baseEntity->getReviewSettings()->getErrorCategoryIds1(),
-                        'errorCategoryIds[2]' => $baseEntity->getReviewSettings()->getErrorCategoryIds2(),
+                        'errorCategoryIds'    => $baseEntity->getReviewSettings()->getErrorCategoryIds(),
                         'passFailThreshold'   => $baseEntity->getReviewSettings()->getPassFailThreshold(),
                 ]);
             } else {
@@ -359,9 +347,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
                         'projectId'           => $baseEntity->getDqfId(),
                         'reviewType'          => $baseEntity->getReviewSettings()->getReviewType(),
                         'severityWeights'     => $baseEntity->getReviewSettings()->getSeverityWeights(),
-                        'errorCategoryIds[0]' => $baseEntity->getReviewSettings()->getErrorCategoryIds0(),
-                        'errorCategoryIds[1]' => $baseEntity->getReviewSettings()->getErrorCategoryIds1(),
-                        'errorCategoryIds[2]' => $baseEntity->getReviewSettings()->getErrorCategoryIds2(),
+                        'errorCategoryIds'    => $baseEntity->getReviewSettings()->getErrorCategoryIds(),
                         'passFailThreshold'   => $baseEntity->getReviewSettings()->getPassFailThreshold(),
                 ]);
 

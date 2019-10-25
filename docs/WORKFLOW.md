@@ -120,9 +120,7 @@ $projectReviewSettings = $client->addProjectReviewSettings([
     'projectId'           => $masterProject->dqfId,
     'reviewType'          => 'combined',
     'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-    'errorCategoryIds[0]' => 9,
-    'errorCategoryIds[1]' => 10,
-    'errorCategoryIds[2]' => 11,
+    'errorCategoryIds'    => [1, 2, 3],
     'passFailThreshold'   => 1.00,
 ]);
 
@@ -290,9 +288,7 @@ $childNodeReviewSettings = $client->addProjectReviewSettings([
     'projectId'           => $childReview->dqfId,
     'reviewType'          => 'combined',
     'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-    'errorCategoryIds[0]' => 9,
-    'errorCategoryIds[1]' => 10,
-    'errorCategoryIds[2]' => 11,
+    'errorCategoryIds'    => [1, 2, 3],
     'passFailThreshold'   => 1.00,
 ]);
 
@@ -308,9 +304,7 @@ $client->addReviewTemplate([
     'templateName'        => 'test-review-template-' . Uuid::uuid4()->toString(),
     'reviewType'          => 'combined',
     'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-    'errorCategoryIds[0]' => 9,
-    'errorCategoryIds[1]' => 10,
-    'errorCategoryIds[2]' => 11,
+    'errorCategoryIds'    => [1, 2, 3],
     'passFailThreshold'   => 1.00,
     'isPublic'            => true,
 ]);
@@ -478,9 +472,11 @@ $masterProject->assocTargetLanguageToFile('fr-FR', $file);
 
 // review settings
 $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
-$reviewSettings->setErrorCategoryIds0(1);
-$reviewSettings->setErrorCategoryIds1(2);
-$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->addErrorCategoryId(1);
+$reviewSettings->addErrorCategoryId(2);
+$reviewSettings->addErrorCategoryId(3);
+$reviewSettings->addErrorCategoryId(4);
+$reviewSettings->addErrorCategoryId(5);
 
 $sev1 = new Severity(1,1);
 $sev2 = new Severity(2,2);
@@ -519,9 +515,11 @@ $childProject->assocTargetLanguageToFile('fr-FR', $masterProject->getFiles()[ 0 
 
 // review settings
 $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
-$reviewSettings->setErrorCategoryIds0(1);
-$reviewSettings->setErrorCategoryIds1(2);
-$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->addErrorCategoryId(1);
+$reviewSettings->addErrorCategoryId(2);
+$reviewSettings->addErrorCategoryId(3);
+$reviewSettings->addErrorCategoryId(4);
+$reviewSettings->addErrorCategoryId(5);
 
 $sev1 = new Severity(1,1);
 $sev2 = new Severity(2,2);
@@ -585,9 +583,9 @@ $childProject->assocTargetLanguageToFile('fr-FR', $file);
 
 // review settings
 $reviewSettings = new ReviewSettings(Constants::REVIEW_TYPE_COMBINED);
-$reviewSettings->setErrorCategoryIds0(9);
-$reviewSettings->setErrorCategoryIds1(10);
-$reviewSettings->setErrorCategoryIds2(11);
+$reviewSettings->addErrorCategoryId(1);
+$reviewSettings->addErrorCategoryId(2);
+$reviewSettings->addErrorCategoryId(3);
 
 $sev1 = new Severity(1,1);
 $sev2 = new Severity(2,2);

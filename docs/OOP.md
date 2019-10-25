@@ -30,9 +30,9 @@ $masterProject->assocTargetLanguageToFile('en-US', $file);
 
 // review settings
 $reviewSettings = new ReviewSettings('combined');
-$reviewSettings->setErrorCategoryIds0(1);
-$reviewSettings->setErrorCategoryIds1(2);
-$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->addErrorCategoryId(1);
+$reviewSettings->addErrorCategoryId(2);
+$reviewSettings->addErrorCategoryId(3);
 
 $sev1 = new Severity(1,1);
 $sev2 = new Severity(2,2);
@@ -87,9 +87,11 @@ $retrivedMasterProject->assocTargetLanguageToFile('en-US', $file);
 
 // review settings
 $reviewSettings = new ReviewSettings('combined');
-$reviewSettings->setErrorCategoryIds0(1);
-$reviewSettings->setErrorCategoryIds1(2);
-$reviewSettings->setErrorCategoryIds2(3);
+$reviewSettings->addErrorCategoryId(1);
+$reviewSettings->addErrorCategoryId(2);
+$reviewSettings->addErrorCategoryId(3);
+$reviewSettings->addErrorCategoryId(4);
+$reviewSettings->addErrorCategoryId(5);
 
 $sev1 = new Severity(1,1);
 $sev2 = new Severity(2,2);

@@ -129,9 +129,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectId'           => $masterProject->dqfId,
                 'reviewType'          => 'combined',
                 'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-                'errorCategoryIds[0]' => 9,
-                'errorCategoryIds[1]' => 10,
-                'errorCategoryIds[2]' => 11,
+                'errorCategoryIds'    => [1,2,3,4,5],
                 'passFailThreshold'   => 1.00,
         ]);
 
@@ -343,9 +341,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'projectId'           => $childReview->dqfId,
                 'reviewType'          => 'combined',
                 'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-                'errorCategoryIds[0]' => 9,
-                'errorCategoryIds[1]' => 10,
-                'errorCategoryIds[2]' => 11,
+                'errorCategoryIds'    => [1,2,3,4,5],
                 'passFailThreshold'   => 1.00,
         ]);
 
@@ -364,9 +360,7 @@ class CompleteDQFWorkflowTest extends BaseTest
                 'templateName'        => 'test-review-template-' . Uuid::uuid4()->toString(),
                 'reviewType'          => 'combined',
                 'severityWeights'     => '[{"severityId":"1","weight":1}, {"severityId":"2","weight":2}, {"severityId":"3","weight":3}, {"severityId":"4","weight":4}]',
-                'errorCategoryIds[0]' => 9,
-                'errorCategoryIds[1]' => 10,
-                'errorCategoryIds[2]' => 11,
+                'errorCategoryIds'    => [1,2,3],
                 'passFailThreshold'   => 1.00,
                 'isPublic'            => true,
         ]);
@@ -424,14 +418,14 @@ class CompleteDQFWorkflowTest extends BaseTest
                 "comment"  => "Sample review comment",
                 "errors"   => [
                         [
-                                "errorCategoryId" => 11,
+                                "errorCategoryId" => 1,
                                 "severityId"      => 2,
                                 "charPosStart"    => null,
                                 "charPosEnd"      => null,
                                 "isRepeated"      => false
                         ],
                         [
-                                "errorCategoryId" => 9,
+                                "errorCategoryId" => 2,
                                 "severityId"      => 1,
                                 "charPosStart"    => 1,
                                 "charPosEnd"      => 5,

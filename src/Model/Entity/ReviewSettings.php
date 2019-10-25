@@ -23,19 +23,19 @@ class ReviewSettings extends BaseApiEntity
     private $severityWeights;
 
     /**
-     * @var int
+     * @var array
      */
-    private $errorCategoryIds0;
+    private $errorCategoryIds;
 
-    /**
-     * @var int
-     */
-    private $errorCategoryIds1;
-
-    /**
-     * @var int
-     */
-    private $errorCategoryIds2;
+//    /**
+//     * @var int
+//     */
+//    private $errorCategoryIds1;
+//
+//    /**
+//     * @var int
+//     */
+//    private $errorCategoryIds2;
 
     /**
      * @var float
@@ -103,7 +103,7 @@ class ReviewSettings extends BaseApiEntity
         $severities = [];
 
         /** @var Severity $severityWeight */
-        foreach ($this->severityWeights as $severityWeight){
+        foreach ($this->severityWeights as $severityWeight) {
             $severities[] = [
                     'severityId' => $severityWeight->getSeverityId(),
                     'weight' => $severityWeight->getWeight(),
@@ -122,55 +122,55 @@ class ReviewSettings extends BaseApiEntity
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getErrorCategoryIds0()
+    public function getErrorCategoryIds()
     {
-        return $this->errorCategoryIds0;
+        return $this->errorCategoryIds;
     }
 
     /**
-     * @param int $errorCategoryIds0
+     * @param $errorCategoryId
      */
-    public function setErrorCategoryIds0($errorCategoryIds0)
+    public function addErrorCategoryId($errorCategoryId)
     {
-        $this->validateErrorCategoryId($errorCategoryIds0);
-        $this->errorCategoryIds0 = $errorCategoryIds0;
+        $this->validateErrorCategoryId($errorCategoryId);
+        $this->errorCategoryIds[] = $errorCategoryId;
     }
 
-    /**
-     * @return int
-     */
-    public function getErrorCategoryIds1()
-    {
-        return $this->errorCategoryIds1;
-    }
-
-    /**
-     * @param int $errorCategoryIds1
-     */
-    public function setErrorCategoryIds1($errorCategoryIds1)
-    {
-        $this->validateErrorCategoryId($errorCategoryIds1);
-        $this->errorCategoryIds1 = $errorCategoryIds1;
-    }
-
-    /**
-     * @return int
-     */
-    public function getErrorCategoryIds2()
-    {
-        return $this->errorCategoryIds2;
-    }
-
-    /**
-     * @param int $errorCategoryIds2
-     */
-    public function setErrorCategoryIds2($errorCategoryIds2)
-    {
-        $this->validateErrorCategoryId($errorCategoryIds2);
-        $this->errorCategoryIds2 = $errorCategoryIds2;
-    }
+//    /**
+//     * @return int
+//     */
+//    public function getErrorCategoryIds1()
+//    {
+//        return $this->errorCategoryIds1;
+//    }
+//
+//    /**
+//     * @param int $errorCategoryIds1
+//     */
+//    public function setErrorCategoryIds1($errorCategoryIds1)
+//    {
+//        $this->validateErrorCategoryId($errorCategoryIds1);
+//        $this->errorCategoryIds1 = $errorCategoryIds1;
+//    }
+//
+//    /**
+//     * @return int
+//     */
+//    public function getErrorCategoryIds2()
+//    {
+//        return $this->errorCategoryIds2;
+//    }
+//
+//    /**
+//     * @param int $errorCategoryIds2
+//     */
+//    public function setErrorCategoryIds2($errorCategoryIds2)
+//    {
+//        $this->validateErrorCategoryId($errorCategoryIds2);
+//        $this->errorCategoryIds2 = $errorCategoryIds2;
+//    }
 
     /**
      * @param int $errorCategoryId
@@ -179,7 +179,7 @@ class ReviewSettings extends BaseApiEntity
     {
         $allowed = [1, 2, 3, 4, 5, 6, 7, 8];
 
-        if(false === in_array($errorCategoryId, $allowed)){
+        if (false === in_array($errorCategoryId, $allowed)) {
             throw new \DomainException($errorCategoryId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
         }
     }
