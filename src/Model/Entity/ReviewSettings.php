@@ -27,16 +27,6 @@ class ReviewSettings extends BaseApiEntity
      */
     private $errorCategoryIds;
 
-//    /**
-//     * @var int
-//     */
-//    private $errorCategoryIds1;
-//
-//    /**
-//     * @var int
-//     */
-//    private $errorCategoryIds2;
-
     /**
      * @var float
      */
@@ -137,40 +127,6 @@ class ReviewSettings extends BaseApiEntity
         $this->validateErrorCategoryId($errorCategoryId);
         $this->errorCategoryIds[] = $errorCategoryId;
     }
-
-//    /**
-//     * @return int
-//     */
-//    public function getErrorCategoryIds1()
-//    {
-//        return $this->errorCategoryIds1;
-//    }
-//
-//    /**
-//     * @param int $errorCategoryIds1
-//     */
-//    public function setErrorCategoryIds1($errorCategoryIds1)
-//    {
-//        $this->validateErrorCategoryId($errorCategoryIds1);
-//        $this->errorCategoryIds1 = $errorCategoryIds1;
-//    }
-//
-//    /**
-//     * @return int
-//     */
-//    public function getErrorCategoryIds2()
-//    {
-//        return $this->errorCategoryIds2;
-//    }
-//
-//    /**
-//     * @param int $errorCategoryIds2
-//     */
-//    public function setErrorCategoryIds2($errorCategoryIds2)
-//    {
-//        $this->validateErrorCategoryId($errorCategoryIds2);
-//        $this->errorCategoryIds2 = $errorCategoryIds2;
-//    }
 
     /**
      * @param int $errorCategoryId
