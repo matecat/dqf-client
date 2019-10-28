@@ -3,6 +3,7 @@
 namespace Matecat\Dqf\Tests\Cache;
 
 use Matecat\Dqf\Cache\BasicAttributes;
+use Matecat\Dqf\Exceptions\CacheException;
 use Matecat\Dqf\Tests\BaseTest;
 
 class BasicAttributesTest extends BaseTest
@@ -161,6 +162,7 @@ class BasicAttributesTest extends BaseTest
 
     /**
      * @test
+     * @throws CacheException
      */
     public function refresh()
     {

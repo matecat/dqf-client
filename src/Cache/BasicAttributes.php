@@ -3,6 +3,7 @@
 namespace Matecat\Dqf\Cache;
 
 use Matecat\Dqf\Client;
+use Matecat\Dqf\Exceptions\CacheException;
 
 class BasicAttributes
 {
@@ -25,7 +26,7 @@ class BasicAttributes
      */
     public static function all()
     {
-        return (array)json_decode(file_get_contents(self::getDataFile()));
+        return (array)json_decode(file_get_contents(self::getDataFile()), false);
     }
 
     /**
@@ -42,12 +43,18 @@ class BasicAttributes
 
     /**
      * @param Client $client
+     *
+     * @throws CacheException
      */
     public static function refresh(Client $client)
     {
         $aggregate = $client->getBasicAttributesAggregate([]);
 
-        file_put_contents(self::getDataFile(), json_encode($aggregate));
+        try {
+            file_put_contents(self::getDataFile(), json_encode($aggregate, JSON_PRETTY_PRINT) );
+        } catch (\Exception $e){
+            throw new CacheException('File ' . self::getDataFile() . ' cannot be created. Be sure that directory is writable.');
+        }
     }
 
     /**
