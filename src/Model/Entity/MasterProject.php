@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
+use Matecat\Dqf\Cache\BasicAttributes;
+
 class MasterProject extends AbstractProject
 {
     /**
@@ -114,7 +116,11 @@ class MasterProject extends AbstractProject
      */
     public function setContentTypeId($contentTypeId)
     {
-        $allowed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        $allowed = [];
+        $contentTypes = BasicAttributes::get('contentType');
+        foreach ($contentTypes as $contentType){
+            $allowed[] = $contentType->id;
+        }
 
         if (false === in_array($contentTypeId, $allowed)) {
             throw new \DomainException($contentTypeId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
@@ -136,7 +142,11 @@ class MasterProject extends AbstractProject
      */
     public function setIndustryId($industryId)
     {
-        $allowed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        $allowed = [];
+        $industries = BasicAttributes::get('industry');
+        foreach ($industries as $industry){
+            $allowed[] = $industry->id;
+        }
 
         if (false === in_array($industryId, $allowed)) {
             throw new \DomainException($industryId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
@@ -158,7 +168,11 @@ class MasterProject extends AbstractProject
      */
     public function setProcessId($processId)
     {
-        $allowed = [1, 2, 3, 4, 5];
+        $allowed = [];
+        $processes = BasicAttributes::get('process');
+        foreach ($processes as $process){
+            $allowed[] = $process->id;
+        }
 
         if (false === in_array($processId, $allowed)) {
             throw new \DomainException($processId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
@@ -180,7 +194,11 @@ class MasterProject extends AbstractProject
      */
     public function setQualityLevelId($qualityLevelId)
     {
-        $allowed = [1, 2];
+        $allowed = [];
+        $qualitylevels = BasicAttributes::get('qualitylevel');
+        foreach ($qualitylevels as $qualitylevel){
+            $allowed[] = $qualitylevel->id;
+        }
 
         if (false === in_array($qualityLevelId, $allowed)) {
             throw new \DomainException($qualityLevelId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');

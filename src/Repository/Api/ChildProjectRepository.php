@@ -13,7 +13,7 @@ use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\Severity;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
-class ChildProjectRepository extends AbstractApiRepository implements CrudApiRepositoryInterface
+class ChildProjectRepository extends AbstractProjectRepository implements CrudApiRepositoryInterface
 {
     /**
      * Delete a record
@@ -204,6 +204,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
                         ]);
 
                         $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                        $this->hydrateFileTargetLang($fileTargetLang);
                     }
                 }
             }
@@ -317,6 +318,7 @@ class ChildProjectRepository extends AbstractApiRepository implements CrudApiRep
                     ]);
 
                     $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                    $this->hydrateFileTargetLang($fileTargetLang);
                 }
             }
         }

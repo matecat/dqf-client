@@ -4,6 +4,7 @@ namespace Matecat\Dqf\Tests\Repository;
 
 use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\File;
+use Matecat\Dqf\Model\Entity\FileTargetLang;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
@@ -86,6 +87,14 @@ class MasterProjectRepositoryTest extends BaseTest
         // save project
         $this->repo->save($masterProject);
 
+        // check the target language association
+        /** @var FileTargetLang $fileTargetLang */
+        /** @var FileTargetLang $fileTargetLang2 */
+        $fileTargetLang = $masterProject->getTargetLanguageAssoc()['en-US'][0];
+        $fileTargetLang2 = $masterProject->getTargetLanguageAssoc()['fr-FR'][0];
+        $this->assertNotNull($fileTargetLang->getDqfId());
+        $this->assertNotNull($fileTargetLang2->getDqfId());
+
         // get a master project
         $this->get_a_master_project($masterProject->getDqfId(), $masterProject->getDqfUuid());
 
@@ -131,6 +140,17 @@ class MasterProjectRepositoryTest extends BaseTest
         $masterProject->assocTargetLanguageToFile('es-ES', $masterProject->getFiles()[0]);
 
         $this->repo->update($masterProject);
+
+        // check the target language association
+        /** @var FileTargetLang $fileTargetLang */
+        /** @var FileTargetLang $fileTargetLang2 */
+        /** @var FileTargetLang $fileTargetLang3 */
+        $fileTargetLang = $masterProject->getTargetLanguageAssoc()['pt-PT'][0];
+        $fileTargetLang2 = $masterProject->getTargetLanguageAssoc()['fr-FR'][0];
+        $fileTargetLang3 = $masterProject->getTargetLanguageAssoc()['es-ES'][0];
+        $this->assertNotNull($fileTargetLang->getDqfId());
+        $this->assertNotNull($fileTargetLang2->getDqfId());
+        $this->assertNotNull($fileTargetLang3->getDqfId());
 
         /** @var AbstractProject $modifiedMasterProject */
         $modifiedMasterProject = $this->repo->get($dqfId, $dqfUuid);

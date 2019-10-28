@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Model\ValueObject;
 
+use Matecat\Dqf\Cache\BasicAttributes;
+
 class Severity
 {
     /**
@@ -31,7 +33,11 @@ class Severity
      */
     private function setSeverityId($severityId)
     {
-        $allowed = [1, 2, 3, 4];
+        $allowed = [];
+        $severities = BasicAttributes::get('severity');
+        foreach ($severities as $severity){
+            $allowed[] = $severity->id;
+        }
 
         if (false === in_array($severityId, $allowed)) {
             throw new \DomainException($severityId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');

@@ -45,13 +45,13 @@ class EntityTest extends BaseTest
         try {
             new MasterProject('test-project', 'it-IT', 1, 432432432, 3, 1);
         } catch (\DomainException $e) {
-            $this->assertEquals($e->getMessage(), '432432432 is not a valid value. [Allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]');
+            $this->assertEquals($e->getMessage(), '432432432 is not a valid value. [Allowed: 1,2,3,4,16,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,24]');
         }
 
         try {
             new MasterProject('test-project', 'it-IT', 1, 2, 43243, 1);
         } catch (\DomainException $e) {
-            $this->assertEquals($e->getMessage(), '43243 is not a valid value. [Allowed: 1,2,3,4,5]');
+            $this->assertEquals($e->getMessage(), '43243 is not a valid value. [Allowed: 5,2,1,3,4]');
         }
 
         try {

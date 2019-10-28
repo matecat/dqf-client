@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Repository\Api;
 
+use Matecat\Dqf\Cache\BasicAttributes;
 use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
@@ -13,7 +14,7 @@ use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\Severity;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
-class MasterProjectRepository extends AbstractApiRepository implements CrudApiRepositoryInterface
+class MasterProjectRepository extends AbstractProjectRepository implements CrudApiRepositoryInterface
 {
     /**
      * Delete a record
@@ -225,7 +226,7 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
                 /** @var FileTargetLang $fileTargetLang */
                 foreach ($fileTargetLangs as $fileTargetLang) {
                     if (false === empty($fileTargetLang->getFile()->getDqfId())) {
-                        $projectTargetLanguage = $this->client->addMasterProjectTargetLanguage([
+                        $projectTargetLanguageAssoc = $this->client->addMasterProjectTargetLanguage([
                                 'generic_email'      => $this->genericEmail,
                                 'sessionId'          => $this->sessionId,
                                 'projectKey'         => $baseEntity->getDqfUuid(),
@@ -234,7 +235,8 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
                                 'targetLanguageCode' => $targetLanguageCode,
                         ]);
 
-                        $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                        $fileTargetLang->setDqfId($projectTargetLanguageAssoc->dqfId);
+                        $this->hydrateFileTargetLang($fileTargetLang);
                     }
                 }
             }
@@ -400,6 +402,7 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
                     ]);
 
                     $fileTargetLang->setDqfId($projectTargetLanguage->dqfId);
+                    $this->hydrateFileTargetLang($fileTargetLang);
                 }
             }
         }
@@ -510,9 +513,7 @@ class MasterProjectRepository extends AbstractApiRepository implements CrudApiRe
             return;
         }
 
-        $attr = $this->client->getBasicAttributesAggregate([]);
-
-        foreach ($attr['language'] as $language) {
+        foreach (BasicAttributes::get('language') as $language) {
             if ($language->localeCode === $masterProject->getSourceLanguage()->getLocaleCode()) {
                 $masterProject->getSourceLanguage()->setName($language->name);
                 $masterProject->getSourceLanguage()->setDqfId($language->id);

@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
+use Matecat\Dqf\Cache\BasicAttributes;
+
 class TranslatedSegment extends BaseApiEntity
 {
     /**
@@ -93,7 +95,7 @@ class TranslatedSegment extends BaseApiEntity
     ) {
         $this->childProject   = $childProject;
         $this->file           = $file;
-        $this->mtEngineId     = $mtEngineId;
+        $this->setMtEngineId($mtEngineId);
         $this->setSegmentOriginId($segmentOriginId);
         $this->targetLanguage = new Language($targetLanguageCode);
         $this->sourceSegment  = $sourceSegment;
@@ -194,7 +196,13 @@ class TranslatedSegment extends BaseApiEntity
      */
     public function setSegmentOriginId($segmentOriginId)
     {
-        if (false === in_array($segmentOriginId, [1, 2, 3, 4, 5])) {
+        $allowed = [];
+        $segmentOrigins = BasicAttributes::get('segmentOrigin');
+        foreach ($segmentOrigins as $segmentOrigin){
+            $allowed[] = $segmentOrigin->id;
+        }
+
+        if (false === in_array($segmentOriginId, $allowed)) {
             throw new \DomainException($segmentOriginId . 'is not an allowed value. [Allowed: 1,2,3,4,5]');
         }
 
@@ -230,6 +238,16 @@ class TranslatedSegment extends BaseApiEntity
      */
     public function setMtEngineId($mtEngineId)
     {
+        $allowed = [];
+        $mtEngines = BasicAttributes::get('mtEngine');
+        foreach ($mtEngines as $mtEngine){
+            $allowed[] = $mtEngine->id;
+        }
+
+        if (false === in_array($mtEngineId, $allowed)) {
+            throw new \DomainException($mtEngineId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
+        }
+
         $this->mtEngineId = $mtEngineId;
     }
 

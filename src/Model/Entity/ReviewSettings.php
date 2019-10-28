@@ -2,6 +2,7 @@
 
 namespace Matecat\Dqf\Model\Entity;
 
+use Matecat\Dqf\Cache\BasicAttributes;
 use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\ValueObject\Severity;
 
@@ -133,7 +134,11 @@ class ReviewSettings extends BaseApiEntity
      */
     private function validateErrorCategoryId($errorCategoryId)
     {
-        $allowed = [1, 2, 3, 4, 5, 6, 7, 8];
+        $allowed = [];
+        $errorCategories = BasicAttributes::get('errorCategory');
+        foreach ($errorCategories as $errorCategory){
+            $allowed[] = $errorCategory->id;
+        }
 
         if (false === in_array($errorCategoryId, $allowed)) {
             throw new \DomainException($errorCategoryId . ' is not a valid value. [Allowed: '.implode(',', $allowed).']');
