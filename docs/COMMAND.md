@@ -2,6 +2,7 @@
 
 If you have an application which uses [Symfony Console](https://github.com/symfony/console), you have some commands available:
 
+*  ``` dqf:cache:refresh```     refresh the local cache for basic attributes.
 *  ``` dqf:client:helper```     displays the complete list of all client's available commands.
 
 You can register the commands in your app, consider this example:
@@ -29,10 +30,17 @@ $app = new \Symfony\Component\Console\Application('DQF Client', 'console tool');
 
 // add commands here
 $app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
+$app->add(new \Matecat\Dqf\Console\CacheRefreshCommand($client));
 $app->run();
 ```
 
-And this is the output that you get:
+## Cache refresh
+
+A positive message is displayed if the operation is successful.
+
+## Client helper
+
+This is the output that you get:
 
 ```
 +--------------------------+---------------+---------+----------+

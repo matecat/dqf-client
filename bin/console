@@ -20,4 +20,5 @@ $app = new \Symfony\Component\Console\Application('DQF Client', 'console tool');
 
 // add commands here
 $app->add(new \Matecat\Dqf\Console\ClientHelperCommand($client));
+$app->add(new \Matecat\Dqf\Console\CacheRefreshCommand($client));
 $app->run();
