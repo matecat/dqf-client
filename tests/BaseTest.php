@@ -71,8 +71,19 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
 
         $this->genericEmail     = 'mauro@translated.net';
         $this->sessionProvider  = new SessionProvider($this->client, $repo);
-        $this->sessionId        = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
-        $this->genericSessionId = $this->sessionProvider->createAnonymous('mauro@translated.net', $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
+
+        $this->sessionId        = $this->sessionProvider->create([
+            'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
+            'username'            =>  $this->config[ 'dqf' ][ 'USERNAME' ],
+            'password'            =>  $this->config[ 'dqf' ][ 'PASSWORD' ]
+        ]);
+
+        $this->genericSessionId = $this->sessionProvider->create([
+            'genericEmail' =>'mauro@translated.net',
+            'username'     =>$this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+            'password'     =>$this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+            'isGeneric'    => true,
+        ]);
 
         $this->sourceFile = $this->getSourceFile();
         $this->targetFile = $this->getTranslationFile();

@@ -1,16 +1,20 @@
 # Session Provider
 
-Use `SessionProvider` to obtain the needed sessionId. You have three methods available:
+Use `SessionProvider` to obtain the needed sessionId. 
 
-*   `getById($externalReferenceId)` - get the sessionId by your external userId reference
-*   `createByCredentials($externalReferenceId, $username, $password)` - get the sessionId by credentials. A `externalReferenceId` is needed to link your application's user and DQF user. Login is
- performed and user data is persisted 
-*   `destroy($externalReferenceId)` - destroy the sessionId and performs logout
+You can perform a login and get a sessionId by using `create()` method. This function accepts an associative array of parameters:
 
-If you want to login as a generic user you can use:
+* `externalReferenceId` (OPTIONAL) - the user ID in your application
+* `username` (REQUIRED) - DQF username
+* `password` (REQUIRED) - DQF password
+* `isGeneric` (OPTIONAL) - specify if the login is anonymous
+* `genericEmail` (OPTIONAL) - the generic email . Mandatary if `isGeneric` is set to true
 
-*   `createAnonymous($email, $genericUsername, $genericPassword)` - get the sessionId by email and generic credentials. Login for generic user is performed and user data is persisted 
+You have also some other methods available:
+
 *   `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
+*   `getById($externalReferenceId)` - get the sessionId by your external userId reference
+*   `destroy($externalReferenceId)` - destroy the sessionId and performs logout
 *   `destroyAnonymous($email)` - destroy the sessionId and performs logout
 
 ## Drivers
@@ -46,7 +50,11 @@ $repo = new PDODqfUserRepository($pdo);
 $sessionProvider = new SessionProvider($client, $repo);
 
 // get sessionId by DQF credentials
-$sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+$sessionId = $this->sessionProvider->create([
+    'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
+    'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
+    'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
+] );
 
 // get sessionId by your application's user id
 $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);

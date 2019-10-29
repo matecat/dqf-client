@@ -38,21 +38,33 @@ class SessionProvider
     }
 
     /**
-     * @param string $genericEmail
-     * @param string $genericUsername
-     * @param string $genericPassword
+     * @param array $params
      *
      * @return mixed
      * @throws SessionProviderException
      */
-    public function createAnonymous($genericEmail, $genericUsername, $genericPassword)
+    public function create(array $params)
     {
+        if(false === isset($params['username']) and false === isset($params['password'])) {
+            throw new SessionProviderException('Username and password are mandatary');
+        }
+
+        if(isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
+            throw new SessionProviderException('genericEmail is mandatary when isGeneric is true');
+        }
+
+        $username = $params['username'];
+        $password = $params['password'];
+        $isGeneric = (isset($params['isGeneric']) and true === $params['isGeneric'] ) ? true : false;
+        $genericEmail = (isset($params['genericEmail']) ) ? $params['genericEmail'] : null;
+        $externalReferenceId = (isset($params['externalReferenceId']) ) ? $params['externalReferenceId'] : $this->dqfUserRepository->getNextGenericExternalId();
+
         try {
             $login = $this->client->login(
                 [
                     'generic_email' => $genericEmail,
-                    'username'      => $genericUsername,
-                    'password'      => $genericPassword,
+                    'username'      => $username,
+                    'password'      => $password,
                 ]
             );
         } catch (\Exception $e) {
@@ -60,13 +72,17 @@ class SessionProvider
         }
 
         $dqfUser = new DqfUser();
-        $dqfUser->setExternalReferenceId($this->dqfUserRepository->getNextGenericExternalId());
-        $dqfUser->setUsername($this->dataEncryptor->encrypt($genericUsername));
-        $dqfUser->setPassword($this->dataEncryptor->encrypt($genericPassword));
+        $dqfUser->setExternalReferenceId($externalReferenceId);
+        $dqfUser->setUsername($this->dataEncryptor->encrypt($username));
+        $dqfUser->setPassword($this->dataEncryptor->encrypt($password));
         $dqfUser->setSessionId($login->sessionId);
         $dqfUser->setSessionExpiresAt((int)(strtotime("now") + (int)$login->expires));
-        $dqfUser->setIsGeneric(true);
-        $dqfUser->setGenericEmail($this->dataEncryptor->encrypt($genericEmail));
+        $dqfUser->setIsGeneric($isGeneric);
+
+        if(false === empty($genericEmail)){
+            $dqfUser->setGenericEmail($this->dataEncryptor->encrypt($genericEmail));
+        }
+
         $this->dqfUserRepository->save($dqfUser);
 
         return $login->sessionId;
@@ -109,7 +125,12 @@ class SessionProvider
             return $dqfUser->getSessionId();
         }
 
-        return $this->createAnonymous($genericEmail, $dqfUser->getUsername(), $dqfUser->getPassword());
+        return $this->create([
+                'genericEmail' => $genericEmail,
+                'username'     => $dqfUser->getUsername(),
+                'password'     => $dqfUser->getPassword(),
+                'isGeneric'    => true,
+        ]);
     }
 
     /**
@@ -120,40 +141,6 @@ class SessionProvider
     public function hasGenericEmail($genericEmail)
     {
         return ($this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail)) instanceof DqfUser);
-    }
-
-    /**
-     * @param mixed  $externalReferenceId
-     * @param string $username
-     * @param string $password
-     *
-     * @return mixed
-     * @throws SessionProviderException
-     */
-    public function createByCredentials($externalReferenceId, $username, $password)
-    {
-        try {
-            $login = $this->client->login(
-                [
-                    'username' => $username,
-                    'password' => $password,
-                ]
-            );
-        } catch (\Exception $e) {
-            throw new SessionProviderException('Login to DQF failed.' . $e->getMessage());
-        }
-
-        // save or update DqfUser
-        $dqfUser = new DqfUser();
-        $dqfUser->setExternalReferenceId($externalReferenceId);
-        $dqfUser->setUsername($this->dataEncryptor->encrypt($username));
-        $dqfUser->setPassword($this->dataEncryptor->encrypt($password));
-        $dqfUser->setSessionId($login->sessionId);
-        $dqfUser->setSessionExpiresAt((int)(strtotime("now") + (int)$login->expires));
-        $dqfUser->setIsGeneric(false);
-        $this->dqfUserRepository->save($dqfUser);
-
-        return $login->sessionId;
     }
 
     /**
@@ -200,7 +187,11 @@ class SessionProvider
             return $dqfUser->getSessionId();
         }
 
-        return $this->createByCredentials($dqfUser->getExternalReferenceId(), $dqfUser->getUsername(), $dqfUser->getPassword());
+        return $this->create([
+                'externalReferenceId' => $dqfUser->getExternalReferenceId(),
+                'username'            => $dqfUser->getUsername(),
+                'password'            => $dqfUser->getPassword(),
+        ]);
     }
 
     /**

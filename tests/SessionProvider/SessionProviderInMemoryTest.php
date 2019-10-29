@@ -44,8 +44,13 @@ class SessionProviderInMemoryTest extends \PHPUnit_Framework_TestCase
     public function can_create_update_and_destroy_anonymous_sessions()
     {
         $email = 'mauro@translated.net';
+        $sessionId = $this->sessionProvider->create([
+            'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+            'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+            'isGeneric' => true,
+            'genericEmail' => $email,
+        ]  );
 
-        $sessionId = $this->sessionProvider->createAnonymous($email, $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getByGenericEmail($email);
@@ -61,7 +66,11 @@ class SessionProviderInMemoryTest extends \PHPUnit_Framework_TestCase
      */
     public function can_create_update_and_destroy_sessions()
     {
-        $sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+        $sessionId = $this->sessionProvider->create([
+            'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
+            'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
+            'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
+        ]  );
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);

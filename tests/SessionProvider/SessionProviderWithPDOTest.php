@@ -3,6 +3,7 @@
 namespace Matecat\Dqf\Tests\SessionProvider;
 
 use Matecat\Dqf\Client;
+use Matecat\Dqf\Exceptions\SessionProviderException;
 use Matecat\Dqf\Repository\Persistence\PDODqfUserRepository;
 use Matecat\Dqf\SessionProvider;
 
@@ -40,13 +41,39 @@ class SessionProviderWithPDOTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function throws_SessionProviderException()
+    {
+        try {
+            $this->sessionProvider->create([]);
+        } catch (SessionProviderException $e) {
+            $this->assertEquals('Username and password are mandatary', $e->getMessage());
+        }
+
+        try {
+            $this->sessionProvider->create([
+                    'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+                    'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+                    'isGeneric' => true,
+            ]);
+        } catch (SessionProviderException $e) {
+            $this->assertEquals('genericEmail is mandatary when isGeneric is true', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
      * @throws \Matecat\Dqf\Exceptions\SessionProviderException
      */
     public function can_create_update_and_destroy_anonymous_sessions()
     {
         $email = 'mauro@translated.net';
-
-        $sessionId = $this->sessionProvider->createAnonymous($email, $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ], $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ]);
+        $sessionId = $this->sessionProvider->create([
+                'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+                'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+                'isGeneric' => true,
+                'genericEmail' => $email,
+        ]  );
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getByGenericEmail($email);
@@ -62,7 +89,12 @@ class SessionProviderWithPDOTest extends \PHPUnit_Framework_TestCase
      */
     public function can_create_update_and_destroy_sessions()
     {
-        $sessionId = $this->sessionProvider->createByCredentials($this->config[ 'dqf' ][ 'EXTERNAL_ID' ], $this->config[ 'dqf' ][ 'USERNAME' ], $this->config[ 'dqf' ][ 'PASSWORD' ]);
+        $sessionId = $this->sessionProvider->create([
+                'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
+                'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
+                'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
+        ]  );
+
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
