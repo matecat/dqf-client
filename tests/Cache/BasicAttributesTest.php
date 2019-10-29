@@ -168,7 +168,7 @@ class BasicAttributesTest extends BaseTest
     {
         $dataFile = __DIR__.'/../../src/Cache/data/attributes.json';
 
-        if(file_exists($dataFile)){
+        if (file_exists($dataFile)) {
             unlink($dataFile);
             sleep(4);
         }

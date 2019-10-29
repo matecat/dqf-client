@@ -35,7 +35,7 @@ class Severity
     {
         $allowed = [];
         $severities = BasicAttributes::get('severity');
-        foreach ($severities as $severity){
+        foreach ($severities as $severity) {
             $allowed[] = $severity->id;
         }
 

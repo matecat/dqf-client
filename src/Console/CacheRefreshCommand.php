@@ -54,7 +54,7 @@ class CacheRefreshCommand extends Command
         try {
             BasicAttributes::refresh($this->dqfClient);
             $io->success('Basic attributes were successfully refreshed');
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $io->error($e->getMessage());
         }
     }

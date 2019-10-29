@@ -118,7 +118,7 @@ class MasterProject extends AbstractProject
     {
         $allowed = [];
         $contentTypes = BasicAttributes::get('contentType');
-        foreach ($contentTypes as $contentType){
+        foreach ($contentTypes as $contentType) {
             $allowed[] = $contentType->id;
         }
 
@@ -144,7 +144,7 @@ class MasterProject extends AbstractProject
     {
         $allowed = [];
         $industries = BasicAttributes::get('industry');
-        foreach ($industries as $industry){
+        foreach ($industries as $industry) {
             $allowed[] = $industry->id;
         }
 
@@ -170,7 +170,7 @@ class MasterProject extends AbstractProject
     {
         $allowed = [];
         $processes = BasicAttributes::get('process');
-        foreach ($processes as $process){
+        foreach ($processes as $process) {
             $allowed[] = $process->id;
         }
 
@@ -196,7 +196,7 @@ class MasterProject extends AbstractProject
     {
         $allowed = [];
         $qualitylevels = BasicAttributes::get('qualitylevel');
-        foreach ($qualitylevels as $qualitylevel){
+        foreach ($qualitylevels as $qualitylevel) {
             $allowed[] = $qualitylevel->id;
         }
 

@@ -51,8 +51,8 @@ class BasicAttributes
         $aggregate = $client->getBasicAttributesAggregate([]);
 
         try {
-            file_put_contents(self::getDataFile(), json_encode($aggregate, JSON_PRETTY_PRINT) );
-        } catch (\Exception $e){
+            file_put_contents(self::getDataFile(), json_encode($aggregate, JSON_PRETTY_PRINT));
+        } catch (\Exception $e) {
             throw new CacheException('File ' . self::getDataFile() . ' cannot be created. Be sure that directory is writable.');
         }
     }

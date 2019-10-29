@@ -198,7 +198,7 @@ class TranslatedSegment extends BaseApiEntity
     {
         $allowed = [];
         $segmentOrigins = BasicAttributes::get('segmentOrigin');
-        foreach ($segmentOrigins as $segmentOrigin){
+        foreach ($segmentOrigins as $segmentOrigin) {
             $allowed[] = $segmentOrigin->id;
         }
 
@@ -240,7 +240,7 @@ class TranslatedSegment extends BaseApiEntity
     {
         $allowed = [];
         $mtEngines = BasicAttributes::get('mtEngine');
-        foreach ($mtEngines as $mtEngine){
+        foreach ($mtEngines as $mtEngine) {
             $allowed[] = $mtEngine->id;
         }
 

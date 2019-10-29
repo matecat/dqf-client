@@ -45,19 +45,19 @@ class SessionProvider
      */
     public function create(array $params)
     {
-        if(false === isset($params['username']) and false === isset($params['password'])) {
+        if (false === isset($params['username']) and false === isset($params['password'])) {
             throw new SessionProviderException('Username and password are mandatary');
         }
 
-        if(isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
+        if (isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
             throw new SessionProviderException('genericEmail is mandatary when isGeneric is true');
         }
 
         $username = $params['username'];
         $password = $params['password'];
-        $isGeneric = (isset($params['isGeneric']) and true === $params['isGeneric'] ) ? true : false;
-        $genericEmail = (isset($params['genericEmail']) ) ? $params['genericEmail'] : null;
-        $externalReferenceId = (isset($params['externalReferenceId']) ) ? $params['externalReferenceId'] : $this->dqfUserRepository->getNextGenericExternalId();
+        $isGeneric = (isset($params['isGeneric']) and true === $params['isGeneric']) ? true : false;
+        $genericEmail = (isset($params['genericEmail'])) ? $params['genericEmail'] : null;
+        $externalReferenceId = (isset($params['externalReferenceId'])) ? $params['externalReferenceId'] : $this->dqfUserRepository->getNextGenericExternalId();
 
         try {
             $login = $this->client->login(
@@ -79,7 +79,7 @@ class SessionProvider
         $dqfUser->setSessionExpiresAt((int)(strtotime("now") + (int)$login->expires));
         $dqfUser->setIsGeneric($isGeneric);
 
-        if(false === empty($genericEmail)){
+        if (false === empty($genericEmail)) {
             $dqfUser->setGenericEmail($this->dataEncryptor->encrypt($genericEmail));
         }
 

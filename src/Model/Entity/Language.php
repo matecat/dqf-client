@@ -41,7 +41,7 @@ class Language extends BaseApiEntity
     private function checkLocaleCode($localeCode)
     {
         $languages = BasicAttributes::get('language');
-        foreach ($languages as $language){
+        foreach ($languages as $language) {
             if ($localeCode === $language->localeCode) {
                 return true;
             }

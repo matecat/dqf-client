@@ -12,10 +12,10 @@ You can perform a login and get a sessionId by using `create()` method. This fun
 
 You have also some other methods available:
 
-*   `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
-*   `getById($externalReferenceId)` - get the sessionId by your external userId reference
-*   `destroy($externalReferenceId)` - destroy the sessionId and performs logout
-*   `destroyAnonymous($email)` - destroy the sessionId and performs logout
+* `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
+* `getById($externalReferenceId)` - get the sessionId by your external userId reference
+* `destroy($externalReferenceId)` - destroy the sessionId and performs logout
+* `destroyAnonymous($email)` - destroy the sessionId and performs logout
 
 ## Drivers
 
@@ -36,12 +36,12 @@ use Matecat\Dqf\Client;
 
 $this->config = parse_ini_file(__DIR__ . '/../config/parameters.ini', true);
 $client       = new Client([
-        'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
-        'idPrefix'       => $this->config[ 'dqf' ][ 'ID_PREFIX' ],
-        'encryptionKey'  => $this->config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
-        'encryptionIV'   => $this->config[ 'dqf' ][ 'ENCRYPTION_IV' ],
-        'debug'          => true,
-        'logStoragePath' => __DIR__ . '/../log/api.log'
+    'apiKey'         => $this->config[ 'dqf' ][ 'API_KEY' ],
+    'idPrefix'       => $this->config[ 'dqf' ][ 'ID_PREFIX' ],
+    'encryptionKey'  => $this->config[ 'dqf' ][ 'ENCRYPTION_KEY' ],
+    'encryptionIV'   => $this->config[ 'dqf' ][ 'ENCRYPTION_IV' ],
+    'debug'          => true,
+    'logStoragePath' => __DIR__ . '/../log/api.log'
 ]);
 
 $pdo  = new \PDO("mysql:host=" . $this->config[ 'pdo' ][ 'SERVER' ] . ";dbname=" . $this->config[ 'pdo' ][ 'DBNAME' ], $this->config[ 'pdo' ][ 'USERNAME' ], $this->config[ 'pdo' ][ 'PASSWORD' ]);
@@ -54,7 +54,7 @@ $sessionId = $this->sessionProvider->create([
     'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
     'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
     'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
-] );
+]);
 
 // get sessionId by your application's user id
 $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);

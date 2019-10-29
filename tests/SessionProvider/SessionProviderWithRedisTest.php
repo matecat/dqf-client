@@ -50,7 +50,7 @@ class SessionProviderWithRedisTest extends \PHPUnit_Framework_TestCase
                 'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
                 'isGeneric' => true,
                 'genericEmail' => $email,
-        ]  );
+        ]);
 
         $this->assertInternalType('string', $sessionId);
 
@@ -71,7 +71,7 @@ class SessionProviderWithRedisTest extends \PHPUnit_Framework_TestCase
             'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
             'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
             'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
-        ]  );
+        ]);
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);

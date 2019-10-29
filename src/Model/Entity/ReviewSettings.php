@@ -136,7 +136,7 @@ class ReviewSettings extends BaseApiEntity
     {
         $allowed = [];
         $errorCategories = BasicAttributes::get('errorCategory');
-        foreach ($errorCategories as $errorCategory){
+        foreach ($errorCategories as $errorCategory) {
             $allowed[] = $errorCategory->id;
         }
 
