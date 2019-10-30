@@ -45,18 +45,12 @@ class SessionProvider
      */
     public function create(array $params)
     {
-        if (false === isset($params['username']) and false === isset($params['password'])) {
-            throw new SessionProviderException('Username and password are mandatary');
-        }
-
-        if (isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
-            throw new SessionProviderException('genericEmail is mandatary when isGeneric is true');
-        }
+        $this->validate($params);
 
         $username            = $params['username'];
         $password            = $params['password'];
         $isGeneric           = (isset($params['isGeneric']) and true === $params['isGeneric']) ? true : false;
-        $genericEmail        = (isset($params['genericEmail'])) ? $params['genericEmail'] : null;
+        $genericEmail        = (isset($params['genericEmail']) and $isGeneric === true) ? $params['genericEmail'] : null;
         $externalReferenceId = (isset($params['externalReferenceId'])) ? $params['externalReferenceId'] : $this->dqfUserRepository->getNextGenericExternalId();
 
         try {
@@ -79,13 +73,33 @@ class SessionProvider
         $dqfUser->setSessionExpiresAt((int)(strtotime("now") + (int)$login->expires));
         $dqfUser->setIsGeneric($isGeneric);
 
-        if (false === empty($genericEmail)) {
+        if (false === empty($genericEmail) and true === $isGeneric) {
             $dqfUser->setGenericEmail($this->dataEncryptor->encrypt($genericEmail));
         }
 
         $this->dqfUserRepository->save($dqfUser);
 
         return $login->sessionId;
+    }
+
+    /**
+     * @param $params
+     *
+     * @throws SessionProviderException
+     */
+    private function validate($params)
+    {
+        if (false === isset($params['username']) and false === isset($params['password'])) {
+            throw new SessionProviderException('Username and password are mandatary');
+        }
+
+        if (isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
+            throw new SessionProviderException('genericEmail is mandatary when isGeneric is true');
+        }
+
+        if ((false === isset($params['isGeneric']) or true !== $params['isGeneric']) and true === isset($params['genericEmail'])) {
+            throw new SessionProviderException('genericEmail must be black if isGeneric is false');
+        }
     }
 
     /**

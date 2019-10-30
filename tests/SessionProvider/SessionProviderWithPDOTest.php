@@ -52,12 +52,23 @@ class SessionProviderWithPDOTest extends \PHPUnit_Framework_TestCase
 
         try {
             $this->sessionProvider->create([
-                    'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
-                    'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
-                    'isGeneric' => true,
+                'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+                'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+                'isGeneric' => true,
             ]);
         } catch (SessionProviderException $e) {
             $this->assertEquals('genericEmail is mandatary when isGeneric is true', $e->getMessage());
+        }
+
+        try {
+            $this->sessionProvider->create([
+                'username' => $this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ],
+                'password' => $this->config[ 'dqf' ][ 'DQF_GENERIC_PASSWORD' ],
+                'genericEmail' => 'mauro@translated.net',
+                'isGeneric' => false,
+            ]);
+        } catch (SessionProviderException $e) {
+            $this->assertEquals('genericEmail must be black if isGeneric is false', $e->getMessage());
         }
     }
 
