@@ -37,6 +37,7 @@ class Logout extends CommandHandler
         $response      = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri('logout'), [
                 'headers'     => [
                         'sessionId' => $params[ 'sessionId' ],
+                        'email' => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
                 ],
                 'form_params' => [
                         'email' => $dataEncryptor->encrypt($params[ 'username' ]),

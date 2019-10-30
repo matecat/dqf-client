@@ -113,6 +113,8 @@ class SessionProvider
         try {
             $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
 
+            // At the moment it is not possible to log out anonymously
+
             return $this->dqfUserRepository->delete($dqfUser);
         } catch (\Exception $e) {
             throw new SessionProviderException('Logout from DQF failed.' . $e->getMessage());
@@ -165,6 +167,18 @@ class SessionProvider
     {
         try {
             $dqfUser = $this->dqfUserRepository->getByExternalId($externalReferenceId);
+
+            if(false === $dqfUser->isSessionStillValid()){
+                $login = $this->client->login(
+                        [
+                                'generic_email' => $dqfUser->getGenericEmail(),
+                                'username'      => $dqfUser->getUsername(),
+                                'password'      => $dqfUser->getPassword(),
+                        ]
+                );
+
+                $dqfUser->setSessionId($login->sessionId);
+            }
 
             $this->client->logout(
                 [
