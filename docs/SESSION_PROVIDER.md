@@ -12,8 +12,8 @@ You can perform a login and get a sessionId by using `create()` method. This fun
 
 You have also some other methods available:
 
-* `getByGenericEmail($email)` - get the sessionId by credentials. Login is performed and user data is persisted 
-* `getById($externalReferenceId)` - get the sessionId by your external userId reference
+* `getByGenericEmail($email)` - get the sessionId by generic email. Login is performed and user data is persisted 
+* `getById($externalReferenceId)` - get the sessionId by your external user ID reference
 * `destroy($externalReferenceId)` - destroy the sessionId and performs logout
 * `destroyAnonymous($email)` - destroy the sessionId and performs logout
 

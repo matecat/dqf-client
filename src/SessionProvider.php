@@ -118,8 +118,6 @@ class SessionProvider
         }
 
         $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
-        $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
-        $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
 
         if ($dqfUser->isSessionStillValid()) {
             return $dqfUser->getSessionId();
@@ -127,8 +125,8 @@ class SessionProvider
 
         return $this->create([
                 'genericEmail' => $genericEmail,
-                'username'     => $dqfUser->getUsername(),
-                'password'     => $dqfUser->getPassword(),
+                'username'     => $this->dataEncryptor->decrypt($dqfUser->getUsername()),
+                'password'     => $this->dataEncryptor->decrypt($dqfUser->getPassword()),
                 'isGeneric'    => true,
         ]);
     }
