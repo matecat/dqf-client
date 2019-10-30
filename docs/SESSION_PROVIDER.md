@@ -2,20 +2,22 @@
 
 Use `SessionProvider` to obtain the needed sessionId. 
 
-You can perform a login and get a sessionId by using `create()` method. This function accepts an associative array of parameters:
+You can login and get a valid sessionId by using `create()` method. This function accepts an associative array of parameters:
 
 * `externalReferenceId` (OPTIONAL) - the user ID in your application
-* `username` (REQUIRED) - DQF username
-* `password` (REQUIRED) - DQF password
-* `isGeneric` (OPTIONAL) - specify if the login is anonymous
-* `genericEmail` (OPTIONAL) - the generic email . Mandatary if `isGeneric` is set to true
+* `username`            (REQUIRED) - DQF username
+* `password`            (REQUIRED) - DQF password
+* `isGeneric`           (OPTIONAL) - specify if the login is anonymous
+* `genericEmail`        (OPTIONAL) - the generic email . Mandatary if `isGeneric` is set to true
 
 You have also some other methods available:
 
-* `getByGenericEmail($email)` - get the sessionId by generic email. Login is performed and user data is persisted 
-* `getById($externalReferenceId)` - get the sessionId by your external user ID reference
-* `destroy($externalReferenceId)` - destroy the sessionId and performs logout
-* `destroyAnonymous($email)` - destroy the sessionId and performs logout
+* `destroy($externalReferenceId)` - destroy the sessionId and does logout by generic email
+* `destroyAnonymous($email)`      - destroy the sessionId and does logout by external user ID reference
+* `hasGenericEmail($email)`       - check if a user had been persisted by generic email
+* `hasId($externalReferenceId)`   - check if a user had been persisted by external user ID reference
+* `getByGenericEmail($email)`     - get the sessionId by generic email. Login is performed and user data is persisted 
+* `getById($externalReferenceId)` - get the sessionId by external user ID reference
 
 ## Drivers
 
@@ -27,7 +29,7 @@ You can choose between three different drivers:
 
 ## Example
 
-Here is a full example implementing PDO driver:
+Here is an extract taken from a unit test (implementing PDO driver):
 
 ```php
 // ...
@@ -50,14 +52,20 @@ $repo = new PDODqfUserRepository($pdo);
 $sessionProvider = new SessionProvider($client, $repo);
 
 // get sessionId by DQF credentials
-$sessionId = $this->sessionProvider->create([
+$sessionId = $sessionProvider->create([
     'externalReferenceId' => $this->config[ 'dqf' ][ 'EXTERNAL_ID' ],
     'username'            => $this->config[ 'dqf' ][ 'USERNAME' ],
     'password'            => $this->config[ 'dqf' ][ 'PASSWORD' ],
 ]);
 
-// get sessionId by your application's user id
-$sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+// now you can get sessionId by your application's user ID
+$sessionId = $sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+
+// that's return true
+$exists = $sessionProvider->hasId($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+
+// destroy the DQF user and logout from DQF
+$destroy = $sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
 
 ```
 
