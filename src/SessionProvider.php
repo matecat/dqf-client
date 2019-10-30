@@ -53,10 +53,10 @@ class SessionProvider
             throw new SessionProviderException('genericEmail is mandatary when isGeneric is true');
         }
 
-        $username = $params['username'];
-        $password = $params['password'];
-        $isGeneric = (isset($params['isGeneric']) and true === $params['isGeneric']) ? true : false;
-        $genericEmail = (isset($params['genericEmail'])) ? $params['genericEmail'] : null;
+        $username            = $params['username'];
+        $password            = $params['password'];
+        $isGeneric           = (isset($params['isGeneric']) and true === $params['isGeneric']) ? true : false;
+        $genericEmail        = (isset($params['genericEmail'])) ? $params['genericEmail'] : null;
         $externalReferenceId = (isset($params['externalReferenceId'])) ? $params['externalReferenceId'] : $this->dqfUserRepository->getNextGenericExternalId();
 
         try {
@@ -68,7 +68,7 @@ class SessionProvider
                 ]
             );
         } catch (\Exception $e) {
-            throw new SessionProviderException('Anonymous login to DQF failed.' . $e->getMessage());
+            throw new SessionProviderException('Login to DQF failed.' . $e->getMessage());
         }
 
         $dqfUser = new DqfUser();
