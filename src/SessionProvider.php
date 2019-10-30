@@ -168,9 +168,9 @@ class SessionProvider
         try {
             $dqfUser = $this->dqfUserRepository->getByExternalId($externalReferenceId);
 
-            if(false === $dqfUser->isSessionStillValid()){
+            if (false === $dqfUser->isSessionStillValid()) {
                 $login = $this->client->login(
-                        [
+                    [
                                 'generic_email' => $dqfUser->getGenericEmail(),
                                 'username'      => $dqfUser->getUsername(),
                                 'password'      => $dqfUser->getPassword(),
