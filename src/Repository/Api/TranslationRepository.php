@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Repository\Api;
 
+use Matecat\Dqf\Model\Entity\ChildProject;
+use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\TranslationRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
@@ -72,18 +74,20 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     }
 
     /**
+     * @param ChildProject      $childProject
+     * @param File              $file
      * @param TranslatedSegment $translatedSegment
      *
      * @return bool
      */
-    public function update(TranslatedSegment $translatedSegment)
+    public function update(ChildProject $childProject, File $file, TranslatedSegment $translatedSegment)
     {
-        if ($this->exists($translatedSegment)) {
+        if ($this->exists($childProject, $file, $translatedSegment)) {
             $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
                     'sessionId'           => $this->sessionId,
-                    'projectKey'          => $translatedSegment->getChildProject()->getDqfUuid(),
-                    'projectId'           => $translatedSegment->getChildProject()->getDqfId(),
-                    'fileId'              => $translatedSegment->getFile()->getDqfId(),
+                    'projectKey'          => $childProject->getDqfUuid(),
+                    'projectId'           => $childProject->getDqfId(),
+                    'fileId'              => $file->getDqfId(),
                     'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
                     'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
                     'translationId'       => $translatedSegment->getDqfId(),
@@ -104,17 +108,19 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     }
 
     /**
+     * @param ChildProject      $childProject
+     * @param File              $file
      * @param TranslatedSegment $translatedSegment
      *
      * @return bool
      */
-    private function exists(TranslatedSegment $translatedSegment)
+    private function exists(ChildProject $childProject, File $file, TranslatedSegment $translatedSegment)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
                 'sessionId'           => $this->sessionId,
-                'projectKey'          => $translatedSegment->getChildProject()->getDqfUuid(),
-                'projectId'           => $translatedSegment->getChildProject()->getDqfId(),
-                'fileId'              => $translatedSegment->getFile()->getDqfId(),
+                'projectKey'          => $childProject->getDqfUuid(),
+                'projectId'           => $childProject->getDqfId(),
+                'fileId'              => $file->getDqfId(),
                 'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
                 'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
                 'translationId'       => $translatedSegment->getDqfId(),

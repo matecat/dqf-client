@@ -158,10 +158,10 @@ class TranslationRepositoryTest extends BaseTest
         $firstSegment = $translationBatch->getSegments()[0];
 
         // update a single segment translation
-        $this->update_a_single_segment_translation($firstSegment);
+        $this->update_a_single_segment_translation($translationBatch->getChildProject(), $translationBatch->getFile(), $firstSegment);
 
         // create a review project and then submit revision(s)
-        $this->create_a_review_child_project_and_then_submit_a_revision($firstSegment, $file);
+        $this->create_a_review_child_project_and_then_submit_a_revision($translationBatch->getChildProject(), $translationBatch->getFile(), $firstSegment);
 
         // delete child project
         $deleteChildProject = $this->childProjectRepo->delete($childProject);
@@ -173,28 +173,31 @@ class TranslationRepositoryTest extends BaseTest
     }
 
     /**
+     * @param ChildProject      $childProject
+     * @param File              $file
      * @param TranslatedSegment $segment
      */
-    public function update_a_single_segment_translation(TranslatedSegment $segment)
+    public function update_a_single_segment_translation(ChildProject $childProject, File $file, TranslatedSegment $segment)
     {
         $segment->setTargetSegment('The frog in Spain');
         $segment->setEditedSegment('The frog in Spain (from Barcelona)');
 
-        $update = $this->translationRepository->update($segment);
+        $update = $this->translationRepository->update($childProject, $file, $segment);
 
         $this->assertTrue($update);
     }
 
     /**
-     * @param TranslatedSegment $segment
+     * @param ChildProject      $parentChildProject
      * @param File              $file
+     * @param TranslatedSegment $segment
      *
      * @throws \Exception
      */
-    public function create_a_review_child_project_and_then_submit_a_revision(TranslatedSegment $segment, File $file)
+    public function create_a_review_child_project_and_then_submit_a_revision(ChildProject $parentChildProject, File $file, TranslatedSegment $segment)
     {
         $childProject = new ChildProject(Constants::PROJECT_TYPE_REVIEW);
-        $childProject->setParentProject($segment->getChildProject());
+        $childProject->setParentProject($parentChildProject);
         $childProject->setName('Review Job');
 
         // assoc targetLang to file(s)
@@ -303,8 +306,6 @@ class TranslationRepositoryTest extends BaseTest
 
         foreach ($this->targetFile['segmentPairs'] as $key => $segment) {
             $translations[] = new TranslatedSegment(
-                $childProject,
-                $file,
                 $segment['mtEngineId'],
                 $segment['segmentOriginId'],
                 $this->targetFile['lang'],

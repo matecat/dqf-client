@@ -544,9 +544,9 @@ $childProjectRepo->save($childProject);
 */
 
 $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
-$segmTrans1       = new TranslatedSegment($childProject, $file, 22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ], '', 'The frog in Spain');
-$segmTrans2       = new TranslatedSegment($childProject, $file, 22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ], 'croaks in countryside matus.', 'croaks in countryside.');
-$segmTrans3       = new TranslatedSegment($childProject, $file, 22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ], 'This is just a tongue twister', '');
+$segmTrans1       = new TranslatedSegment(22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ], '', 'The frog in Spain');
+$segmTrans2       = new TranslatedSegment(22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ], 'croaks in countryside matus.', 'croaks in countryside.');
+$segmTrans3       = new TranslatedSegment(22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ], 'This is just a tongue twister', '');
 
 $translationBatch->addSegment($segmTrans1);
 $translationBatch->addSegment($segmTrans2);
@@ -565,7 +565,7 @@ $translationBatch = $translationRepository->save($translationBatch);
 $firstSegment = $translationBatch->getSegments()[0];
 $segment->setTargetSegment( 'The frog in Spain' );
 $segment->setEditedSegment( 'The frog in Spain (from Barcelona)' );
-$translationRepository->update( $segment );
+$translationRepository->update($translationBatch->getChildProject(), $translationBatch->getFile(), $segment );
 
 /**
 ****************************************************************************

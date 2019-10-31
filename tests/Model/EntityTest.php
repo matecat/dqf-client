@@ -142,12 +142,12 @@ class EntityTest extends BaseTest
 
         // create a segment translation batch
         $translationBatch = new TranslationBatch($childTranslation, $file, 'en-US');
-        $segmTrans1       = new TranslatedSegment($childTranslation, $file, 22, 5, 'en-US', $this->getSourceSegments($file)[ 0 ], 'blah', 'blah blah blah');
-        $segmTrans2       = new TranslatedSegment($childTranslation, $file, 22, 5, 'en-US', $this->getSourceSegments($file)[ 1 ], 'blah', 'blah blah blah');
-        $segmTrans3       = new TranslatedSegment($childTranslation, $file, 22, 5, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
+        $segmTrans1       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 0 ], 'blah', 'blah blah blah');
+        $segmTrans2       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 1 ], 'blah', 'blah blah blah');
+        $segmTrans3       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
 
         try {
-            new TranslatedSegment($childTranslation, $file, 22, 4343, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
+            new TranslatedSegment(22, 4343, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
         } catch (\DomainException $e) {
             $this->assertEquals('4343is not an allowed value. [Allowed: 1,2,3,4,5]', $e->getMessage());
         }

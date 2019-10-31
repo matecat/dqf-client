@@ -7,16 +7,6 @@ use Matecat\Dqf\Cache\BasicAttributes;
 class TranslatedSegment extends BaseApiEntity
 {
     /**
-     * @var ChildProject
-     */
-    private $childProject;
-
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
      * @var Language
      */
     private $targetLanguage;
@@ -74,8 +64,6 @@ class TranslatedSegment extends BaseApiEntity
     /**
      * TranslatedSegment constructor.
      *
-     * @param ChildProject  $childProject
-     * @param File          $file
      * @param int           $mtEngineId
      * @param int           $segmentOriginId
      * @param string        $targetLanguageCode
@@ -84,8 +72,6 @@ class TranslatedSegment extends BaseApiEntity
      * @param string        $editedSegment
      */
     public function __construct(
-        ChildProject $childProject,
-        File $file,
         $mtEngineId,
         $segmentOriginId,
         $targetLanguageCode,
@@ -93,30 +79,12 @@ class TranslatedSegment extends BaseApiEntity
         $targetSegment,
         $editedSegment
     ) {
-        $this->childProject   = $childProject;
-        $this->file           = $file;
         $this->setMtEngineId($mtEngineId);
         $this->setSegmentOriginId($segmentOriginId);
         $this->targetLanguage = new Language($targetLanguageCode);
         $this->sourceSegment  = $sourceSegment;
         $this->targetSegment  = $targetSegment;
         $this->editedSegment  = $editedSegment;
-    }
-
-    /**
-     * @return ChildProject
-     */
-    public function getChildProject()
-    {
-        return $this->childProject;
-    }
-
-    /**
-     * @return File
-     */
-    public function getFile()
-    {
-        return $this->file;
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Model\Repository;
 
+use Matecat\Dqf\Model\Entity\ChildProject;
+use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 
@@ -20,5 +22,5 @@ interface TranslationRepositoryInterface
      *
      * @return bool
      */
-    public function update(TranslatedSegment $translatedSegment);
+    public function update(ChildProject $childProject, File $file, TranslatedSegment $translatedSegment);
 }
