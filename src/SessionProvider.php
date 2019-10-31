@@ -173,7 +173,7 @@ class SessionProvider
             if (false === $dqfUser->isSessionStillValid()) {
                 $login = $this->client->login(
                     [
-                        'generic_email' => ( false === empty($dqfUser->getGenericEmail() ) ) ? $this->dataEncryptor->decrypt($dqfUser->getGenericEmail()) : null,
+                        'generic_email' => (false === empty($dqfUser->getGenericEmail())) ? $this->dataEncryptor->decrypt($dqfUser->getGenericEmail()) : null,
                         'username'      => $this->dataEncryptor->decrypt($dqfUser->getUsername()),
                         'password'      => $this->dataEncryptor->decrypt($dqfUser->getPassword()),
                     ]
