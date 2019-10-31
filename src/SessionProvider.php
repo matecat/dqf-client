@@ -134,16 +134,18 @@ class SessionProvider
         }
 
         $dqfUser = $this->dqfUserRepository->getByGenericEmail($this->dataEncryptor->encrypt($genericEmail));
+        $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
+        $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
 
         if ($dqfUser->isSessionStillValid()) {
             return $dqfUser->getSessionId();
         }
 
         return $this->create([
-                'genericEmail' => $genericEmail,
-                'username'     => $this->dataEncryptor->decrypt($dqfUser->getUsername()),
-                'password'     => $this->dataEncryptor->decrypt($dqfUser->getPassword()),
-                'isGeneric'    => true,
+            'genericEmail' => $genericEmail,
+            'username'     => $dqfUser->getUsername(),
+            'password'     => $dqfUser->getPassword(),
+            'isGeneric'    => true,
         ]);
     }
 
@@ -171,10 +173,10 @@ class SessionProvider
             if (false === $dqfUser->isSessionStillValid()) {
                 $login = $this->client->login(
                     [
-                                'generic_email' => $dqfUser->getGenericEmail(),
-                                'username'      => $dqfUser->getUsername(),
-                                'password'      => $dqfUser->getPassword(),
-                        ]
+                        'generic_email' => ( false === empty($dqfUser->getGenericEmail() ) ) ? $this->dataEncryptor->decrypt($dqfUser->getGenericEmail()) : null,
+                        'username'      => $this->dataEncryptor->decrypt($dqfUser->getUsername()),
+                        'password'      => $this->dataEncryptor->decrypt($dqfUser->getPassword()),
+                    ]
                 );
 
                 $dqfUser->setSessionId($login->sessionId);
@@ -214,9 +216,9 @@ class SessionProvider
         }
 
         return $this->create([
-                'externalReferenceId' => $dqfUser->getExternalReferenceId(),
-                'username'            => $dqfUser->getUsername(),
-                'password'            => $dqfUser->getPassword(),
+            'externalReferenceId' => $dqfUser->getExternalReferenceId(),
+            'username'            => $dqfUser->getUsername(),
+            'password'            => $dqfUser->getPassword(),
         ]);
     }
 

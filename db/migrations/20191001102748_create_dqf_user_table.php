@@ -12,8 +12,8 @@ class CreateDqfUserTable extends AbstractMigration
         $sql = 'CREATE TABLE `dqf_user` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `externalReferenceId` int(11) NOT NULL,
-              `username` varchar(45) NOT NULL,
-              `password` varchar(45) NOT NULL,
+              `username` varchar(255) NOT NULL,
+              `password` varchar(255) NOT NULL,
               `sessionId` varchar(45) NOT NULL,
               `sessionExpiresAt` int(11) DEFAULT NULL,
               `isGeneric` tinyint(4) DEFAULT NULL,
