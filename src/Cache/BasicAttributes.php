@@ -7,6 +7,8 @@ use Matecat\Dqf\Exceptions\CacheException;
 
 class BasicAttributes
 {
+    private static $dataPath;
+
     /**
      * Keys complete list
      */
@@ -58,10 +60,18 @@ class BasicAttributes
     }
 
     /**
+     * @param string $dataPath
+     */
+    public static function setDataFile($dataPath)
+    {
+        self::$dataPath = $dataPath;
+    }
+
+    /**
      * @return string
      */
-    private static function getDataFile()
+    public static function getDataFile()
     {
-        return __DIR__.'/data/attributes.json';
+        return (isset(self::$dataPath)) ? self::$dataPath : __DIR__.'/data/attributes.json';
     }
 }

@@ -118,6 +118,7 @@ class MasterProject extends AbstractProject
     {
         $allowed = [];
         $contentTypes = BasicAttributes::get('contentType');
+
         foreach ($contentTypes as $contentType) {
             $allowed[] = $contentType->id;
         }

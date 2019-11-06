@@ -37,6 +37,7 @@ class CacheRefreshCommand extends Command
             ->setName('dqf:cache:refresh')
             ->setDescription('Refresh the local cache for basic attributes.')
             ->setHelp('This command allows you to refresh the local cache for basic attributes.')
+            ->addArgument('data-path', InputArgument::OPTIONAL, 'Override the default data path')
         ;
     }
 
@@ -52,6 +53,10 @@ class CacheRefreshCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
+            if (false === empty($input->getArgument('data-path'))) {
+                BasicAttributes::setDataFile($input->getArgument('data-path'));
+            }
+
             BasicAttributes::refresh($this->dqfClient);
             $io->success('Basic attributes were successfully refreshed');
         } catch (\Exception $e) {

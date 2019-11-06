@@ -33,7 +33,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
 
         if (false === empty($batch->getSegments())) {
             foreach ($batch->getSegments() as $segment) {
-                foreach ($sourceSegmentIds->sourceSegmentList as $item) {
+                foreach ($sourceSegmentIds->sourceSegmentList as $index => $item) {
                     if ($item->index === $segment->getSourceSegment()->getIndex()) {
                         $segment->getSourceSegment()->setDqfId($item->dqfId);
                         $segment->getSourceSegment()->setClientId($item->clientId);
@@ -50,7 +50,8 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                                 "segmentOriginId"   => $segment->getSegmentOriginId(),
                                 "mtEngineId"        => $segment->getMtEngineId(),
                                 "mtEngineOtherName" => $segment->getMtEngineOtherName(),
-                                "matchRate"         => $segment->getMatchRate()
+                                "matchRate"         => $segment->getMatchRate(),
+                                "indexNo"           => (false === empty($segment->getIndexNo())) ? $segment->getIndexNo() : $index
                         ];
                     }
                 }

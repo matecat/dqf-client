@@ -2,6 +2,7 @@
 config/parameters.ini
 .php_cs.cache
 .phpunit.result.cache
+cache
 composer.lock
 vendor
 log

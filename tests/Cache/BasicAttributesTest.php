@@ -4,6 +4,7 @@ namespace Matecat\Dqf\Tests\Cache;
 
 use Matecat\Dqf\Cache\BasicAttributes;
 use Matecat\Dqf\Exceptions\CacheException;
+use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Tests\BaseTest;
 
 class BasicAttributesTest extends BaseTest
@@ -176,5 +177,30 @@ class BasicAttributesTest extends BaseTest
         BasicAttributes::refresh($this->client);
 
         $this->assertTrue(file_exists($dataFile));
+    }
+
+    /**
+     * @test
+     * @throws CacheException
+     */
+    public function refreshWithDifferentDataPath()
+    {
+        $dataFile = __DIR__.'/../../cache/attributes.json';
+
+        if (file_exists($dataFile)) {
+            unlink($dataFile);
+            sleep(4);
+        }
+
+        BasicAttributes::setDataFile($dataFile);
+        BasicAttributes::refresh($this->client);
+        $this->assertTrue(file_exists($dataFile));
+
+        try {
+            new MasterProject('test', 'en-US', 1 , 2, 3 , 5);
+        } catch (\DomainException $e){
+            $this->assertEquals($dataFile, BasicAttributes::getDataFile());
+            $this->assertEquals('5 is not a valid value. [Allowed: 1,2]', $e->getMessage());
+        }
     }
 }

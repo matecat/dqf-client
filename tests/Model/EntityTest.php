@@ -147,9 +147,9 @@ class EntityTest extends BaseTest
         $segmTrans3       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
 
         try {
-            new TranslatedSegment(22, 4343, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
+            new TranslatedSegment(22, 4343, 'en-US', $this->getSourceSegments($file)[ 0 ], 'blah', 'blah blah blah');
         } catch (\DomainException $e) {
-            $this->assertEquals('4343is not an allowed value. [Allowed: 1,2,3,4,5]', $e->getMessage());
+            $this->assertEquals('4343 is not an allowed value. [Allowed: 1,2,3,4,5]', $e->getMessage());
         }
 
         $translationBatch->addSegment($segmTrans1);

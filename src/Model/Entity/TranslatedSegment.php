@@ -62,6 +62,11 @@ class TranslatedSegment extends BaseApiEntity
     private $segmentOriginDetail;
 
     /**
+     * @var int
+     */
+    private $indexNo;
+
+    /**
      * TranslatedSegment constructor.
      *
      * @param int           $mtEngineId
@@ -171,7 +176,7 @@ class TranslatedSegment extends BaseApiEntity
         }
 
         if (false === in_array($segmentOriginId, $allowed)) {
-            throw new \DomainException($segmentOriginId . 'is not an allowed value. [Allowed: 1,2,3,4,5]');
+            throw new \DomainException($segmentOriginId . ' is not an allowed value. [Allowed: '.implode(',', $allowed).']');
         }
 
         $this->segmentOriginId = $segmentOriginId;
@@ -265,5 +270,21 @@ class TranslatedSegment extends BaseApiEntity
     public function setSegmentOriginDetail($segmentOriginDetail)
     {
         $this->segmentOriginDetail = $segmentOriginDetail;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndexNo()
+    {
+        return $this->indexNo;
+    }
+
+    /**
+     * @param int $indexNo
+     */
+    public function setIndexNo($indexNo)
+    {
+        $this->indexNo = $indexNo;
     }
 }
