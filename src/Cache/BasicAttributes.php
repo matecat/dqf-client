@@ -44,6 +44,40 @@ class BasicAttributes
     }
 
     /**
+     * @param string $key
+     * @param int $id
+     *
+     * @return mixed
+     */
+    public static function getFromId($key, $id)
+    {
+        $data = self::get($key);
+
+        foreach ($data as $item) {
+            if ($item->id === $id) {
+                return $item;
+            }
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public static function getFromName($key, $name)
+    {
+        $data = self::get($key);
+
+        foreach ($data as $item) {
+            if ($item->name === $name) {
+                return $item;
+            }
+        }
+    }
+
+    /**
      * @param Client $client
      *
      * @throws CacheException

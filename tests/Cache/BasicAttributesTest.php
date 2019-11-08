@@ -163,6 +163,28 @@ class BasicAttributesTest extends BaseTest
 
     /**
      * @test
+     */
+    public function get_fromId()
+    {
+        $segmentOrigin = BasicAttributes::getFromId(BasicAttributes::SEGMENT_ORIGIN, 1);
+
+        $this->assertEquals($segmentOrigin->name, 'MT');
+        $this->assertEquals($segmentOrigin->id, 1);
+    }
+
+    /**
+     * @test
+     */
+    public function get_fromName()
+    {
+        $segmentOrigin = BasicAttributes::getFromName(BasicAttributes::SEGMENT_ORIGIN, 'MT');
+
+        $this->assertEquals($segmentOrigin->name, 'MT');
+        $this->assertEquals($segmentOrigin->id, 1);
+    }
+
+    /**
+     * @test
      * @throws CacheException
      */
     public function refresh()
@@ -197,8 +219,8 @@ class BasicAttributesTest extends BaseTest
         $this->assertTrue(file_exists($dataFile));
 
         try {
-            new MasterProject('test', 'en-US', 1 , 2, 3 , 5);
-        } catch (\DomainException $e){
+            new MasterProject('test', 'en-US', 1, 2, 3, 5);
+        } catch (\DomainException $e) {
             $this->assertEquals($dataFile, BasicAttributes::getDataFile());
             $this->assertEquals('5 is not a valid value. [Allowed: 1,2]', $e->getMessage());
         }
