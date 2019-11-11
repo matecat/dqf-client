@@ -85,9 +85,6 @@ class TranslationBatch extends BaseApiEntity
         $this->segments[] = $segment;
     }
 
-//    public function hasSegment(TranslatedSegment $segment)
-//    {}
-
     /**
      * @return TranslatedSegment[]
      */

@@ -31,7 +31,7 @@ class GetTranslationsForSourceSegmentsInBatch extends CommandHandler
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],
-                'offset'           => [
+                'offset'         => [
                         'required' => true,
                         'type'     => Constants::DATA_TYPE_INTEGER,
                 ],

@@ -7,6 +7,7 @@ use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
 use Matecat\Dqf\Model\Entity\AbstractProject;
+use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\ReviewRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\ReviewBatch;
 use Ramsey\Uuid\Uuid;
@@ -30,11 +31,11 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                 // errors
                 foreach ($reviewedSegment->getErrors() as $error) {
                     $errors[] = [
-                            "errorCategoryId" => $error->getErrorCategoryId(),
-                            "severityId"      => $error->getSeverityId(),
-                            "charPosStart"    => $error->getCharPosStart(),
-                            "charPosEnd"      => $error->getCharPosEnd(),
-                            "isRepeated"      => $error->isRepeated()
+                        'errorCategoryId' => $error->getErrorCategoryId(),
+                        'severityId'      => $error->getSeverityId(),
+                        'charPosStart'    => $error->getCharPosStart(),
+                        'charPosEnd'      => $error->getCharPosEnd(),
+                        'isRepeated'      => $error->isRepeated()
                     ];
                 }
 
@@ -42,38 +43,39 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                 $detailList = [];
                 foreach ($reviewedSegment->getCorrection()->getDetailList() as $correctionItem) {
                     $detailList[] = [
-                            "subContent" => $correctionItem->getSubContent(),
-                            "type"       => $correctionItem->getType()
+                        'subContent' => $correctionItem->getSubContent(),
+                        'type'       => $correctionItem->getType()
                     ];
                 }
 
                 $corrections[] = [
-                        "clientId" => (false === empty($reviewedSegment->getClientId())) ? $reviewedSegment->getClientId() : Uuid::uuid4()->toString(),
-                        "comment"  => $reviewedSegment->getComment(),
-                        "errors"   => $errors,
-                        "correction" => [
-                                "content"    => $reviewedSegment->getCorrection()->getContent(),
-                                "time"       => $reviewedSegment->getCorrection()->getTime(),
-                                "detailList" => $detailList
-                        ]
+                    'clientId' => (false === empty($reviewedSegment->getClientId())) ? $reviewedSegment->getClientId() : Uuid::uuid4()->toString(),
+                    'comment'  => $reviewedSegment->getComment(),
+                    'errors'   => $errors,
+                    'correction' => [
+                        'content'    => $reviewedSegment->getCorrection()->getContent(),
+                        'time'       => $reviewedSegment->getCorrection()->getTime(),
+                        'detailList' => $detailList
+                    ]
                 ];
             }
         }
 
         $updateReviewInBatch = $this->client->updateReviewInBatch([
-                'sessionId'      => $this->sessionId,
-                'projectKey'     => $batch->getChildProject()->getDqfUuid(),
-                'projectId'      => $batch->getChildProject()->getDqfId(),
-                'fileId'         => $batch->getFile()->getDqfId(),
-                'targetLangCode' => $batch->getTargetLanguage()->getLocaleCode(),
-                'translationId'  => $batch->getTranslation()->getDqfId(),
-                'batchId'        => $batch->getBatchId(),
-                'overwrite'      => $batch->isOverwrite(),
-                'body'           => $corrections,
+            'sessionId'      => $this->sessionId,
+            'projectKey'     => $batch->getChildProject()->getDqfUuid(),
+            'projectId'      => $batch->getChildProject()->getDqfId(),
+            'fileId'         => $batch->getFile()->getDqfId(),
+            'targetLangCode' => $batch->getTargetLanguage()->getLocaleCode(),
+            'translationId'  => $batch->getTranslation()->getDqfId(),
+            'batchId'        => $batch->getBatchId(),
+            'overwrite'      => $batch->isOverwrite(),
+            'body'           => $corrections,
         ]);
 
         if (false === empty($reviewedSegments)) {
             foreach ($reviewedSegments as $key => $reviewedSegment) {
+                $reviewedSegment->setDqfId($updateReviewInBatch->createdReviewIds[$key]->reviewContainerId);
                 $reviewedSegment->setClientId($updateReviewInBatch->createdReviewIds[$key]->clientId);
             }
         }

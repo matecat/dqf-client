@@ -9,7 +9,6 @@ use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 
 interface TranslationRepositoryInterface
 {
-
     /**
      * @param TranslationBatch $batch
      *

@@ -232,6 +232,7 @@ class TranslationRepositoryTest extends BaseTest
         $childProject->setReviewSettings($reviewSettings);
 
         // save the child project
+        /** @var ChildProject $childReview */
         $childReview = $this->childProjectRepo->save($childProject);
 
         // create a segment review batch
@@ -259,6 +260,7 @@ class TranslationRepositoryTest extends BaseTest
         $this->assertInstanceOf(ReviewBatch::class, $batch);
 
         foreach ($batch->getReviewedSegments() as $reviewedSegment) {
+            $this->assertNotNull($reviewedSegment->getDqfId());
             $this->assertNotNull($reviewedSegment->getClientId());
         }
 

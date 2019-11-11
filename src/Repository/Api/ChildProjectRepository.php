@@ -167,16 +167,16 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
     private function createProject(ChildProject $baseEntity)
     {
         $childProject = $this->client->createChildProject([
-                'generic_email'   => $this->genericEmail,
-                'sessionId'       => $this->sessionId,
-                'parentKey'       => $baseEntity->getParentProject()->getDqfUuid(),
-                'type'            => $baseEntity->getType(),
-                'name'            => $baseEntity->getName(),
-                'clientId'        => $baseEntity->getClientId(),
-                'assignee'        => $baseEntity->getAssignee(),
-                'assigner'        => $baseEntity->getAssigner(),
-                'reviewSettingId' => $baseEntity->getReviewSettingsId(),
-                'isDummy'         => $baseEntity->isDummy(),
+            'generic_email'   => $this->genericEmail,
+            'sessionId'       => $this->sessionId,
+            'parentKey'       => $baseEntity->getParentProject()->getDqfUuid(),
+            'type'            => $baseEntity->getType(),
+            'name'            => $baseEntity->getName(),
+            'clientId'        => $baseEntity->getClientId(),
+            'assignee'        => $baseEntity->getAssignee(),
+            'assigner'        => $baseEntity->getAssigner(),
+            'reviewSettingId' => $baseEntity->getReviewSettingsId(),
+            'isDummy'         => $baseEntity->isDummy(),
         ]);
 
         $baseEntity->setDqfId($childProject->dqfId);

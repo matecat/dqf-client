@@ -4,6 +4,7 @@ namespace Matecat\Dqf\Repository\Api;
 
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
+use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\TranslationRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
@@ -21,11 +22,11 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     {
         // get the source segments for the child project
         $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile([
-                'sessionId'      => $this->sessionId,
-                'projectKey'     => $batch->getChildProject()->getDqfUuid(),
-                'projectId'      => $batch->getChildProject()->getDqfId(),
-                'fileId'         => $batch->getFile()->getDqfId(),
-                'targetLangCode' => $batch->getChildProject()->getTargetLanguages()[ 0 ]->getLocaleCode(),
+            'sessionId'      => $this->sessionId,
+            'projectKey'     => $batch->getChildProject()->getDqfUuid(),
+            'projectId'      => $batch->getChildProject()->getDqfId(),
+            'fileId'         => $batch->getFile()->getDqfId(),
+            'targetLangCode' => $batch->getChildProject()->getTargetLanguages()[ 0 ]->getLocaleCode(),
         ]);
 
         // build $segmentPairs
@@ -42,16 +43,16 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                         }
 
                         $segmentPairs[] = [
-                                "sourceSegmentId"   => $item->dqfId,
-                                "clientId"          => $segment->getClientId(),
-                                "targetSegment"     => $segment->getTargetSegment(),
-                                "editedSegment"     => $segment->getEditedSegment(),
-                                "time"              => $segment->getTime(),
-                                "segmentOriginId"   => $segment->getSegmentOriginId(),
-                                "mtEngineId"        => $segment->getMtEngineId(),
-                                "mtEngineOtherName" => $segment->getMtEngineOtherName(),
-                                "matchRate"         => $segment->getMatchRate(),
-                                "indexNo"           => (false === empty($segment->getIndexNo())) ? $segment->getIndexNo() : $index
+                            'sourceSegmentId'   => $item->dqfId,
+                            'clientId'          => $segment->getClientId(),
+                            'targetSegment'     => $segment->getTargetSegment(),
+                            'editedSegment'     => $segment->getEditedSegment(),
+                            'time'              => $segment->getTime(),
+                            'segmentOriginId'   => $segment->getSegmentOriginId(),
+                            'mtEngineId'        => $segment->getMtEngineId(),
+                            'mtEngineOtherName' => $segment->getMtEngineOtherName(),
+                            'matchRate'         => $segment->getMatchRate(),
+                            'indexNo'           => (false === empty($segment->getIndexNo())) ? $segment->getIndexNo() : $index
                         ];
                     }
                 }
@@ -59,16 +60,17 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         }
 
         $translationsBatch = $this->client->addTranslationsForSourceSegmentsInBatch([
-                'sessionId'      => $this->sessionId,
-                'projectKey'     => $batch->getChildProject()->getDqfUuid(),
-                'projectId'      => $batch->getChildProject()->getDqfId(),
-                'fileId'         => $batch->getFile()->getDqfId(),
-                'targetLangCode' => $batch->getTargetLanguage()->getLocaleCode(),
-                'body'           => $segmentPairs,
+            'sessionId'      => $this->sessionId,
+            'projectKey'     => $batch->getChildProject()->getDqfUuid(),
+            'projectId'      => $batch->getChildProject()->getDqfId(),
+            'fileId'         => $batch->getFile()->getDqfId(),
+            'targetLangCode' => $batch->getTargetLanguage()->getLocaleCode(),
+            'body'           => $segmentPairs,
         ]);
 
         foreach ($translationsBatch->translations as $i => $translation) {
             $batch->getSegments()[ $i ]->setDqfId($translation->dqfId);
+            $this->hydrateLanguage($batch->getSegments()[ $i ]->getTargetLanguage());
         }
 
         return $batch;
@@ -85,23 +87,23 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     {
         if ($this->exists($childProject, $file, $translatedSegment)) {
             $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
-                    'sessionId'           => $this->sessionId,
-                    'projectKey'          => $childProject->getDqfUuid(),
-                    'projectId'           => $childProject->getDqfId(),
-                    'fileId'              => $file->getDqfId(),
-                    'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
-                    'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
-                    'translationId'       => $translatedSegment->getDqfId(),
-                    'segmentOriginId'     => $translatedSegment->getSegmentOriginId(),
-                    'targetSegment'       => $translatedSegment->getTargetSegment(),
-                    'editedSegment'       => $translatedSegment->getEditedSegment(),
-                    'time'                => $translatedSegment->getTime(),
-                    'matchRate'           => $translatedSegment->getMatchRate(),
-                    'mtEngineId'          => $translatedSegment->getMtEngineId(),
-                    'mtEngineOtherName'   => $translatedSegment->getMtEngineOtherName(),
-                    'mtEngineVersion'     => $translatedSegment->getMtEngineVersion(),
-                    'segmentOriginDetail' => $translatedSegment->getSegmentOriginDetail(),
-                    'clientId'            => $translatedSegment->getClientId(),
+                'sessionId'           => $this->sessionId,
+                'projectKey'          => $childProject->getDqfUuid(),
+                'projectId'           => $childProject->getDqfId(),
+                'fileId'              => $file->getDqfId(),
+                'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
+                'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
+                'translationId'       => $translatedSegment->getDqfId(),
+                'segmentOriginId'     => $translatedSegment->getSegmentOriginId(),
+                'targetSegment'       => $translatedSegment->getTargetSegment(),
+                'editedSegment'       => $translatedSegment->getEditedSegment(),
+                'time'                => $translatedSegment->getTime(),
+                'matchRate'           => $translatedSegment->getMatchRate(),
+                'mtEngineId'          => $translatedSegment->getMtEngineId(),
+                'mtEngineOtherName'   => $translatedSegment->getMtEngineOtherName(),
+                'mtEngineVersion'     => $translatedSegment->getMtEngineVersion(),
+                'segmentOriginDetail' => $translatedSegment->getSegmentOriginDetail(),
+                'clientId'            => $translatedSegment->getClientId(),
             ]);
 
             return $updateSingleSegmentTranslation->status === 'OK';
@@ -118,13 +120,13 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     private function exists(ChildProject $childProject, File $file, TranslatedSegment $translatedSegment)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
-                'sessionId'           => $this->sessionId,
-                'projectKey'          => $childProject->getDqfUuid(),
-                'projectId'           => $childProject->getDqfId(),
-                'fileId'              => $file->getDqfId(),
-                'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
-                'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
-                'translationId'       => $translatedSegment->getDqfId(),
+            'sessionId'           => $this->sessionId,
+            'projectKey'          => $childProject->getDqfUuid(),
+            'projectId'           => $childProject->getDqfId(),
+            'fileId'              => $file->getDqfId(),
+            'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
+            'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
+            'translationId'       => $translatedSegment->getDqfId(),
         ]);
 
         return false === empty($translationForASegment->model);
