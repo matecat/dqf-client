@@ -14,6 +14,64 @@ use Ramsey\Uuid\Uuid;
 class TranslationRepository extends AbstractApiRepository implements TranslationRepositoryInterface
 {
     /**
+     * @param ChildProject $childProject
+     * @param int          $fileId
+     * @param string       $targetLanguage
+     * @param int          $sourceSegmentDqfId
+     * @param int          $segmentTranslationDqfId
+     *
+     * @return TranslatedSegment
+     */
+    public function getSegmentTranslation(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    {
+        $translationForASegment = $this->client->getTranslationForASegment([
+                'sessionId'           => $this->sessionId,
+                'projectKey'          => $childProject->getDqfUuid(),
+                'projectId'           => $childProject->getDqfId(),
+                'fileId'              => $fileId,
+                'targetLangCode'      => $targetLanguage,
+                'sourceSegmentId'     => $sourceSegmentDqfId,
+                'translationId'       => $segmentTranslationDqfId,
+        ]);
+
+        if (false === isset($translationForASegment->model)) {
+            return null;
+        }
+
+        $model = $translationForASegment->model;
+
+        $file = new File($model->sourceSegment->file->name, $model->sourceSegment->file->segmentSize);
+        $file->setDqfId($model->sourceSegment->file->id);
+        $file->setTmsFileId($model->sourceSegment->file->tmsFile);
+        $file->setClientId($model->sourceSegment->file->integratorFileMap->clientValue);
+
+        $sourceSegment = new SourceSegment($file, $model->sourceSegment->indexNo, $model->sourceSegment->content);
+        $sourceSegment->setDqfId($model->sourceSegment->id);
+        $sourceSegment->setClientId($model->sourceSegment->integratorSegmentMap->clientValue);
+
+        $translatedSegment = new TranslatedSegment(
+                $model->targetSegment->mtEngine->id,
+                $model->targetSegment->segmentOrigin->id,
+                $targetLanguage,
+                $sourceSegment,
+                $model->sourceSegment->content,
+                $model->targetSegment->content
+        );
+        $translatedSegment->setDqfId($model->id);
+        $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);
+        $translatedSegment->setMtEngineVersion($model->targetSegment->mtEngineVersion);
+        $translatedSegment->setMatchRate($model->targetSegment->matchRate);
+        $translatedSegment->setClientId($model->integratorTranslationMap->clientValue);
+        $translatedSegment->setTime($model->time);
+
+        $language = new Language($targetLanguage);
+        $this->hydrateLanguage($language);
+        $translatedSegment->setTargetLanguage($language);
+
+        return $translatedSegment;
+    }
+
+    /**
      * @param TranslationBatch $batch
      *
      * @return mixed|void
@@ -131,63 +189,5 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         ]);
 
         return false === empty($translationForASegment->model);
-    }
-
-    /**
-     * @param ChildProject $childProject
-     * @param int          $fileId
-     * @param string       $targetLanguage
-     * @param int          $sourceSegmentDqfId
-     * @param int          $segmentTranslationDqfId
-     *
-     * @return TranslatedSegment
-     */
-    public function getSegmentTranslation(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
-    {
-        $translationForASegment = $this->client->getTranslationForASegment([
-            'sessionId'           => $this->sessionId,
-            'projectKey'          => $childProject->getDqfUuid(),
-            'projectId'           => $childProject->getDqfId(),
-            'fileId'              => $fileId,
-            'targetLangCode'      => $targetLanguage,
-            'sourceSegmentId'     => $sourceSegmentDqfId,
-            'translationId'       => $segmentTranslationDqfId,
-        ]);
-
-        if (false === isset($translationForASegment->model)) {
-            return null;
-        }
-
-        $model = $translationForASegment->model;
-
-        $file = new File($model->sourceSegment->file->name, $model->sourceSegment->file->segmentSize);
-        $file->setDqfId($model->sourceSegment->file->id);
-        $file->setTmsFileId($model->sourceSegment->file->tmsFile);
-        $file->setClientId($model->sourceSegment->file->integratorFileMap->clientValue);
-
-        $sourceSegment = new SourceSegment($file, $model->sourceSegment->indexNo, $model->sourceSegment->content);
-        $sourceSegment->setDqfId($model->sourceSegment->id);
-        $sourceSegment->setClientId($model->sourceSegment->integratorSegmentMap->clientValue);
-
-        $translatedSegment = new TranslatedSegment(
-            $model->targetSegment->mtEngine->id,
-            $model->targetSegment->segmentOrigin->id,
-            $targetLanguage,
-            $sourceSegment,
-            $model->sourceSegment->content,
-            $model->targetSegment->content
-        );
-        $translatedSegment->setDqfId($model->id);
-        $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);
-        $translatedSegment->setMtEngineVersion($model->targetSegment->mtEngineVersion);
-        $translatedSegment->setMatchRate($model->targetSegment->matchRate);
-        $translatedSegment->setClientId($model->integratorTranslationMap->clientValue);
-        $translatedSegment->setTime($model->time);
-
-        $language = new Language($targetLanguage);
-        $this->hydrateLanguage($language);
-        $translatedSegment->setTargetLanguage($language);
-
-        return $translatedSegment;
     }
 }
