@@ -62,6 +62,10 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
                 'projectId'     => $dqfId,
         ]);
 
+        if(false === isset($masterProject->model)){
+            return null;
+        }
+
         $model = $masterProject->model;
 
         $masterProject = new MasterProject(

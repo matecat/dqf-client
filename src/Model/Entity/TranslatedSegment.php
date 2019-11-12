@@ -101,6 +101,14 @@ class TranslatedSegment extends BaseApiEntity
     }
 
     /**
+     * @param Language $targetLanguage
+     */
+    public function setTargetLanguage($targetLanguage)
+    {
+        $this->targetLanguage = $targetLanguage;
+    }
+
+    /**
      * @return SourceSegment
      */
     public function getSourceSegment()

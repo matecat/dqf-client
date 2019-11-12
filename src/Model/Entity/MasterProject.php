@@ -241,7 +241,7 @@ class MasterProject extends AbstractProject
     }
 
     /**
-     * @return array
+     * @return SourceSegment[]
      */
     public function getSourceSegments()
     {

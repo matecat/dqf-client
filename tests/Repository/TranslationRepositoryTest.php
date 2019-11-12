@@ -156,6 +156,16 @@ class TranslationRepositoryTest extends BaseTest
         }
 
         $firstSegment = $translationBatch->getSegments()[0];
+        $sourceSegment = $masterProject->getSourceSegments()['original-filename'][0];
+
+        // get a single segment translation
+        $getTranslationSegment = $this->translationRepository->getSegmentTranslation($childProject, $file->getDqfId(), 'en-US', $sourceSegment->getDqfId(), $firstSegment->getDqfId());
+
+        $this->assertNotNull($getTranslationSegment->getDqfId());
+        $this->assertNotNull($getTranslationSegment->getClientId());
+        $this->assertNotNull($getTranslationSegment->getSourceSegment());
+        $this->assertNotNull($getTranslationSegment->getTargetSegment());
+        $this->assertNotNull($getTranslationSegment->getTargetLanguage());
 
         // update a single segment translation
         $this->update_a_single_segment_translation($translationBatch->getChildProject(), $translationBatch->getFile(), $firstSegment);

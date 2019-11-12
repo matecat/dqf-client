@@ -5,6 +5,7 @@ namespace Matecat\Dqf\Repository\Api;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
+use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\TranslationRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
@@ -131,4 +132,181 @@ class TranslationRepository extends AbstractApiRepository implements Translation
 
         return false === empty($translationForASegment->model);
     }
+
+    /**
+     * @param ChildProject $childProject
+     * @param              $fileId
+     * @param              $targetLanguage
+     * @param              $sourceSegmentDqfId
+     * @param              $segmentTranslationDqfId
+     *
+     * @return TranslatedSegment
+     */
+    public function getSegmentTranslation( ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    {
+        $translationForASegment = $this->client->getTranslationForASegment([
+            'sessionId'           => $this->sessionId,
+            'projectKey'          => $childProject->getDqfUuid(),
+            'projectId'           => $childProject->getDqfId(),
+            'fileId'              => $fileId,
+            'targetLangCode'      => $targetLanguage,
+            'sourceSegmentId'     => $sourceSegmentDqfId,
+            'translationId'       => $segmentTranslationDqfId,
+        ]);
+
+        if(false === isset($translationForASegment->model)){
+           return null;
+        }
+
+        $model = $translationForASegment->model;
+
+        $file = new File($model->sourceSegment->file->name, $model->sourceSegment->file->segmentSize);
+        $file->setDqfId($model->sourceSegment->file->id);
+        $file->setTmsFileId($model->sourceSegment->file->tmsFile);
+        $file->setClientId($model->sourceSegment->file->integratorFileMap->clientValue);
+
+        $sourceSegment = new SourceSegment($file, $model->sourceSegment->indexNo, $model->sourceSegment->content);
+        $sourceSegment->setDqfId($model->sourceSegment->id);
+        $sourceSegment->setClientId($model->sourceSegment->integratorSegmentMap->clientValue);
+
+        $translatedSegment = new TranslatedSegment($model->targetSegment->mtEngine->id, $model->targetSegment->segmentOrigin->id, $targetLanguage, $sourceSegment, $model->sourceSegment->content,
+        $model->targetSegment->content );
+        $translatedSegment->setDqfId($model->id);
+        $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);
+        $translatedSegment->setMtEngineVersion($model->targetSegment->mtEngineVersion);
+        $translatedSegment->setMatchRate($model->targetSegment->matchRate);
+        $translatedSegment->setClientId($model->integratorTranslationMap->clientValue);
+        $translatedSegment->setTime($model->time);
+
+        $language = new Language($targetLanguage);
+        $this->hydrateLanguage($language);
+        $translatedSegment->setTargetLanguage($language);
+
+        return $translatedSegment;
+    }
 }
+
+
+//
+//(100%)object(stdClass)#425 (16) {
+//["id"]=>
+//  int(961729)
+//  ["comment"]=>
+//  NULL
+//  ["content"]=>
+//  string(17) "The frog in Spain"
+//["creationTimestamp"]=>
+//  int(1573565705000)
+//  ["isReview"]=>
+//  bool(false)
+//  ["time"]=>
+//  NULL
+//  ["updateTimestamp"]=>
+//  int(1573565705000)
+//  ["version"]=>
+//  int(1)
+//  ["wordCount"]=>
+//  int(4)
+//  ["characterCount"]=>
+//  int(14)
+//  ["maxCharacterCount"]=>
+//  int(14)
+//  ["editDistance"]=>
+//  int(17)
+//  ["editedSegment"]=>
+//  NULL
+//  ["sourceSegment"]=>
+//  object(stdClass)#270 (7) {
+//  ["id"]=>
+//    int(5778747)
+//    ["content"]=>
+//    string(17) "La rana in Spagna"
+//["indexNo"]=>
+//    int(1)
+//    ["wordCount"]=>
+//    int(4)
+//    ["characterCount"]=>
+//    int(14)
+//    ["file"]=>
+//    object(stdClass)#731 (7) {
+//    ["id"]=>
+//      int(143005)
+//      ["name"]=>
+//      string(17) "original-filename"
+//["segmentSize"]=>
+//      int(3)
+//      ["segmentsUploaded"]=>
+//      bool(true)
+//      ["wordCount"]=>
+//      int(12)
+//      ["integratorFileMap"]=>
+//      object(stdClass)#362 (2) {
+//      ["id"]=>
+//        int(121827)
+//        ["clientValue"]=>
+//        string(36) "2f0bc4f6-9af1-4039-a2d4-34ccd4c63c15"
+//      }
+//      ["tmsFile"]=>
+//      NULL
+//    }
+//    ["integratorSegmentMap"]=>
+//    object(stdClass)#133 (2) {
+//    ["id"]=>
+//      int(5026595)
+//      ["clientValue"]=>
+//      string(36) "ab1a3b06-f4cb-48ac-aba8-9e3370f52e0d"
+//    }
+//  }
+//  ["targetSegment"]=>
+//  object(stdClass)#263 (13) {
+//  ["id"]=>
+//    int(941093)
+//    ["content"]=>
+//    string(0) ""
+//["isReview"]=>
+//    bool(false)
+//    ["matchRate"]=>
+//    NULL
+//    ["mtEngineVersion"]=>
+//    NULL
+//    ["segmentOrigin"]=>
+//    object(stdClass)#702 (2) {
+//    ["id"]=>
+//      int(1)
+//      ["name"]=>
+//      string(2) "MT"
+//    }
+//    ["segmentOriginDetail"]=>
+//    NULL
+//    ["wordCount"]=>
+//    int(0)
+//    ["characterCount"]=>
+//    int(0)
+//    ["mtEngine"]=>
+//    object(stdClass)#125 (2) {
+//    ["id"]=>
+//      int(22)
+//      ["name"]=>
+//      string(8) "MyMemory"
+//    }
+//    ["mtEngineOther"]=>
+//    NULL
+//    ["segmentOriginLeaf"]=>
+//    object(stdClass)#492 (2) {
+//    ["id"]=>
+//      int(1)
+//      ["name"]=>
+//      string(2) "MT"
+//    }
+//    ["creationTimestamp"]=>
+//    int(1573565705000)
+//  }
+//  ["integratorTranslationMap"]=>
+//  object(stdClass)#744 (2) {
+//  ["id"]=>
+//    int(104346)
+//    ["clientValue"]=>
+//    string(36) "166c5172-8f60-4adf-9ed0-154b11b62893"
+//  }
+//}
+
