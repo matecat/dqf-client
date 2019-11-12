@@ -135,10 +135,10 @@ class TranslationRepository extends AbstractApiRepository implements Translation
 
     /**
      * @param ChildProject $childProject
-     * @param              $fileId
-     * @param              $targetLanguage
-     * @param              $sourceSegmentDqfId
-     * @param              $segmentTranslationDqfId
+     * @param int          $fileId
+     * @param string       $targetLanguage
+     * @param int          $sourceSegmentDqfId
+     * @param int          $segmentTranslationDqfId
      *
      * @return TranslatedSegment
      */
@@ -185,128 +185,3 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         return $translatedSegment;
     }
 }
-
-
-//
-//(100%)object(stdClass)#425 (16) {
-//["id"]=>
-//  int(961729)
-//  ["comment"]=>
-//  NULL
-//  ["content"]=>
-//  string(17) "The frog in Spain"
-//["creationTimestamp"]=>
-//  int(1573565705000)
-//  ["isReview"]=>
-//  bool(false)
-//  ["time"]=>
-//  NULL
-//  ["updateTimestamp"]=>
-//  int(1573565705000)
-//  ["version"]=>
-//  int(1)
-//  ["wordCount"]=>
-//  int(4)
-//  ["characterCount"]=>
-//  int(14)
-//  ["maxCharacterCount"]=>
-//  int(14)
-//  ["editDistance"]=>
-//  int(17)
-//  ["editedSegment"]=>
-//  NULL
-//  ["sourceSegment"]=>
-//  object(stdClass)#270 (7) {
-//  ["id"]=>
-//    int(5778747)
-//    ["content"]=>
-//    string(17) "La rana in Spagna"
-//["indexNo"]=>
-//    int(1)
-//    ["wordCount"]=>
-//    int(4)
-//    ["characterCount"]=>
-//    int(14)
-//    ["file"]=>
-//    object(stdClass)#731 (7) {
-//    ["id"]=>
-//      int(143005)
-//      ["name"]=>
-//      string(17) "original-filename"
-//["segmentSize"]=>
-//      int(3)
-//      ["segmentsUploaded"]=>
-//      bool(true)
-//      ["wordCount"]=>
-//      int(12)
-//      ["integratorFileMap"]=>
-//      object(stdClass)#362 (2) {
-//      ["id"]=>
-//        int(121827)
-//        ["clientValue"]=>
-//        string(36) "2f0bc4f6-9af1-4039-a2d4-34ccd4c63c15"
-//      }
-//      ["tmsFile"]=>
-//      NULL
-//    }
-//    ["integratorSegmentMap"]=>
-//    object(stdClass)#133 (2) {
-//    ["id"]=>
-//      int(5026595)
-//      ["clientValue"]=>
-//      string(36) "ab1a3b06-f4cb-48ac-aba8-9e3370f52e0d"
-//    }
-//  }
-//  ["targetSegment"]=>
-//  object(stdClass)#263 (13) {
-//  ["id"]=>
-//    int(941093)
-//    ["content"]=>
-//    string(0) ""
-//["isReview"]=>
-//    bool(false)
-//    ["matchRate"]=>
-//    NULL
-//    ["mtEngineVersion"]=>
-//    NULL
-//    ["segmentOrigin"]=>
-//    object(stdClass)#702 (2) {
-//    ["id"]=>
-//      int(1)
-//      ["name"]=>
-//      string(2) "MT"
-//    }
-//    ["segmentOriginDetail"]=>
-//    NULL
-//    ["wordCount"]=>
-//    int(0)
-//    ["characterCount"]=>
-//    int(0)
-//    ["mtEngine"]=>
-//    object(stdClass)#125 (2) {
-//    ["id"]=>
-//      int(22)
-//      ["name"]=>
-//      string(8) "MyMemory"
-//    }
-//    ["mtEngineOther"]=>
-//    NULL
-//    ["segmentOriginLeaf"]=>
-//    object(stdClass)#492 (2) {
-//    ["id"]=>
-//      int(1)
-//      ["name"]=>
-//      string(2) "MT"
-//    }
-//    ["creationTimestamp"]=>
-//    int(1573565705000)
-//  }
-//  ["integratorTranslationMap"]=>
-//  object(stdClass)#744 (2) {
-//  ["id"]=>
-//    int(104346)
-//    ["clientValue"]=>
-//    string(36) "166c5172-8f60-4adf-9ed0-154b11b62893"
-//  }
-//}
-
