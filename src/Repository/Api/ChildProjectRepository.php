@@ -61,7 +61,7 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
                 'projectId'     => $dqfId,
         ]);
 
-        if(false === isset($childProject->model)){
+        if (false === isset($childProject->model)) {
             return null;
         }
 

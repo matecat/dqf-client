@@ -142,7 +142,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
      *
      * @return TranslatedSegment
      */
-    public function getSegmentTranslation( ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    public function getSegmentTranslation(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
             'sessionId'           => $this->sessionId,
@@ -154,8 +154,8 @@ class TranslationRepository extends AbstractApiRepository implements Translation
             'translationId'       => $segmentTranslationDqfId,
         ]);
 
-        if(false === isset($translationForASegment->model)){
-           return null;
+        if (false === isset($translationForASegment->model)) {
+            return null;
         }
 
         $model = $translationForASegment->model;
@@ -169,8 +169,14 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         $sourceSegment->setDqfId($model->sourceSegment->id);
         $sourceSegment->setClientId($model->sourceSegment->integratorSegmentMap->clientValue);
 
-        $translatedSegment = new TranslatedSegment($model->targetSegment->mtEngine->id, $model->targetSegment->segmentOrigin->id, $targetLanguage, $sourceSegment, $model->sourceSegment->content,
-        $model->targetSegment->content );
+        $translatedSegment = new TranslatedSegment(
+            $model->targetSegment->mtEngine->id,
+            $model->targetSegment->segmentOrigin->id,
+            $targetLanguage,
+            $sourceSegment,
+            $model->sourceSegment->content,
+            $model->targetSegment->content
+        );
         $translatedSegment->setDqfId($model->id);
         $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);
         $translatedSegment->setMtEngineVersion($model->targetSegment->mtEngineVersion);
