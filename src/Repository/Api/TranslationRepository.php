@@ -22,7 +22,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
      *
      * @return TranslatedSegment
      */
-    public function getSegmentTranslation(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    public function getTranslatedSegment( ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
                 'sessionId'           => $this->sessionId,

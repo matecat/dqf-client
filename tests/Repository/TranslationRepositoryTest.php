@@ -159,7 +159,7 @@ class TranslationRepositoryTest extends BaseTest
         $sourceSegment = $masterProject->getSourceSegments()['original-filename'][0];
 
         // get a single segment translation
-        $getTranslationSegment = $this->translationRepository->getSegmentTranslation($childProject, $file->getDqfId(), 'en-US', $sourceSegment->getDqfId(), $firstSegment->getDqfId());
+        $getTranslationSegment = $this->translationRepository->getTranslatedSegment($childProject, $file->getDqfId(), 'en-US', $sourceSegment->getDqfId(), $firstSegment->getDqfId());
 
         $this->assertNotNull($getTranslationSegment->getDqfId());
         $this->assertNotNull($getTranslationSegment->getClientId());
