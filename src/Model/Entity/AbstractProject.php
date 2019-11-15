@@ -185,7 +185,7 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
     /**
      * @param File $file
      *
-     * @return array
+     * @return SourceSegment[]
      */
     public function getSourceSegmentsForAFile(File $file)
     {
