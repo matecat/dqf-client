@@ -128,8 +128,8 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         ]);
 
         foreach ($translationsBatch->translations as $i => $translation) {
-            $batch->getSegments()[ $i ]->setDqfId($translation->dqfId);
-            $this->hydrateLanguage($batch->getSegments()[ $i ]->getTargetLanguage());
+            $batch->getSegments()[$i]->setDqfId($translation->dqfId);
+            $this->hydrateLanguage($batch->getSegments()[$i]->getTargetLanguage());
         }
 
         return $batch;

@@ -8,7 +8,9 @@ use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
+use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
+use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Repository\CrudApiRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\Severity;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
@@ -94,6 +96,9 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
         $childProject->setReviewSettings($reviewSettings);
         $childProject->setReviewSettingsId($reviewSettings->getDqfId());
 
+        // source segment(s)
+        $this->getSourceSegments($childProject);
+
         return $childProject;
     }
 
@@ -129,6 +134,35 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
         }
 
         return $reviewSettings;
+    }
+
+    /**
+     * @param ChildProject $childProject
+     */
+    private function getSourceSegments(ChildProject $childProject)
+    {
+        foreach ($childProject->getTargetLanguageAssoc() as $targetLanguageAssoc){
+
+            /** @var FileTargetLang $fileTargetLang */
+            foreach ($targetLanguageAssoc as $fileTargetLang){
+                $segmentIdsForAFile = $this->client->getSourceSegmentIdsForAFile([
+                        'generic_email'  => $this->genericEmail,
+                        'sessionId'      => $this->sessionId,
+                        'projectKey'     => $childProject->getDqfUuid(),
+                        'projectId'      => $childProject->getDqfId(),
+                        'fileId'         => $fileTargetLang->getFile()->getDqfId(),
+                        'targetLangCode' => $fileTargetLang->getLanguage()->getLocaleCode(),
+                ]);
+
+                foreach ($segmentIdsForAFile->sourceSegmentList as $sourceSegmentId){
+                    $sourceSegment = new SourceSegment($fileTargetLang->getFile(), $sourceSegmentId->index);
+                    $sourceSegment->setDqfId($sourceSegmentId->dqfId);
+                    $sourceSegment->setClientId($sourceSegmentId->clientId);
+
+                    $childProject->addSourceSegment($sourceSegment);
+                }
+            }
+        }
     }
 
     /**

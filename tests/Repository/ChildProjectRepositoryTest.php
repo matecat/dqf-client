@@ -164,6 +164,7 @@ class ChildProjectRepositoryTest extends BaseTest
     {
         /** @var ChildProject $childProject */
         $childProject = $this->childProjectRepo->get($dqfId, $dqfUuid);
+        $file0 = $childProject->getFiles()[0];
 
         $this->assertInstanceOf(ChildProject::class, $childProject);
         $this->assertEquals($childProject->getDqfId(), $dqfId);
@@ -174,6 +175,8 @@ class ChildProjectRepositoryTest extends BaseTest
         $this->assertNotNull($childProject->getReviewSettings()->getDqfId());
         $this->assertNotNull($childProject->getReviewSettingsId());
         $this->assertEquals($childProject->getReviewSettings()->getDqfId(), $childProject->getReviewSettingsId());
+        $this->assertCount(1, $childProject->getSourceSegments());
+        $this->assertCount(200, $childProject->getSourceSegmentsForAFile($file0));
     }
 
     /**

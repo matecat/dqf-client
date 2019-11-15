@@ -47,11 +47,6 @@ class MasterProject extends AbstractProject
     private $tmsProjectKey;
 
     /**
-     * @var array
-     */
-    private $sourceSegments;
-
-    /**
      * MasterProject constructor.
      *
      * @param string $name
@@ -238,46 +233,6 @@ class MasterProject extends AbstractProject
     public function setTmsProjectKey($tmsProjectKey)
     {
         $this->tmsProjectKey = $tmsProjectKey;
-    }
-
-    /**
-     * @return SourceSegment[]
-     */
-    public function getSourceSegments()
-    {
-        return $this->sourceSegments;
-    }
-
-    /**
-     * @param SourceSegment $sourceSegment
-     */
-    public function addSourceSegment(SourceSegment $sourceSegment)
-    {
-        if (false === $this->hasSourceSegment($sourceSegment)) {
-            $this->sourceSegments[$sourceSegment->getFile()->getName()][] = $sourceSegment;
-        }
-    }
-
-    /**
-     * @param SourceSegment $sourceSegment
-     *
-     * @return bool
-     */
-    public function hasSourceSegment(SourceSegment $sourceSegment)
-    {
-        $fileName = $sourceSegment->getFile()->getName();
-
-        if (empty($this->sourceSegments[$fileName])) {
-            return false;
-        }
-
-        foreach ($this->sourceSegments[$fileName] as $segment) {
-            if ($sourceSegment->isEqualTo($segment)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

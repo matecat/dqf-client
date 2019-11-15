@@ -20,6 +20,11 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
     protected $targetLanguageAssoc;
 
     /**
+     * @var array
+     */
+    protected $sourceSegments;
+
+    /**
      * @return ReviewSettings
      */
     public function getReviewSettings()
@@ -167,5 +172,55 @@ abstract class AbstractProject extends BaseApiEntity implements ProjectInterface
         }
 
         return $targetLanguages;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSourceSegments()
+    {
+        return $this->sourceSegments;
+    }
+
+    /**
+     * @param File $file
+     *
+     * @return array
+     */
+    public function getSourceSegmentsForAFile(File $file)
+    {
+        return $this->sourceSegments[$file->getName()];
+    }
+
+    /**
+     * @param SourceSegment $sourceSegment
+     */
+    public function addSourceSegment(SourceSegment $sourceSegment)
+    {
+        if (false === $this->hasSourceSegment($sourceSegment)) {
+            $this->sourceSegments[$sourceSegment->getFile()->getName()][] = $sourceSegment;
+        }
+    }
+
+    /**
+     * @param SourceSegment $sourceSegment
+     *
+     * @return bool
+     */
+    public function hasSourceSegment(SourceSegment $sourceSegment)
+    {
+        $fileName = $sourceSegment->getFile()->getName();
+
+        if (empty($this->sourceSegments[$fileName])) {
+            return false;
+        }
+
+        foreach ($this->sourceSegments[$fileName] as $segment) {
+            if ($sourceSegment->isEqualTo($segment)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

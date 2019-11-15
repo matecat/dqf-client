@@ -24,9 +24,9 @@ class SourceSegment extends BaseApiEntity
      *
      * @param File   $file
      * @param int    $index
-     * @param string $segment
+     * @param null   $segment
      */
-    public function __construct(File $file, $index, $segment)
+    public function __construct(File $file, $index, $segment = null)
     {
         $this->file    = $file;
         $this->index   = $index;
@@ -55,6 +55,14 @@ class SourceSegment extends BaseApiEntity
     public function getSegment()
     {
         return $this->segment;
+    }
+
+    /**
+     * @param string $segment
+     */
+    public function setSegment($segment)
+    {
+        $this->segment = $segment;
     }
 
     /**
