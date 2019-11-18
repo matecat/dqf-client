@@ -10,6 +10,7 @@ It provides a Client, and an OOP Abstraction Layer built on top of it.
 * [Session Provider](https://github.com/matecat/dqf-integrator/tree/master/docs/SESSION_PROVIDER.md)
 * [OOP Abstraction Layer](https://github.com/matecat/dqf-integrator/tree/master/docs/OOP.md)
 * [A complete workflow](https://github.com/matecat/dqf-integrator/tree/master/docs/WORKFLOW.md)
+* [Utils](https://github.com/matecat/dqf-integrator/tree/master/docs/UTILS.md)
 * [Commands](https://github.com/matecat/dqf-integrator/tree/master/docs/COMMAND.md)
 
 ## Support
