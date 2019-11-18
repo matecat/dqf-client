@@ -97,9 +97,6 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                     if ($item->index === $segment->getSourceSegment()->getIndex()) {
                         $segment->getSourceSegment()->setDqfId($item->dqfId);
                         $segment->getSourceSegment()->setClientId($item->clientId);
-                        if (empty($segment->getClientId())) {
-                            $segment->setClientId(Uuid::uuid4()->toString());
-                        }
 
                         $segmentPairs[] = [
                             'sourceSegmentId'   => $item->dqfId,
