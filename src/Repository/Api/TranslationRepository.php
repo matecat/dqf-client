@@ -9,7 +9,6 @@ use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\TranslationRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\TranslationBatch;
-use Ramsey\Uuid\Uuid;
 
 class TranslationRepository extends AbstractApiRepository implements TranslationRepositoryInterface
 {
