@@ -2,15 +2,8 @@
 
 namespace Matecat\Dqf\Repository\Api;
 
-use Matecat\Dqf\Model\Entity\BaseApiEntity;
-use Matecat\Dqf\Model\Entity\ChildProject;
-use Matecat\Dqf\Model\Entity\File;
-use Matecat\Dqf\Model\Entity\FileTargetLang;
-use Matecat\Dqf\Model\Entity\AbstractProject;
-use Matecat\Dqf\Model\Entity\TranslatedSegment;
 use Matecat\Dqf\Model\Repository\ReviewRepositoryInterface;
 use Matecat\Dqf\Model\ValueObject\ReviewBatch;
-use Ramsey\Uuid\Uuid;
 
 class ReviewRepository extends AbstractApiRepository implements ReviewRepositoryInterface
 {
@@ -48,8 +41,8 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                     ];
                 }
 
-                $corrections[] = [
-                    'clientId' => (false === empty($reviewedSegment->getClientId())) ? $reviewedSegment->getClientId() : Uuid::uuid4()->toString(),
+                // correction
+                $correctionArray = [
                     'comment'  => $reviewedSegment->getComment(),
                     'errors'   => $errors,
                     'correction' => [
@@ -58,6 +51,12 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                         'detailList' => $detailList
                     ]
                 ];
+
+                if(false === empty($reviewedSegment->getClientId())) {
+                    $correctionArray['clientId'] = $reviewedSegment->getClientId();
+                }
+
+                $corrections[] = $correctionArray;
             }
         }
 
