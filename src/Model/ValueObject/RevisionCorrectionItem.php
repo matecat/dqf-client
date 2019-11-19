@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Model\ValueObject;
 
+use Matecat\Dqf\Constants;
+
 class RevisionCorrectionItem
 {
     /**
@@ -31,7 +33,7 @@ class RevisionCorrectionItem
      */
     private function setType($type)
     {
-        $allowed = ['unchanged','added', 'deleted'];
+        $allowed = [Constants::REVISION_CORRECTION_TYPE_ADDED, Constants::REVISION_CORRECTION_TYPE_DELETED, Constants::REVISION_CORRECTION_TYPE_UNCHANGED];
 
         if (false === in_array($type, $allowed)) {
             throw new \DomainException($type . 'is not a valid type. [Allowed: '.implode(',', $allowed).']');

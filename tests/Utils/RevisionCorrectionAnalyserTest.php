@@ -9,7 +9,8 @@ class RevisionCorrectionAnalyserTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function can_analyse_the_differences_between_two_strings_and_returns_in_as_a_structured_array() {
+    public function can_analyse_the_differences_between_two_strings_and_returns_in_as_a_structured_array()
+    {
         $data = [
             'test_1' => [
                 'old_string' => 'Test Segment',
@@ -47,12 +48,37 @@ class RevisionCorrectionAnalyserTest extends \PHPUnit_Framework_TestCase
                     'Test Segment' => 'unchanged',
                 ],
             ],
+            'test_5' => [
+                    'old_string' => 'This is just a Test Segment',
+                    'new_string' => 'This is just',
+                    'expected' => [
+                            'This is just' => 'unchanged',
+                            'a Test Segment' => 'deleted',
+                    ],
+            ],
+            'test_6' => [
+                    'old_string' => '. سعدت بلقائك.',
+                    'new_string' => ". سعدت",
+                    'expected' => [
+                            'بلقائك.' => 'deleted',
+                            '. سعدت' => 'unchanged',
+                    ],
+            ],
+            'test_7' => [
+                    'old_string' => '夏目漱石 私の個人主義',
+                    'new_string' => '夏目漱石 自分で指定（A4で1-2枚程度)',
+                    'expected' => [
+                            '夏目漱石' => 'unchanged',
+                            '私の個人主義' => 'deleted',
+                            '自分で指定（A4で1-2枚程度)' => 'added',
+                    ],
+            ],
         ];
 
-        foreach ( $data as $item ) {
-            $analysed = RevisionCorrectionAnalyser::analyse( $item[ 'old_string' ], $item[ 'new_string' ] );
+        foreach ($data as $item) {
+            $analysed = RevisionCorrectionAnalyser::analyse($item[ 'old_string' ], $item[ 'new_string' ]);
 
-            foreach ($analysed as $key => $value){
+            foreach ($analysed as $key => $value) {
                 $this->assertArrayHasKey($key, $item[ 'expected' ]);
                 $this->assertEquals($item[ 'expected' ][$key], $value);
             }

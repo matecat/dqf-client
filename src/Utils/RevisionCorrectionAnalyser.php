@@ -2,6 +2,8 @@
 
 namespace Matecat\Dqf\Utils;
 
+use Matecat\Dqf\Constants;
+
 class RevisionCorrectionAnalyser
 {
     /**
@@ -21,7 +23,6 @@ class RevisionCorrectionAnalyser
      *     'and also added.' => 'added',
      * ]
      *
-     *
      * @param string $old
      * @param string $new
      *
@@ -31,75 +32,78 @@ class RevisionCorrectionAnalyser
     {
         $results = [];
 
-        $oldExpl = preg_split('/\s/', $old);
-        $newExpl = preg_split('/\s/', $new);
+        $oldWords = self::explodeStringInWords($old);
+        $newWords = self::explodeStringInWords($new);
 
-        $countNewExpl = count($newExpl);
-        $countOldExpl = count($oldExpl);
+        $countNewWords = count($newWords);
+        $countOldWords = count($oldWords);
 
-        // added
-        for ($i = 0; $i < $countNewExpl; $i++) {
+        // append 'added'
+        for ($i = 0; $i < $countNewWords; $i++) {
+            if (isset($newWords[$i]) and false === in_array($newWords[$i], $oldWords)) {
+                $word = $newWords[$i];
 
-            if( isset($newExpl[$i]) and false === in_array($newExpl[$i], $oldExpl) ){
-
-                $word = $newExpl[$i];
-
-                for ($k = 1; $k <= $countNewExpl; $k++) {
-                    if( isset($newExpl[$i+$k]) and false === in_array($newExpl[$i+$k], $oldExpl) ){
-                        $word .= ' ' . $newExpl[$i+$k];
-                        unset($newExpl[$i+$k]);
+                for ($k = 1; $k <= $countNewWords; $k++) {
+                    if (isset($newWords[$i+$k]) and false === in_array($newWords[$i+$k], $oldWords)) {
+                        $word .= ' ' . $newWords[$i+$k];
+                        unset($newWords[$i+$k]);
                     } else {
                         break;
                     }
                 }
 
-                $results[$word] = 'added';
+                $results[$word] = Constants::REVISION_CORRECTION_TYPE_ADDED;
             }
         }
 
-        // unchanged
-        for ($i = 0; $i < $countNewExpl; $i++) {
+        // append 'unchanged'
+        for ($i = 0; $i < $countNewWords; $i++) {
+            if (isset($newWords[$i]) and true === in_array($newWords[$i], $oldWords)) {
+                $word = $newWords[$i];
 
-            if( isset($newExpl[$i]) and true === in_array($newExpl[$i], $oldExpl) ){
-
-                $word = $newExpl[$i];
-
-                for ($k = 1; $k <= $countNewExpl; $k++) {
-                    if( isset($newExpl[$i+$k]) and true === in_array($newExpl[$i+$k], $oldExpl) ){
-                        $word .= ' ' . $newExpl[$i+$k];
-                        unset($newExpl[$i+$k]);
+                for ($k = 1; $k <= $countNewWords; $k++) {
+                    if (isset($newWords[$i+$k]) and true === in_array($newWords[$i+$k], $oldWords)) {
+                        $word .= ' ' . $newWords[$i+$k];
+                        unset($newWords[$i+$k]);
                     } else {
                         break;
                     }
                 }
 
-                $results[$word] = 'unchanged';
+                $results[$word] = Constants::REVISION_CORRECTION_TYPE_UNCHANGED;
             }
         }
 
-        // deleted
-        for ($i = 0; $i < $countOldExpl; $i++) {
+        // append 'deleted'
+        for ($i = 0; $i < $countOldWords; $i++) {
+            $newWords = self::explodeStringInWords($new);
 
-            $newExpl = preg_split('/\s/', $new);
+            if (isset($oldWords[$i]) and false === in_array($oldWords[$i], $newWords)) {
+                $word = $oldWords[$i];
 
-            if( isset($oldExpl[$i]) and false === in_array($oldExpl[$i], $newExpl) ){
-
-                $word = $oldExpl[$i];
-
-                for ($k = 1; $k <= $countOldExpl; $k++) {
-                    if( isset($oldExpl[$i+$k]) and false === in_array($oldExpl[$i+$k], $newExpl) ){
-                        $word .= ' ' . $oldExpl[$i+$k];
-                        unset($oldExpl[$i+$k]);
+                for ($k = 1; $k <= $countOldWords; $k++) {
+                    if (isset($oldWords[$i+$k]) and false === in_array($oldWords[$i+$k], $newWords)) {
+                        $word .= ' ' . $oldWords[$i+$k];
+                        unset($oldWords[$i+$k]);
                     } else {
                         break;
                     }
                 }
 
-                $results[$word] = 'deleted';
+                $results[$word] = Constants::REVISION_CORRECTION_TYPE_DELETED;
             }
-
         }
 
         return $results;
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return array[]|false|string[]
+     */
+    private static function explodeStringInWords($string)
+    {
+        return preg_split('/(\s+)/', $string);
     }
 }

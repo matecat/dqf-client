@@ -141,10 +141,10 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
      */
     private function getSourceSegments(ChildProject $childProject)
     {
-        foreach ($childProject->getTargetLanguageAssoc() as $targetLanguageAssoc){
+        foreach ($childProject->getTargetLanguageAssoc() as $targetLanguageAssoc) {
 
             /** @var FileTargetLang $fileTargetLang */
-            foreach ($targetLanguageAssoc as $fileTargetLang){
+            foreach ($targetLanguageAssoc as $fileTargetLang) {
                 $segmentIdsForAFile = $this->client->getSourceSegmentIdsForAFile([
                         'generic_email'  => $this->genericEmail,
                         'sessionId'      => $this->sessionId,
@@ -154,7 +154,7 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
                         'targetLangCode' => $fileTargetLang->getLanguage()->getLocaleCode(),
                 ]);
 
-                foreach ($segmentIdsForAFile->sourceSegmentList as $sourceSegmentId){
+                foreach ($segmentIdsForAFile->sourceSegmentList as $sourceSegmentId) {
                     $sourceSegment = new SourceSegment($fileTargetLang->getFile(), $sourceSegmentId->index);
                     $sourceSegment->setDqfId($sourceSegmentId->dqfId);
                     $sourceSegment->setClientId($sourceSegmentId->clientId);

@@ -68,4 +68,13 @@ class Constants
     const REVIEW_TYPE_CORRECTION = 'correction';
     const REVIEW_TYPE_ERROR      = 'error_typology';
     const REVIEW_TYPE_COMBINED   = 'combined';
+
+    /**
+     * **********************************************
+     * REVISION_CORRECTION_TYPE
+     * **********************************************
+     */
+    const REVISION_CORRECTION_TYPE_UNCHANGED = 'unchanged';
+    const REVISION_CORRECTION_TYPE_ADDED     = 'added';
+    const REVISION_CORRECTION_TYPE_DELETED   = 'deleted';
 }

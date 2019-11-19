@@ -21,7 +21,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
      *
      * @return TranslatedSegment
      */
-    public function getTranslatedSegment( ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    public function getTranslatedSegment(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
                 'sessionId'           => $this->sessionId,
@@ -49,12 +49,12 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         $sourceSegment->setClientId($model->sourceSegment->integratorSegmentMap->clientValue);
 
         $translatedSegment = new TranslatedSegment(
-                $model->targetSegment->mtEngine->id,
-                $model->targetSegment->segmentOrigin->id,
-                $targetLanguage,
-                $sourceSegment,
-                $model->sourceSegment->content,
-                $model->targetSegment->content
+            $model->targetSegment->mtEngine->id,
+            $model->targetSegment->segmentOrigin->id,
+            $targetLanguage,
+            $sourceSegment,
+            $model->sourceSegment->content,
+            $model->targetSegment->content
         );
         $translatedSegment->setDqfId($model->id);
         $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);

@@ -18,7 +18,7 @@ interface TranslationRepositoryInterface
      *
      * @return TranslatedSegment
      */
-    public function getTranslatedSegment( ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId);
+    public function getTranslatedSegment(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId);
 
     /**
      * @param TranslationBatch $batch
