@@ -3,6 +3,7 @@
 namespace Matecat\Dqf\Repository\Api;
 
 use Matecat\Dqf\Cache\BasicAttributes;
+use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
@@ -454,10 +455,10 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
         if (false === empty($baseEntity->getSourceSegments())) {
             $bodies = [];
             foreach ($baseEntity->getSourceSegments() as $filename => $sourceSegments) {
-                $chunks = array_chunk($sourceSegments, 100, true);
+                $chunks = array_chunk($sourceSegments, Constants::BATCH_LIMIT, true);
 
                 $k = 0;
-                for ($i=0; $i<count($chunks);$i++) {
+                for ($i=0; $i < count($chunks);$i++) {
                     $sourceSegments = $chunks[$i];
 
                     /** @var SourceSegment $sourceSegment */
@@ -473,7 +474,8 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
                 }
             }
 
-            for ($i=0; $i<count($bodies);$i++) {
+            // send source segment in batch
+            for ($i=0; $i < count($bodies); $i++) {
                 foreach ($bodies[$i] as $fileId => $body) {
                     $updatedSourceSegments = $this->client->addSourceSegmentsInBatchToMasterProject([
                             'generic_email' => $this->genericEmail,
@@ -486,21 +488,18 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
 
                     $segmentList = $updatedSourceSegments->segmentList;
 
+                    // hydrate source segment with Dqf Id (comparing with their index)
                     foreach ($baseEntity->getSourceSegments() as $filename => $sourceSegments) {
-                        $chunks = array_chunk($sourceSegments, 100, true);
-
-                        $k = 0;
-                        for ($c=0; $c<count($chunks);$c++) {
-                            $sourceSegments = $chunks[ $c ];
+                        for ($k=0; $k < count($sourceSegments); $k++) {
 
                             /** @var SourceSegment $sourceSegment */
-                            foreach ($sourceSegments as $sourceSegment) {
-                                if ($sourceSegment->getFile()->getDqfId() === $fileId) {
-                                    $sourceSegment->setDqfId($segmentList[ $k ]->dqfId);
+                            $sourceSegment = $sourceSegments[$k];
+
+                            for ($c=0; $c < count($segmentList); $c++) {
+                                if ($sourceSegment->getIndex() === $segmentList[$c]->index) {
+                                    $sourceSegment->setDqfId($segmentList[ $c ]->dqfId);
                                 }
                             }
-
-                            $k++;
                         }
                     }
                 }

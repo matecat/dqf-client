@@ -87,6 +87,11 @@ class MasterProjectRepositoryTest extends BaseTest
         // save project
         $this->repo->save($masterProject);
 
+        // Have all the source segments a valid DqfId after saving?
+        foreach ($masterProject->getSourceSegmentsForAFile($file) as $sourceSegment) {
+            $this->assertNotNull($sourceSegment->getDqfId());
+        }
+
         // check the target language association
         /** @var FileTargetLang $fileTargetLang */
         /** @var FileTargetLang $fileTargetLang2 */

@@ -67,7 +67,7 @@ class TranslationRepositoryTest extends BaseTest
         $masterProject = new MasterProject('master-workflow-test', 'it-IT', 1, 2, 3, 1);
 
         // file(s)
-        $file = new File('original-filename', 3);
+        $file = new File('original-filename', 300);
         $file->setClientId(Uuid::uuid4()->toString());
         $masterProject->addFile($file);
 
@@ -96,8 +96,8 @@ class TranslationRepositoryTest extends BaseTest
         $reviewSettings->setPassFailThreshold(0.00);
         $masterProject->setReviewSettings($reviewSettings);
 
-        // source segments
-        foreach ($this->getSourceSegmentsArray($file) as $sourceSegment) {
+        // source segments (300)
+        foreach ($this->getSourceSegmentsBatchArray($file) as $sourceSegment) {
             $masterProject->addSourceSegment($sourceSegment);
         }
 
@@ -141,7 +141,8 @@ class TranslationRepositoryTest extends BaseTest
         // build the translation batch
         $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
 
-        foreach ($this->getTargetSegmentsArray($childProject, $file) as $segmTrans) {
+        // submit a 300 translations batch
+        foreach ($this->getTargetSegmentsBatchArray($childProject, $file) as $segmTrans) {
             $translationBatch->addSegment($segmTrans);
         }
 
@@ -149,6 +150,7 @@ class TranslationRepositoryTest extends BaseTest
         $translationBatch = $this->translationRepository->save($translationBatch);
 
         $this->assertInstanceOf(TranslationBatch::class, $translationBatch);
+        $this->assertCount(300, $translationBatch->getSegments());
 
         /** @var TranslationBatch $translationBatch */
         foreach ($translationBatch->getSegments() as $segment) {
@@ -254,11 +256,13 @@ class TranslationRepositoryTest extends BaseTest
         $reviewedSegment->addError(new RevisionError(1, 2));
         $reviewedSegment->addError(new RevisionError(1, 1, 1, 5));
         $reviewedSegment->setCorrection($correction);
+        $reviewedSegment->setClientId(Uuid::uuid4()->toString());
 
         $reviewedSegment2 = new ReviewedSegment('this is another comment');
         $reviewedSegment2->addError(new RevisionError(2, 2));
         $reviewedSegment2->addError(new RevisionError(2, 1, 1, 5));
         $reviewedSegment2->setCorrection($correction);
+        $reviewedSegment2->setClientId(Uuid::uuid4()->toString());
 
         $batchId = Uuid::uuid4()->toString();
         $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
@@ -309,7 +313,7 @@ class TranslationRepositoryTest extends BaseTest
      * @param ChildProject $childProject
      * @param File         $file
      *
-     * @return array
+     * @return TranslatedSegment[]
      * @throws \Exception
      */
     protected function getTargetSegmentsArray(ChildProject $childProject, File $file)
@@ -325,6 +329,60 @@ class TranslationRepositoryTest extends BaseTest
                 $segment['targetSegment'],
                 $segment['editedSegment']
             );
+        }
+
+        return $translations;
+    }
+
+    /**
+     * @param File $file
+     * @param int  $size
+     *
+     * @return SourceSegment[]
+     * @throws \Exception
+     */
+    private function getSourceSegmentsBatchArray(File $file, $size = 300)
+    {
+        $segments = [];
+
+        for($i=1; $i <= $size; $i++){
+            $sourceSegment = new SourceSegment($file, $i, \Faker\Factory::create()->text);
+            $sourceSegment->setClientId(Uuid::uuid4()->toString());
+            $segments[] = $sourceSegment;
+        }
+
+        return $segments;
+    }
+
+    /**
+     * @param ChildProject $childProject
+     * @param File         $file
+     * @param int          $size
+     *
+     * @return TranslatedSegment[]
+     * @throws \Exception
+     */
+    protected function getTargetSegmentsBatchArray(ChildProject $childProject, File $file, $size = 300)
+    {
+        $translations = [];
+
+        for($i=1; $i <= $size; $i++){
+
+            $sourceSegment = new SourceSegment($file, $i);
+            $targetSegment = \Faker\Factory::create()->text;
+            $editedSegment = \Faker\Factory::create()->text;
+
+            $translatedSegment = new TranslatedSegment(
+                    22,
+                    1,
+                    $this->targetFile['lang'],
+                    $sourceSegment,
+                    $targetSegment,
+                    $editedSegment
+            );
+            $translatedSegment->setClientId(Uuid::uuid4()->toString());
+
+            $translations[] = $translatedSegment;
         }
 
         return $translations;

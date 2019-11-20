@@ -52,7 +52,7 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
                     ]
                 ];
 
-                if(false === empty($reviewedSegment->getClientId())) {
+                if (false === empty($reviewedSegment->getClientId())) {
                     $correctionArray['clientId'] = $reviewedSegment->getClientId();
                 }
 

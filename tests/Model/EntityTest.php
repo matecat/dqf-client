@@ -202,7 +202,7 @@ class EntityTest extends BaseTest
         try {
             $correction->addItem(new RevisionCorrectionItem('Another comment', 'fdsfdsfdsfsd'));
         } catch (\DomainException $e) {
-            $this->assertEquals($e->getMessage(), 'fdsfdsfdsfsdis not a valid type. [Allowed: unchanged,added,deleted]');
+            $this->assertEquals($e->getMessage(), 'fdsfdsfdsfsdis not a valid type. [Allowed: added,deleted,unchanged]');
         }
 
         $reviewedSegment = new ReviewedSegment('this is a comment');
