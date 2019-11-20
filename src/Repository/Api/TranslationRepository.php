@@ -61,7 +61,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         $translatedSegment->setMtEngineVersion($model->targetSegment->mtEngineVersion);
         $translatedSegment->setMatchRate($model->targetSegment->matchRate);
 
-        if( isset($model->integratorTranslationMap->clientValue) ){
+        if (isset($model->integratorTranslationMap->clientValue)) {
             $translatedSegment->setClientId($model->integratorTranslationMap->clientValue);
         }
 

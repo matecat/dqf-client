@@ -345,7 +345,7 @@ class TranslationRepositoryTest extends BaseTest
     {
         $segments = [];
 
-        for($i=1; $i <= $size; $i++){
+        for ($i=1; $i <= $size; $i++) {
             $sourceSegment = new SourceSegment($file, $i, \Faker\Factory::create()->text);
             $sourceSegment->setClientId(Uuid::uuid4()->toString());
             $segments[] = $sourceSegment;
@@ -366,19 +366,18 @@ class TranslationRepositoryTest extends BaseTest
     {
         $translations = [];
 
-        for($i=1; $i <= $size; $i++){
-
+        for ($i=1; $i <= $size; $i++) {
             $sourceSegment = new SourceSegment($file, $i);
             $targetSegment = \Faker\Factory::create()->text;
             $editedSegment = \Faker\Factory::create()->text;
 
             $translatedSegment = new TranslatedSegment(
-                    22,
-                    1,
-                    $this->targetFile['lang'],
-                    $sourceSegment,
-                    $targetSegment,
-                    $editedSegment
+                22,
+                1,
+                $this->targetFile['lang'],
+                $sourceSegment,
+                $targetSegment,
+                $editedSegment
             );
             $translatedSegment->setClientId(Uuid::uuid4()->toString());
 
