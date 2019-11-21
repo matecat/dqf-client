@@ -100,10 +100,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         if (false === empty($batch->getSegments())) {
             foreach ($batch->getSegments() as $segment) {
                 foreach ($sourceSegmentIds->sourceSegmentList as $index => $item) {
-                    if ($item->index === $segment->getSourceSegment()->getIndex()) {
-                        $segment->getSourceSegment()->setDqfId($item->dqfId);
-                        $segment->getSourceSegment()->setClientId($item->clientId);
-
+                    if ($item->dqfId === $segment->getSourceSegmentId()) {
                         $segmentPairs[] = [
                             'sourceSegmentId'   => $item->dqfId,
                             'clientId'          => $segment->getClientId(),
@@ -155,7 +152,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                 'projectId'           => $childProject->getDqfId(),
                 'fileId'              => $file->getDqfId(),
                 'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
-                'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
+                'sourceSegmentId'     => $translatedSegment->getSourceSegmentId(),
                 'translationId'       => $translatedSegment->getDqfId(),
                 'segmentOriginId'     => $translatedSegment->getSegmentOriginId(),
                 'targetSegment'       => $translatedSegment->getTargetSegment(),
@@ -189,7 +186,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
             'projectId'           => $childProject->getDqfId(),
             'fileId'              => $file->getDqfId(),
             'targetLangCode'      => $translatedSegment->getTargetLanguage()->getLocaleCode(),
-            'sourceSegmentId'     => $translatedSegment->getSourceSegment()->getDqfId(),
+            'sourceSegmentId'     => $translatedSegment->getSourceSegmentId(),
             'translationId'       => $translatedSegment->getDqfId(),
         ]);
 

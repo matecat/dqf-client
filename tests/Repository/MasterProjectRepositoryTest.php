@@ -3,10 +3,10 @@
 namespace Matecat\Dqf\Tests\Repository;
 
 use Matecat\Dqf\Constants;
+use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\FileTargetLang;
 use Matecat\Dqf\Model\Entity\Language;
-use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;

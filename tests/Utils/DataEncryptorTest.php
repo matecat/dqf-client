@@ -2,9 +2,6 @@
 
 namespace Matecat\Dqf\Tests\SessionProvider;
 
-use Matecat\Dqf\Client;
-use Matecat\Dqf\Repository\Persistence\InMemoryDqfUserRepository;
-use Matecat\Dqf\SessionProvider;
 use Matecat\Dqf\Utils\DataEncryptor;
 
 class DataEncryptorTest extends \PHPUnit_Framework_TestCase

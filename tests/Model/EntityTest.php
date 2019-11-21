@@ -2,10 +2,10 @@
 
 namespace Matecat\Dqf\Tests\Model;
 
+use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
-use Matecat\Dqf\Model\Entity\AbstractProject;
 use Matecat\Dqf\Model\Entity\MasterProject;
 use Matecat\Dqf\Model\Entity\ReviewedSegment;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
@@ -142,9 +142,9 @@ class EntityTest extends BaseTest
 
         // create a segment translation batch
         $translationBatch = new TranslationBatch($childTranslation, $file, 'en-US');
-        $segmTrans1       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 0 ], 'blah', 'blah blah blah');
-        $segmTrans2       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 1 ], 'blah', 'blah blah blah');
-        $segmTrans3       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 2 ], 'blah', 'blah blah blah');
+        $segmTrans1       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 0 ]->getDqfId(), 'blah', 'blah blah blah');
+        $segmTrans2       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 1 ]->getDqfId(), 'blah', 'blah blah blah');
+        $segmTrans3       = new TranslatedSegment(22, 5, 'en-US', $this->getSourceSegments($file)[ 2 ]->getDqfId(), 'blah', 'blah blah blah');
 
         try {
             new TranslatedSegment(22, 4343, 'en-US', $this->getSourceSegments($file)[ 0 ], 'blah', 'blah blah blah');

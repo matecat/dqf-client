@@ -21,7 +21,6 @@ use Matecat\Dqf\Repository\Api\MasterProjectRepository;
 use Matecat\Dqf\Repository\Api\ReviewRepository;
 use Matecat\Dqf\Repository\Api\TranslationRepository;
 use Matecat\Dqf\Tests\BaseTest;
-use phpDocumentor\Reflection\DocBlock\Tags\Source;
 use Ramsey\Uuid\Uuid;
 
 class TranslationRepositoryTest extends BaseTest
@@ -139,6 +138,9 @@ class TranslationRepositoryTest extends BaseTest
         // save the child project
         $this->childProjectRepo->save($childProject);
 
+        /** @var ChildProject $childProject */
+        $childProject = $this->childProjectRepo->get($childProject->getDqfId(), $childProject->getDqfUuid());
+
         // build the translation batch
         $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
 
@@ -175,7 +177,7 @@ class TranslationRepositoryTest extends BaseTest
 
         $this->assertNotNull($getTranslationSegment->getDqfId());
         $this->assertNotNull($getTranslationSegment->getClientId());
-        $this->assertNotNull($getTranslationSegment->getSourceSegment());
+        $this->assertNotNull($getTranslationSegment->getSourceSegmentId());
         $this->assertNotNull($getTranslationSegment->getTargetSegment());
         $this->assertNotNull($getTranslationSegment->getTargetLanguage());
 
@@ -335,7 +337,7 @@ class TranslationRepositoryTest extends BaseTest
                 $segment['mtEngineId'],
                 $segment['segmentOriginId'],
                 $this->targetFile['lang'],
-                $this->getSourceSegmentsArray($file)[$key],
+                $this->getSourceSegmentsArray($file)[$key]->getDqfId(),
                 $segment['targetSegment'],
                 $segment['editedSegment']
             );
@@ -376,8 +378,9 @@ class TranslationRepositoryTest extends BaseTest
     {
         $translations = [];
 
-        for ($i=1; $i <= $size; $i++) {
-            $sourceSegment = new SourceSegment($file, $i);
+        for ($i=0; $i < $size; $i++) {
+            $sourceSegment = $childProject->getSourceSegments()[$file->getName()][$i];
+
             $targetSegment = \Faker\Factory::create()->text;
             $editedSegment = \Faker\Factory::create()->text;
 
@@ -385,7 +388,7 @@ class TranslationRepositoryTest extends BaseTest
                 22,
                 1,
                 $this->targetFile['lang'],
-                $sourceSegment,
+                $sourceSegment->getDqfId(),
                 $targetSegment,
                 $editedSegment
             );

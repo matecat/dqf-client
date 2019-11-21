@@ -12,9 +12,9 @@ class TranslatedSegment extends BaseApiEntity
     private $targetLanguage;
 
     /**
-     * @var SourceSegment
+     * @var int
      */
-    private $sourceSegment;
+    private $sourceSegmentId;
 
     /**
      * @var string
@@ -72,7 +72,7 @@ class TranslatedSegment extends BaseApiEntity
      * @param int           $mtEngineId
      * @param int           $segmentOriginId
      * @param string        $targetLanguageCode
-     * @param SourceSegment $sourceSegment
+     * @param int           $sourceSegment
      * @param string        $targetSegment
      * @param string        $editedSegment
      */
@@ -80,14 +80,14 @@ class TranslatedSegment extends BaseApiEntity
         $mtEngineId,
         $segmentOriginId,
         $targetLanguageCode,
-        SourceSegment $sourceSegment,
+        $sourceSegmentId,
         $targetSegment,
         $editedSegment
     ) {
         $this->setMtEngineId($mtEngineId);
         $this->setSegmentOriginId($segmentOriginId);
         $this->targetLanguage = new Language($targetLanguageCode);
-        $this->sourceSegment  = $sourceSegment;
+        $this->sourceSegmentId  = $sourceSegmentId;
         $this->targetSegment  = $targetSegment;
         $this->editedSegment  = $editedSegment;
     }
@@ -109,11 +109,11 @@ class TranslatedSegment extends BaseApiEntity
     }
 
     /**
-     * @return SourceSegment
+     * @return int
      */
-    public function getSourceSegment()
+    public function getSourceSegmentId()
     {
-        return $this->sourceSegment;
+        return $this->sourceSegmentId;
     }
 
     /**
