@@ -54,9 +54,10 @@ class TranslationRepository extends AbstractApiRepository implements Translation
             $model->targetSegment->mtEngine->id,
             $model->targetSegment->segmentOrigin->id,
             $targetLanguage,
-            $sourceSegment,
+            $sourceSegment->getDqfId(),
             $model->sourceSegment->content,
-            $model->targetSegment->content
+            $model->targetSegment->content,
+            $model->sourceSegment->indexNo
         );
         $translatedSegment->setDqfId($model->id);
         $translatedSegment->setMtEngineOtherName($model->targetSegment->mtEngineOther);
@@ -100,7 +101,11 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         if (false === empty($batch->getSegments())) {
             foreach ($batch->getSegments() as $segment) {
                 foreach ($sourceSegmentIds->sourceSegmentList as $index => $item) {
-                    if ($item->dqfId === $segment->getSourceSegmentId()) {
+                    if ($segment->getIndexNo() === null) {
+                        echo 'c';
+                    }
+
+                    if ($item->index === $segment->getIndexNo()) {
                         $segmentPairs[] = [
                             'sourceSegmentId'   => $item->dqfId,
                             'clientId'          => $segment->getClientId(),
@@ -111,7 +116,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
                             'mtEngineId'        => $segment->getMtEngineId(),
                             'mtEngineOtherName' => $segment->getMtEngineOtherName(),
                             'matchRate'         => $segment->getMatchRate(),
-                            'indexNo'           => (false === empty($segment->getIndexNo())) ? $segment->getIndexNo() : $index
+                            'indexNo'           => $segment->getIndexNo()
                         ];
                     }
                 }

@@ -464,7 +464,7 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
                     /** @var SourceSegment $sourceSegment */
                     foreach ($sourceSegments as $sourceSegment) {
                         $bodies[$k][ $sourceSegment->getFile()->getDqfId() ][] = [
-                                'index'         => $sourceSegment->getIndex(),
+                                'index'         => $sourceSegment->getIndexNo(),
                                 'sourceSegment' => $sourceSegment->getSegment(),
                                 'clientId'      => $sourceSegment->getClientId(),
                         ];
@@ -496,7 +496,7 @@ class MasterProjectRepository extends AbstractProjectRepository implements CrudA
                             $sourceSegment = $sourceSegments[$k];
 
                             for ($c=0; $c < count($segmentList); $c++) {
-                                if ($sourceSegment->getIndex() === $segmentList[$c]->index) {
+                                if ($sourceSegment->getIndexNo() === $segmentList[$c]->index) {
                                     $sourceSegment->setDqfId($segmentList[ $c ]->dqfId);
                                 }
                             }

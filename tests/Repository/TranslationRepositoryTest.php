@@ -167,12 +167,12 @@ class TranslationRepositoryTest extends BaseTest
 
         // get a single segment translation
         $getTranslationSegment = $this->translationRepository->getTranslatedSegment(
-                $childProject->getDqfId(),
-                $childProject->getDqfUuid(),
-                $file->getDqfId(),
-                'en-US',
-                $sourceSegment->getDqfId(),
-                $firstSegment->getDqfId()
+            $childProject->getDqfId(),
+            $childProject->getDqfUuid(),
+            $file->getDqfId(),
+            'en-US',
+            $sourceSegment->getDqfId(),
+            $firstSegment->getDqfId()
         );
 
         $this->assertNotNull($getTranslationSegment->getDqfId());
@@ -332,6 +332,7 @@ class TranslationRepositoryTest extends BaseTest
     {
         $translations = [];
 
+        $indexNo = 1;
         foreach ($this->targetFile['segmentPairs'] as $key => $segment) {
             $translations[] = new TranslatedSegment(
                 $segment['mtEngineId'],
@@ -339,8 +340,11 @@ class TranslationRepositoryTest extends BaseTest
                 $this->targetFile['lang'],
                 $this->getSourceSegmentsArray($file)[$key]->getDqfId(),
                 $segment['targetSegment'],
-                $segment['editedSegment']
+                $segment['editedSegment'],
+                $indexNo
             );
+
+            $indexNo++;
         }
 
         return $translations;
@@ -377,6 +381,7 @@ class TranslationRepositoryTest extends BaseTest
     protected function getTargetSegmentsBatchArray(ChildProject $childProject, File $file, $size = 300)
     {
         $translations = [];
+        $indexNo = 1;
 
         for ($i=0; $i < $size; $i++) {
             $sourceSegment = $childProject->getSourceSegments()[$file->getName()][$i];
@@ -390,11 +395,13 @@ class TranslationRepositoryTest extends BaseTest
                 $this->targetFile['lang'],
                 $sourceSegment->getDqfId(),
                 $targetSegment,
-                $editedSegment
+                $editedSegment,
+                $indexNo
             );
             $translatedSegment->setClientId(Uuid::uuid4()->toString());
 
             $translations[] = $translatedSegment;
+            $indexNo++;
         }
 
         return $translations;

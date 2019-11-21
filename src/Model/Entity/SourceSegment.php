@@ -12,7 +12,7 @@ class SourceSegment extends BaseApiEntity
     /**
      * @var int
      */
-    private $index;
+    private $indexNo;
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class SourceSegment extends BaseApiEntity
     public function __construct(File $file, $index, $segment = null)
     {
         $this->file    = $file;
-        $this->index   = $index;
+        $this->indexNo = $index;
         $this->segment = $segment;
     }
 
@@ -44,9 +44,9 @@ class SourceSegment extends BaseApiEntity
     /**
      * @return int
      */
-    public function getIndex()
+    public function getIndexNo()
     {
-        return $this->index;
+        return $this->indexNo;
     }
 
     /**
@@ -74,7 +74,7 @@ class SourceSegment extends BaseApiEntity
     {
         return (
             $this->getFile()->getName() === $sourceSegment->getFile()->getName() and
-            $this->getIndex() === $sourceSegment->getIndex() and
+            $this->getIndexNo() === $sourceSegment->getIndexNo() and
             $this->getSegment() === $sourceSegment->getSegment()
         );
     }
