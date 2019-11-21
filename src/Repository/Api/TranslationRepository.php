@@ -119,6 +119,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         }
 
         $translationsBatch = $this->client->addTranslationsForSourceSegmentsInBatch([
+            'generic_email'  => $this->genericEmail,
             'sessionId'      => $this->sessionId,
             'projectKey'     => $batch->getChildProject()->getDqfUuid(),
             'projectId'      => $batch->getChildProject()->getDqfId(),
