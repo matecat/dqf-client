@@ -101,10 +101,6 @@ class TranslationRepository extends AbstractApiRepository implements Translation
         if (false === empty($batch->getSegments())) {
             foreach ($batch->getSegments() as $segment) {
                 foreach ($sourceSegmentIds->sourceSegmentList as $index => $item) {
-                    if ($segment->getIndexNo() === null) {
-                        echo 'c';
-                    }
-
                     if ($item->index === $segment->getIndexNo()) {
                         $segmentPairs[] = [
                             'sourceSegmentId'   => $item->dqfId,
