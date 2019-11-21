@@ -10,15 +10,16 @@ use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 interface TranslationRepositoryInterface
 {
     /**
-     * @param ChildProject $childProject
-     * @param int          $fileId
-     * @param string       $targetLanguage
-     * @param int          $sourceSegmentDqfId
-     * @param int          $segmentTranslationDqfId
+     * @param int     $childProjectId
+     * @param string  $childProjectUuid
+     * @param int     $fileId
+     * @param string  $targetLanguage
+     * @param int     $sourceSegmentDqfId
+     * @param int     $segmentTranslationDqfId
      *
      * @return TranslatedSegment
      */
-    public function getTranslatedSegment(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId);
+    public function getTranslatedSegment($childProjectId, $childProjectUuid, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId);
 
     /**
      * @param TranslationBatch $batch

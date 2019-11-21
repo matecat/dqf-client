@@ -21,6 +21,7 @@ use Matecat\Dqf\Repository\Api\MasterProjectRepository;
 use Matecat\Dqf\Repository\Api\ReviewRepository;
 use Matecat\Dqf\Repository\Api\TranslationRepository;
 use Matecat\Dqf\Tests\BaseTest;
+use phpDocumentor\Reflection\DocBlock\Tags\Source;
 use Ramsey\Uuid\Uuid;
 
 class TranslationRepositoryTest extends BaseTest
@@ -158,10 +159,19 @@ class TranslationRepositoryTest extends BaseTest
         }
 
         $firstSegment = $translationBatch->getSegments()[0];
+
+        /** @var SourceSegment $sourceSegment */
         $sourceSegment = $masterProject->getSourceSegments()['original-filename'][0];
 
         // get a single segment translation
-        $getTranslationSegment = $this->translationRepository->getTranslatedSegment($childProject, $file->getDqfId(), 'en-US', $sourceSegment->getDqfId(), $firstSegment->getDqfId());
+        $getTranslationSegment = $this->translationRepository->getTranslatedSegment(
+                $childProject->getDqfId(),
+                $childProject->getDqfUuid(),
+                $file->getDqfId(),
+                'en-US',
+                $sourceSegment->getDqfId(),
+                $firstSegment->getDqfId()
+        );
 
         $this->assertNotNull($getTranslationSegment->getDqfId());
         $this->assertNotNull($getTranslationSegment->getClientId());

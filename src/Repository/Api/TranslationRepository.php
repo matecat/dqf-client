@@ -13,20 +13,21 @@ use Matecat\Dqf\Model\ValueObject\TranslationBatch;
 class TranslationRepository extends AbstractApiRepository implements TranslationRepositoryInterface
 {
     /**
-     * @param ChildProject $childProject
-     * @param int          $fileId
-     * @param string       $targetLanguage
-     * @param int          $sourceSegmentDqfId
-     * @param int          $segmentTranslationDqfId
+     * @param int     $childProjectId
+     * @param string  $childProjectUuid
+     * @param int     $fileId
+     * @param string  $targetLanguage
+     * @param int     $sourceSegmentDqfId
+     * @param int     $segmentTranslationDqfId
      *
      * @return TranslatedSegment
      */
-    public function getTranslatedSegment(ChildProject $childProject, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
+    public function getTranslatedSegment($childProjectId, $childProjectUuid, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
                 'sessionId'           => $this->sessionId,
-                'projectKey'          => $childProject->getDqfUuid(),
-                'projectId'           => $childProject->getDqfId(),
+                'projectKey'          => $childProjectUuid,
+                'projectId'           => $childProjectId,
                 'fileId'              => $fileId,
                 'targetLangCode'      => $targetLanguage,
                 'sourceSegmentId'     => $sourceSegmentDqfId,
