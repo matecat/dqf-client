@@ -61,6 +61,7 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
         }
 
         $updateReviewInBatch = $this->client->updateReviewInBatch([
+            'generic_email'  => $this->genericEmail,
             'sessionId'      => $this->sessionId,
             'projectKey'     => $batch->getChildProject()->getDqfUuid(),
             'projectId'      => $batch->getChildProject()->getDqfId(),

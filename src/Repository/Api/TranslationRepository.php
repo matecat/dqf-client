@@ -25,6 +25,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     public function getTranslatedSegment($childProjectId, $childProjectUuid, $fileId, $targetLanguage, $sourceSegmentDqfId, $segmentTranslationDqfId)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
+                'generic_email'       => $this->genericEmail,
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $childProjectUuid,
                 'projectId'           => $childProjectId,
@@ -85,6 +86,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     {
         // get the source segments for the child project
         $sourceSegmentIds = $this->client->getSourceSegmentIdsForAFile([
+            'generic_email'  => $this->genericEmail,
             'sessionId'      => $this->sessionId,
             'projectKey'     => $batch->getChildProject()->getDqfUuid(),
             'projectId'      => $batch->getChildProject()->getDqfId(),
@@ -147,6 +149,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     {
         if ($this->exists($childProject, $file, $translatedSegment)) {
             $updateSingleSegmentTranslation = $this->client->updateTranslationForASegment([
+                'generic_email'       => $this->genericEmail,
                 'sessionId'           => $this->sessionId,
                 'projectKey'          => $childProject->getDqfUuid(),
                 'projectId'           => $childProject->getDqfId(),
@@ -180,6 +183,7 @@ class TranslationRepository extends AbstractApiRepository implements Translation
     private function exists(ChildProject $childProject, File $file, TranslatedSegment $translatedSegment)
     {
         $translationForASegment = $this->client->getTranslationForASegment([
+            'generic_email'       => $this->genericEmail,
             'sessionId'           => $this->sessionId,
             'projectKey'          => $childProject->getDqfUuid(),
             'projectId'           => $childProject->getDqfId(),

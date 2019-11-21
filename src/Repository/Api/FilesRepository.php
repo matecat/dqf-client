@@ -17,9 +17,10 @@ class FilesRepository extends AbstractApiRepository implements FilesRepositoryIn
     {
         return $this->getFilesArray(
             $this->client->getChildProjectFiles([
-                'sessionId'  => $this->sessionId,
-                'projectKey' => $childProjectUuid,
-                'projectId' => $childProjectId,
+                'generic_email' => $this->genericEmail,
+                'sessionId'     => $this->sessionId,
+                'projectKey'    => $childProjectUuid,
+                'projectId'     => $childProjectId,
             ])
         );
     }
@@ -34,9 +35,10 @@ class FilesRepository extends AbstractApiRepository implements FilesRepositoryIn
     {
         return $this->getFilesArray(
             $this->client->getMasterProjectFiles([
-                'sessionId'  => $this->sessionId,
-                'projectKey' => $masterProjectUuid,
-                'projectId' => $masterProjectId,
+                'generic_email' => $this->genericEmail,
+                'sessionId'     => $this->sessionId,
+                'projectKey'    => $masterProjectUuid,
+                'projectId'     => $masterProjectId,
             ])
         );
     }
@@ -73,10 +75,11 @@ class FilesRepository extends AbstractApiRepository implements FilesRepositoryIn
     {
         return $this->getFile(
             $this->client->getChildProjectFile([
-                'sessionId'  => $this->sessionId,
-                'projectKey' => $childProjectUuid,
-                'projectId' => $childProjectId,
-                'fileId' => $fileId,
+                'generic_email' => $this->genericEmail,
+                'sessionId'     => $this->sessionId,
+                'projectKey'    => $childProjectUuid,
+                'projectId'     => $childProjectId,
+                'fileId'        => $fileId,
             ])
         );
     }
@@ -92,10 +95,11 @@ class FilesRepository extends AbstractApiRepository implements FilesRepositoryIn
     {
         return $this->getFile(
             $this->client->getMasterProjectFile([
-                'sessionId'  => $this->sessionId,
-                'projectKey' => $masterProjectUuid,
-                'projectId' => $masterProjectId,
-                'fileId' => $fileId,
+                'generic_email' => $this->genericEmail,
+                'sessionId'     => $this->sessionId,
+                'projectKey'    => $masterProjectUuid,
+                'projectId'     => $masterProjectId,
+                'fileId'        => $fileId,
             ])
         );
     }
