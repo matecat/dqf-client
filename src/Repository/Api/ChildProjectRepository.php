@@ -179,8 +179,8 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
             throw new \InvalidArgumentException('Entity provided is not an instance of ChildProject');
         }
 
-        if (empty($baseEntity->getParentProject())) {
-            throw new \DomainException('MasterProject MUST be set during creation of a ChildProject');
+        if (empty($baseEntity->getParentProjectUuid())) {
+            throw new \DomainException('Parent Uuid MUST be set during creation of a ChildProject');
         }
 
         if ($baseEntity->getType() === Constants::PROJECT_TYPE_REVIEW and empty($baseEntity->getReviewSettings())) {
@@ -207,7 +207,7 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
         $childProject = $this->client->createChildProject([
             'generic_email'   => $this->genericEmail,
             'sessionId'       => $this->sessionId,
-            'parentKey'       => $baseEntity->getParentProject()->getDqfUuid(),
+            'parentKey'       => $baseEntity->getParentProjectUuid(),
             'type'            => $baseEntity->getType(),
             'name'            => $baseEntity->getName(),
             'clientId'        => $baseEntity->getClientId(),
@@ -296,8 +296,8 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
      */
     private function updateProject(BaseApiEntity $baseEntity)
     {
-        if (empty($baseEntity->getParentProject())) {
-            throw new \DomainException('MasterProject MUST be set during the update of a ChildProject');
+        if (empty($baseEntity->getParentProjectUuid())) {
+            throw new \DomainException('Parent Uuid MUST be set during creation of a ChildProject');
         }
 
         return $this->client->updateChildProject([
@@ -305,7 +305,7 @@ class ChildProjectRepository extends AbstractProjectRepository implements CrudAp
                 'sessionId'       => $this->sessionId,
                 'projectKey'      => $baseEntity->getDqfUuid(),
                 'projectId'       => $baseEntity->getDqfId(),
-                'parentKey'       => $baseEntity->getParentProject()->getDqfUuid(),
+                'parentKey'       => $baseEntity->getParentProjectUuid(),
                 'type'            => $baseEntity->getType(),
                 'name'            => $baseEntity->getName(),
                 'clientId'        => $baseEntity->getClientId(),

@@ -117,7 +117,7 @@ class FilesProjectRepositoryTest extends BaseTest
 
         // create the child project
         $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
-        $childProject->setParentProject($masterProject);
+        $childProject->setParentProjectUuid($masterProject->getDqfUuid());
         $childProject->setName('Translation Job');
         $childProject->setAssigner('giuseppe@gmail.com');
 

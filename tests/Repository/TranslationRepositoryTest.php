@@ -106,7 +106,7 @@ class TranslationRepositoryTest extends BaseTest
 
         // create the child project
         $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
-        $childProject->setParentProject($masterProject);
+        $childProject->setParentProjectUuid($masterProject->getDqfUuid());
         $childProject->setName('child-workflow-test');
         $childProject->setIsDummy(true);
 
@@ -209,7 +209,7 @@ class TranslationRepositoryTest extends BaseTest
     public function create_a_review_child_project_and_then_submit_a_revision(ChildProject $parentChildProject, File $file, TranslatedSegment $segment)
     {
         $childProject = new ChildProject(Constants::PROJECT_TYPE_REVIEW);
-        $childProject->setParentProject($parentChildProject);
+        $childProject->setParentProjectUuid($parentChildProject->getDqfUuid());
         $childProject->setName('Review Job');
 
         // assoc targetLang to file(s)

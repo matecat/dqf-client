@@ -98,7 +98,7 @@ class ChildProjectRepositoryTest extends BaseTest
             $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
             $this->childProjectRepo->save($childProject);
         } catch (\DomainException $e) {
-            $this->assertEquals('MasterProject MUST be set during creation of a ChildProject', $e->getMessage());
+            $this->assertEquals('Parent Uuid MUST be set during creation of a ChildProject', $e->getMessage());
         }
 
         try {
@@ -110,7 +110,7 @@ class ChildProjectRepositoryTest extends BaseTest
 
         // create the child project
         $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
-        $childProject->setParentProject($masterProject);
+        $childProject->setParentProjectUuid($masterProject->getDqfUuid());
         $childProject->setName('Translation Job');
         $childProject->setAssigner('giuseppe@gmail.com');
 
@@ -194,13 +194,13 @@ class ChildProjectRepositoryTest extends BaseTest
             $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
             $this->childProjectRepo->update($childProject);
         } catch (\DomainException $e) {
-            $this->assertEquals('MasterProject MUST be set during the update of a ChildProject', $e->getMessage());
+            $this->assertEquals('Parent Uuid MUST be set during creation of a ChildProject', $e->getMessage());
         }
 
         /** @var ChildProject $childProject */
         $childProject = $this->childProjectRepo->get($dqfId, $dqfUuid);
         $childProject->setName('Modified child name');
-        $childProject->setParentProject($masterProject);
+        $childProject->setParentProjectUuid($masterProject->getDqfUuid());
 
         // assoc targetLang to file(s)
         $childProject->assocTargetLanguageToFile('fr-FR', $masterProject->getFiles()[0]);

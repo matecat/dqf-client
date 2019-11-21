@@ -122,7 +122,7 @@ class EntityTest extends BaseTest
 
         try {
             $childTranslation = new ChildProject('dsadsadsadsa');
-            $childTranslation->setParentProject($masterProject);
+            $childTranslation->setParentProjectUuid($masterProject->getDqfUuid());
             $childTranslation->setName('translation-test');
             $childTranslation->setClientId($clientId);
             $childTranslation->setIsDummy(true);
@@ -131,7 +131,7 @@ class EntityTest extends BaseTest
         }
 
         $childTranslation = new ChildProject('translation');
-        $childTranslation->setParentProject($masterProject);
+        $childTranslation->setParentProjectUuid($masterProject->getDqfUuid());
         $childTranslation->setName('translation-test');
         $childTranslation->setClientId($clientId);
         $childTranslation->setIsDummy(true);
@@ -180,7 +180,7 @@ class EntityTest extends BaseTest
 
         try {
             $childReview = new ChildProject('review');
-            $childReview->setParentProject($masterProject);
+            $childReview->setParentProjectUuid($masterProject->getDqfUuid());
             $childReview->setName('review-test');
             $childReview->setClientId($clientId);
             $childReview->setIsDummy(true);
@@ -189,7 +189,7 @@ class EntityTest extends BaseTest
         }
 
         $childReview = new ChildProject('review');
-        $childReview->setParentProject($masterProject);
+        $childReview->setParentProjectUuid($masterProject->getDqfUuid());
         $childReview->setName('review-test');
         $childReview->setClientId($clientId);
         $childReview->setIsDummy(false);

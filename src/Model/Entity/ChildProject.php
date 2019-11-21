@@ -7,9 +7,9 @@ use Matecat\Dqf\Constants;
 class ChildProject extends AbstractProject
 {
     /**
-     * @var AbstractProject
+     * @var string
      */
-    private $parentProject;
+    private $parentProjectUuid;
 
     /**
      * @var string
@@ -52,19 +52,19 @@ class ChildProject extends AbstractProject
     }
 
     /**
-     * @param AbstractProject $parentProject
+     * @return string
      */
-    public function setParentProject(AbstractProject $parentProject)
+    public function getParentProjectUuid()
     {
-        $this->parentProject = $parentProject;
+        return $this->parentProjectUuid;
     }
 
     /**
-     * @return AbstractProject
+     * @param string $parentProjectUuid
      */
-    public function getParentProject()
+    public function setParentProjectUuid($parentProjectUuid)
     {
-        return $this->parentProject;
+        $this->parentProjectUuid = $parentProjectUuid;
     }
 
     /**

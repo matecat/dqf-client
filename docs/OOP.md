@@ -5,6 +5,7 @@ If you prefer, you can choose to the OOP abstraction layer. You create and manip
 The library comes with four Repositories, built on top of `Client` class:
 
 * `Matecat\Dqf\Repository\Api\ChildProjectRepository` - performs CRUD operations on child projects;
+* `Matecat\Dqf\Repository\Api\FilesRepository` - performs reading operations on files;
 * `Matecat\Dqf\Repository\Api\MasterProjectRepository` - performs CRUD operations on master projects;
 * `Matecat\Dqf\Repository\Api\ReviewRepository` - performs review updates;
 * `Matecat\Dqf\Repository\Api\TranslationRepository` - performs translation updates.

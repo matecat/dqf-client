@@ -506,7 +506,7 @@ $masterProjectRepo->save($masterProject);
 */
 
 $childProject = new ChildProject(Constants::PROJECT_TYPE_TRANSLATION);
-$childProject->setParentProject($masterProject);
+$childProject->setParentProjectUuid($masterProject->getDqfUuid());
 $childProject->setName('Translation Job');
 
 // assoc targetLang to file(s)
@@ -574,7 +574,7 @@ $translationRepository->update($translationBatch->getChildProject(), $translatio
 */
 
 $childProject = new ChildProject(Constants::PROJECT_TYPE_REVIEW);
-$childProject->setParentProject($segment->getChildProject());
+$childProject->setParentProjectUuid($segment->getChildProject()->getDqfUuid());
 $childProject->setName('Review Job');
 
 // assoc targetLang to file(s)
