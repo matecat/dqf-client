@@ -544,9 +544,9 @@ $childProjectRepo->save($childProject);
 */
 
 $translationBatch = new TranslationBatch($childProject, $file, 'en-US');
-$segmTrans1       = new TranslatedSegment(22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ], '', 'The frog in Spain');
-$segmTrans2       = new TranslatedSegment(22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ], 'croaks in countryside matus.', 'croaks in countryside.');
-$segmTrans3       = new TranslatedSegment(22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ], 'This is just a tongue twister', '');
+$segmTrans1       = new TranslatedSegment(22, 1, 'en-US', $this->getSourceSegments($file)[ 0 ]->getDqfId(), '', 'The frog in Spain', 1);
+$segmTrans2       = new TranslatedSegment(22, 2, 'en-US', $this->getSourceSegments($file)[ 1 ]->getDqfId(), 'croaks in countryside matus.', 'croaks in countryside.', 2);
+$segmTrans3       = new TranslatedSegment(22, 3, 'en-US', $this->getSourceSegments($file)[ 2 ]->getDqfId(), 'This is just a tongue twister', '', 3);
 
 $translationBatch->addSegment($segmTrans1);
 $translationBatch->addSegment($segmTrans2);
