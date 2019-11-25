@@ -123,11 +123,12 @@ class SessionProvider
 
     /**
      * @param string $genericEmail
+     * @param null   $externalReferenceId
      *
      * @return mixed
      * @throws SessionProviderException
      */
-    public function getByGenericEmail($genericEmail)
+    public function getByGenericEmail($genericEmail, $externalReferenceId = null)
     {
         if (!$this->hasGenericEmail($genericEmail)) {
             throw new SessionProviderException("Generic user with email " . $genericEmail . " does not exists");
@@ -141,12 +142,18 @@ class SessionProvider
             return $dqfUser->getSessionId();
         }
 
-        return $this->create([
+        $params = [
             'genericEmail' => $genericEmail,
             'username'     => $dqfUser->getUsername(),
             'password'     => $dqfUser->getPassword(),
             'isGeneric'    => true,
-        ]);
+        ];
+
+        if ($externalReferenceId) {
+            $params['externalReferenceId'] = $externalReferenceId;
+        }
+
+        return $this->create($params);
     }
 
     /**
