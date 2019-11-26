@@ -185,6 +185,17 @@ class BasicAttributesTest extends BaseTest
 
     /**
      * @test
+     */
+    public function can_validate_attributes()
+    {
+        $this->assertFalse(BasicAttributes::existsByName(BasicAttributes::SEGMENT_ORIGIN, 'lorem'));
+        $this->assertTrue(BasicAttributes::existsByName(BasicAttributes::SEGMENT_ORIGIN, 'MT'));
+        $this->assertFalse(BasicAttributes::existsById(BasicAttributes::SEGMENT_ORIGIN, 234324325523));
+        $this->assertTrue(BasicAttributes::existsById(BasicAttributes::SEGMENT_ORIGIN, 1));
+    }
+
+    /**
+     * @test
      * @throws CacheException
      */
     public function refresh()

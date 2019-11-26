@@ -32,6 +32,28 @@ class BasicAttributes
     }
 
     /**
+     * @param string $key
+     * @param int    $id
+     *
+     * @return bool
+     */
+    public static function existsById($key, $id)
+    {
+        return self::getFromId($key, $id) ? true : false;
+    }
+
+    /**
+     * @param string $key
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function existsByName($key, $name)
+    {
+        return self::getFromName($key, $name) ? true : false;
+    }
+
+    /**
      * @param $key
      *
      * @return mixed|null
