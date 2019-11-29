@@ -1,10 +1,11 @@
 <?php
 
-namespace Matecat\Dqf\Utils;
+namespace Matecat\Dqf\Factory;
 
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use Matecat\Dqf\Utils\ClientLogsFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 

@@ -5,7 +5,7 @@ namespace Matecat\Dqf;
 use GuzzleHttp\Client as HttpClient;
 use Matecat\Dqf\Commands\CommandHandler;
 use Matecat\Dqf\Exceptions\ParamsValidatorException;
-use Matecat\Dqf\Utils\HandlerStackFactory;
+use Matecat\Dqf\Factory\HandlerStackFactory;
 
 /**
  * Class Client

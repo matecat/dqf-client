@@ -1,6 +1,6 @@
 <?php
 
-namespace Matecat\Dqf\Utils;
+namespace Matecat\Dqf\Utils\Analysers;
 
 use Matecat\Dqf\Constants;
 

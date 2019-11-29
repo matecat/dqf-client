@@ -2,7 +2,7 @@
 
 namespace Matecat\Dqf\Tests\SessionProvider;
 
-use Matecat\Dqf\Utils\RevisionCorrectionAnalyser;
+use Matecat\Dqf\Utils\Analysers\RevisionCorrectionAnalyser;
 
 class RevisionCorrectionAnalyserTest extends \PHPUnit_Framework_TestCase
 {
