@@ -99,19 +99,33 @@ class MatecatSegmentOriginAnalyserTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function REPETITIONS_should_return_TM()
+    public function REPETITIONS_no_edited_should_return_the_suggested_source_and_match()
     {
         $row = [
             'autopropagated_from' => null,
             'suggestions_array' => '[{"id":0,"raw_segment":"Mandat-gestion","segment":"Mandat-gestion","translation":"Mandat- gestion","target_note":"","raw_translation":"Mandat- gestion","quality":70,"reference":"Machine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.","usage_count":1,"subject":false,"created_by":"MT!","last_updated_by":"MT!","create_date":"2019-08-19 11:01:38","last_update_date":"2019-08-19","match":"85%","prop":[],"memory_key":"","ICE":false,"tm_properties":null,"source_note":""},{"id":"414520865","raw_segment":"Ke mandat?","segment":"Ke mandat?","translation":"Vous avez un mandat ?","target_note":"","raw_translation":"Vous avez un mandat ?","quality":"0","reference":null,"usage_count":1,"subject":"All","created_by":"Public_Corpora","last_updated_by":"Public_Corpora","create_date":"2016-10-28 09:29:13","last_update_date":"2016-10-28","match":"52%","prop":[],"memory_key":"","ICE":false,"tm_properties":[{"type":"x-tuid","value":null},{"type":"x-creation-date","value":"2016-10-28 09:29:13"},{"type":"x-change-date","value":"2016-10-28 09:29:13"}],"source_note":""},{"id":"414805250","raw_segment":"Kam nj\u00eb mandat...","segment":"Kam nj\u00eb mandat...","translation":"J\'ai un mandat...","target_note":"","raw_translation":"J\'ai un mandat...","quality":"0","reference":null,"usage_count":1,"subject":"All","created_by":"Public_Corpora","last_updated_by":"Public_Corpora","create_date":"2016-10-28 09:29:13","last_update_date":"2016-10-28","match":"46%","prop":[],"memory_key":"","ICE":false,"tm_properties":[{"type":"x-tuid","value":null},{"type":"x-creation-date","value":"2016-10-28 09:29:13"},{"type":"x-change-date","value":"2016-10-28 09:29:13"}],"source_note":""}]',
             'match_type' => 'REPETITIONS',
+            'suggestion_source' => 'MT',
             'suggestion_match' => '85',
             'suggestion_position' => null,
             'suggestion' => 'Mandat- gestion',
             'translation' => 'Mandat- gestion',
         ];
 
-        $this->assertAnalyseIsCorresponding($row, 'TM', 100);
+        $this->assertAnalyseIsCorresponding($row, 'MT', null);
+
+        $row = [
+                'autopropagated_from' => null,
+                'suggestions_array' => '[{"id":"599702445","raw_segment":"\u20ac\/personne","segment":"\u20ac\/personne","translation":"\u20ac\/guest","target_note":"","raw_translation":"\u20ac\/guest","quality":"74","reference":null,"usage_count":3,"subject":"All","created_by":"MateCat","last_updated_by":"MateCat","create_date":"2017-04-10 16:47:49","last_update_date":"2017-04-10","match":"99%","prop":[],"memory_key":"","ICE":false,"tm_properties":null,"source_note":""},{"id":"712897226","raw_segment":"Personne","segment":"Personne","translation":"Person","target_note":"","raw_translation":"Person","quality":"74","reference":null,"usage_count":15,"subject":"All","created_by":"MateCat","last_updated_by":"MateCat","create_date":"2019-02-27 11:05:05","last_update_date":"2019-02-27","match":"96%","prop":[],"memory_key":"","ICE":false,"tm_properties":[{"type":"x-project_id","value":"1932493"},{"type":"x-project_name","value":"22656658-Traduction"},{"type":"x-job_id","value":"1865064"}],"source_note":""},{"id":"721669787","raw_segment":"Personne","segment":"Personne","translation":"people","target_note":"","raw_translation":"people","quality":"74","reference":null,"usage_count":1,"subject":"All","created_by":"MateCat","last_updated_by":"MateCat","create_date":"2019-05-05 22:23:16","last_update_date":"2019-05-05","match":"95%","prop":[],"memory_key":"","ICE":false,"tm_properties":null,"source_note":""}]',
+                'match_type' => 'REPETITIONS',
+                'suggestion_source' => 'TM',
+                'suggestion_match' => '99',
+                'suggestion_position' => null,
+                'suggestion' => '€/guest',
+                'translation' => '€/guest',
+        ];
+
+        $this->assertAnalyseIsCorresponding($row, 'TM', 99);
     }
 
     /**

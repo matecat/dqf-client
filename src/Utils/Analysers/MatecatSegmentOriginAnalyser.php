@@ -33,7 +33,7 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
                 $selected = $suggestions[$suggestion_position];
 
                 // if the suggestion was created by a MT
-                if (strpos( $selected[ 'created_by' ], 'MT' ) !== false) {
+                if (strpos($selected[ 'created_by' ], 'MT') !== false) {
                     return [
                         'segment_origin' => 'MT',
                         'suggestion_match' => null
@@ -58,22 +58,38 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
      */
     private static function assignDefaultValues( $row)
     {
-        if ((strpos($row['match_type'], '100%') === 0) or $row['match_type'] === 'ICE' or $row['match_type'] === 'REPETITIONS') {
+        if ((strpos($row['match_type'], '100%') === 0) or $row['match_type'] === 'ICE') {
             return [
-                'segment_origin' =>   'TM',
+                'segment_origin' => 'TM',
                 'suggestion_match' => '100'
             ];
         }
 
         if (strpos($row[ 'match_type' ], '%') !== false) {
             return [
-                'segment_origin' =>   'TM',
-                'suggestion_match' => $row['suggestion_match']
+                'segment_origin' => 'TM',
+                'suggestion_match' => isset($row['suggestion_match']) ? $row['suggestion_match'] : null
+            ];
+        }
+
+        if ($row['match_type'] === 'REPETITIONS') {
+            $suggestionSource = $row['suggestion_source'];
+
+            if($suggestionSource === 'MT'){
+                return [
+                    'segment_origin' => 'MT',
+                    'suggestion_match' => null
+                ];
+            }
+
+            return [
+                    'segment_origin' => 'TM',
+                    'suggestion_match' => isset($row['suggestion_match']) ? $row['suggestion_match'] : null
             ];
         }
 
         return [
-            'segment_origin' =>   'MT',
+            'segment_origin' => 'MT',
             'suggestion_match' => null
         ];
     }
