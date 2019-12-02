@@ -45,7 +45,7 @@ class MatecatSegmentOriginAnalyserTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function sdfdsfdsfdsfdsfdfds()
+    public function MT_if_no_suggestion_was_choosen()
     {
         $row = [
             'autopropagated_from' => null,
@@ -58,6 +58,42 @@ class MatecatSegmentOriginAnalyserTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertAnalyseIsCorresponding($row, 'MT', null);
+    }
+
+    /**
+     * @test
+     */
+    public function MT_if_MT_suggestion_was_choosen()
+    {
+        $row = [
+                'autopropagated_from' => null,
+                'suggestions_array' => '[{"id":0,"raw_segment":"200, rue de Paris","segment":"200, rue de Paris","translation":"200, rue de Paris","target_note":"","raw_translation":"200, rue de Paris","quality":70,"reference":"Machine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.","usage_count":1,"subject":false,"created_by":"MT!","last_updated_by":"MT!","create_date":"2019-08-19 10:53:07","last_update_date":"2019-08-19","match":"85%","prop":[],"memory_key":"","ICE":false,"tm_properties":null,"source_note":""},{"id":"414488218","raw_segment":"Dua t\u00eb raportoj nj\u00eb vjedhje n\u00eb \"Hotel de Paris\".","segment":"Dua t\u00eb raportoj nj\u00eb vjedhje n\u00eb \"Hotel de Paris\".","translation":"Je voudrais signaler un vol \u00e0 l\'H\u00f4tel de Paris.","target_note":"","raw_translation":"Je voudrais signaler un vol \u00e0 l\'H\u00f4tel de Paris.","quality":"0","reference":null,"usage_count":1,"subject":"All","created_by":"Public_Corpora","last_updated_by":"Public_Corpora","create_date":"2016-10-28 09:29:13","last_update_date":"2016-10-28","match":"26%","prop":[],"memory_key":"","ICE":false,"tm_properties":[{"type":"x-tuid","value":null},{"type":"x-creation-date","value":"2016-10-28 09:29:13"},{"type":"x-change-date","value":"2016-10-28 09:29:13"}],"source_note":""}]',
+                'match_type' => 'MT',
+                'suggestion_match' => '85',
+                'suggestion_position' => 0,
+                'suggestion' => '200, rue de Paris',
+                'translation' => '200, rue de Paris.',
+        ];
+
+        $this->assertAnalyseIsCorresponding($row, 'MT', null);
+    }
+
+    /**
+     * @test
+     */
+    public function TM_if_no_MT_suggestion_was_choosen()
+    {
+        $row = [
+                'autopropagated_from' => null,
+                'suggestions_array' => '[{"id":0,"raw_segment":"200, rue de Paris","segment":"200, rue de Paris","translation":"200, rue de Paris","target_note":"","raw_translation":"200, rue de Paris","quality":70,"reference":"Machine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.","usage_count":1,"subject":false,"created_by":"MT!","last_updated_by":"MT!","create_date":"2019-08-19 10:53:07","last_update_date":"2019-08-19","match":"85%","prop":[],"memory_key":"","ICE":false,"tm_properties":null,"source_note":""},{"id":"414488218","raw_segment":"Dua t\u00eb raportoj nj\u00eb vjedhje n\u00eb \"Hotel de Paris\".","segment":"Dua t\u00eb raportoj nj\u00eb vjedhje n\u00eb \"Hotel de Paris\".","translation":"Je voudrais signaler un vol \u00e0 l\'H\u00f4tel de Paris.","target_note":"","raw_translation":"Je voudrais signaler un vol \u00e0 l\'H\u00f4tel de Paris.","quality":"0","reference":null,"usage_count":1,"subject":"All","created_by":"Public_Corpora","last_updated_by":"Public_Corpora","create_date":"2016-10-28 09:29:13","last_update_date":"2016-10-28","match":"26%","prop":[],"memory_key":"","ICE":false,"tm_properties":[{"type":"x-tuid","value":null},{"type":"x-creation-date","value":"2016-10-28 09:29:13"},{"type":"x-change-date","value":"2016-10-28 09:29:13"}],"source_note":""}]',
+                'match_type' => 'MT',
+                'suggestion_match' => '85',
+                'suggestion_position' => 1,
+                'suggestion' => '200, rue de Paris',
+                'translation' => '200, rue de Paris.',
+        ];
+
+        $this->assertAnalyseIsCorresponding($row, 'TM', 26);
     }
 
     /**
