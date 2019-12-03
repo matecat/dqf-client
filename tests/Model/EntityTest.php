@@ -7,7 +7,7 @@ use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
 use Matecat\Dqf\Model\Entity\MasterProject;
-use Matecat\Dqf\Model\Entity\ReviewedSegment;
+use Matecat\Dqf\Model\Entity\Revision;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
@@ -205,7 +205,7 @@ class EntityTest extends BaseTest
             $this->assertEquals($e->getMessage(), 'fdsfdsfdsfsdis not a valid type. [Allowed: added,deleted,unchanged]');
         }
 
-        $reviewedSegment = new ReviewedSegment('this is a comment');
+        $reviewedSegment = new Revision('this is a comment');
         $reviewedSegment->addError(new RevisionError(11, 2));
         $reviewedSegment->addError(new RevisionError(9, 1, 1, 5));
 
@@ -220,9 +220,9 @@ class EntityTest extends BaseTest
         $batchId = Uuid::uuid4()->toString();
 
         $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segmTrans1, $batchId);
-        $reviewBatch->addReviewedSegment($reviewedSegment);
+        $reviewBatch->addRevision($reviewedSegment);
 
-        $this->assertSame($reviewedSegment, $reviewBatch->getReviewedSegments()[0]);
+        $this->assertSame($reviewedSegment, $reviewBatch->getRevisions()[0]);
     }
 
     /**

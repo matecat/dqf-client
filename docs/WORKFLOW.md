@@ -613,20 +613,20 @@ $correction = new RevisionCorrection('Another review comment', 10000);
 $correction->addItem(new RevisionCorrectionItem('review', 'deleted'));
 $correction->addItem(new RevisionCorrectionItem('Another comment', 'unchanged'));
 
-$reviewedSegment = new ReviewedSegment('this is a comment');
-$reviewedSegment->addError(new RevisionError(11, 2));
-$reviewedSegment->addError(new RevisionError(9, 1, 1, 5));
-$reviewedSegment->setCorrection($correction);
+$revision = new Revision('this is a comment');
+$revision->addError(new RevisionError(11, 2));
+$revision->addError(new RevisionError(9, 1, 1, 5));
+$revision->setCorrection($correction);
 
-$reviewedSegment2 = new ReviewedSegment('this is another comment');
-$reviewedSegment2->addError(new RevisionError(10, 2));
-$reviewedSegment2->addError(new RevisionError(11, 1, 1, 5));
-$reviewedSegment2->setCorrection($correction);
+$revision2 = new Revision('this is another comment');
+$revision2->addError(new RevisionError(10, 2));
+$revision2->addError(new RevisionError(11, 1, 1, 5));
+$revision2->setCorrection($correction);
 
 $batchId = Uuid::uuid4()->toString();
 $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
-$reviewBatch->addReviewedSegment($reviewedSegment);
-$reviewBatch->addReviewedSegment($reviewedSegment2);
+$reviewBatch->addRevision($revision);
+$reviewBatch->addRevision($revision2);
 
 $reviewRepository->save($reviewBatch);
 

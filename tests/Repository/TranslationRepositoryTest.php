@@ -6,7 +6,7 @@ use Matecat\Dqf\Constants;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\MasterProject;
-use Matecat\Dqf\Model\Entity\ReviewedSegment;
+use Matecat\Dqf\Model\Entity\Revision;
 use Matecat\Dqf\Model\Entity\ReviewSettings;
 use Matecat\Dqf\Model\Entity\SourceSegment;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
@@ -264,37 +264,37 @@ class TranslationRepositoryTest extends BaseTest
         $correction->addItem(new RevisionCorrectionItem('review', 'deleted'));
         $correction->addItem(new RevisionCorrectionItem('Another comment', 'unchanged'));
 
-        $reviewedSegment = new ReviewedSegment('this is a comment');
-        $reviewedSegment->addError(new RevisionError(1, 2));
-        $reviewedSegment->addError(new RevisionError(1, 1, 1, 5));
-        $reviewedSegment->setCorrection($correction);
-        $reviewedSegment->setClientId(Uuid::uuid4()->toString());
+        $revision = new Revision('this is a comment');
+        $revision->addError(new RevisionError(1, 2));
+        $revision->addError(new RevisionError(1, 1, 1, 5));
+        $revision->setCorrection($correction);
+        $revision->setClientId(Uuid::uuid4()->toString());
 
-        $reviewedSegment2 = new ReviewedSegment('this is another comment');
-        $reviewedSegment2->addError(new RevisionError(2, 2));
-        $reviewedSegment2->addError(new RevisionError(2, 1, 1, 5));
-        $reviewedSegment2->setCorrection($correction);
-        $reviewedSegment2->setClientId(Uuid::uuid4()->toString());
+        $revision2 = new Revision('this is another comment');
+        $revision2->addError(new RevisionError(2, 2));
+        $revision2->addError(new RevisionError(2, 1, 1, 5));
+        $revision2->setCorrection($correction);
+        $revision2->setClientId(Uuid::uuid4()->toString());
 
         $batchId = Uuid::uuid4()->toString();
         $reviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
-        $reviewBatch->addReviewedSegment($reviewedSegment);
-        $reviewBatch->addReviewedSegment($reviewedSegment2);
+        $reviewBatch->addRevision($revision);
+        $reviewBatch->addRevision($revision2);
 
         $batch = $this->reviewRepository->save($reviewBatch);
 
         $this->assertInstanceOf(ReviewBatch::class, $batch);
 
-        foreach ($batch->getReviewedSegments() as $reviewedSegment) {
-            $this->assertNotNull($reviewedSegment->getDqfId());
-            $this->assertNotNull($reviewedSegment->getClientId());
+        foreach ($batch->getRevisions() as $revision) {
+            $this->assertNotNull($revision->getDqfId());
+            $this->assertNotNull($revision->getClientId());
         }
 
         // resetting reviews before deleting all the project and child nodes
         $emptyReviewBatch = new ReviewBatch($childReview, $file, 'en-US', $segment, $batchId);
         $emptyBatch = $this->reviewRepository->save($emptyReviewBatch);
 
-        $this->assertNull($emptyBatch->getReviewedSegments());
+        $this->assertNull($emptyBatch->getRevisions());
 
         // deleting the review project
         $delete = $this->childProjectRepo->delete($childReview);

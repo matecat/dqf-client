@@ -15,7 +15,7 @@ class ReviewRepository extends AbstractApiRepository implements ReviewRepository
      */
     public function save(ReviewBatch $batch)
     {
-        $reviewedSegments = $batch->getReviewedSegments();
+        $reviewedSegments = $batch->getRevisions();
         $corrections = [];
         $errors = [];
 

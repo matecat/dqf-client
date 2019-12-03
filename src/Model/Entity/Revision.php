@@ -5,7 +5,7 @@ namespace Matecat\Dqf\Model\Entity;
 use Matecat\Dqf\Model\ValueObject\RevisionCorrection;
 use Matecat\Dqf\Model\ValueObject\RevisionError;
 
-class ReviewedSegment extends BaseApiEntity
+class Revision extends BaseApiEntity
 {
     /**
      * @var string

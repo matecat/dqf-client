@@ -6,7 +6,7 @@ use Matecat\Dqf\Model\Entity\BaseApiEntity;
 use Matecat\Dqf\Model\Entity\ChildProject;
 use Matecat\Dqf\Model\Entity\File;
 use Matecat\Dqf\Model\Entity\Language;
-use Matecat\Dqf\Model\Entity\ReviewedSegment;
+use Matecat\Dqf\Model\Entity\Revision;
 use Matecat\Dqf\Model\Entity\TranslatedSegment;
 
 class ReviewBatch extends BaseApiEntity
@@ -42,9 +42,9 @@ class ReviewBatch extends BaseApiEntity
     private $batchId;
 
     /**
-     * @var ReviewedSegment[]
+     * @var Revision[]
      */
-    private $reviewedSegments;
+    private $revisions;
 
     /**
      * ReviewBatch constructor.
@@ -115,18 +115,18 @@ class ReviewBatch extends BaseApiEntity
     }
 
     /**
-     * @return ReviewedSegment[]
+     * @return Revision[]
      */
-    public function getReviewedSegments()
+    public function getRevisions()
     {
-        return $this->reviewedSegments;
+        return $this->revisions;
     }
 
     /**
-     * @param ReviewedSegment $reviewedSegment
+     * @param Revision $revision
      */
-    public function addReviewedSegment(ReviewedSegment $reviewedSegment)
+    public function addRevision(Revision $revision)
     {
-        $this->reviewedSegments[] = $reviewedSegment;
+        $this->revisions[] = $revision;
     }
 }
