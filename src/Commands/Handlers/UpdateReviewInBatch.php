@@ -69,23 +69,23 @@ class UpdateReviewInBatch extends CommandHandler
         $response = $this->httpClient->request(Constants::HTTP_VERBS_CREATE, $this->buildUri(
             'project/child/{projectId}/file/{fileId}/targetLang/{targetLangCode}/translation/{translationId}/batchReview',
             [
-                        'projectId'      => $params[ 'projectId' ],
-                        'fileId'         => $params[ 'fileId' ],
-                        'targetLangCode' => $params[ 'targetLangCode' ],
-                        'translationId'  => $params[ 'translationId' ],
-                ]
+                'projectId'      => $params[ 'projectId' ],
+                'fileId'         => $params[ 'fileId' ],
+                'targetLangCode' => $params[ 'targetLangCode' ],
+                'translationId'  => $params[ 'translationId' ],
+            ]
         ), [
-                'headers' => [
-                        'Content-Type'   => 'application/json',
-                        'Content-Length' => strlen($json),
-                        'projectKey'     => $params[ 'projectKey' ],
-                        'sessionId'      => $params[ 'sessionId' ],
-                        'email'          => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
-                ],
-                'json'    => json_decode($json),
+            'headers' => [
+                'Content-Type'   => 'application/json',
+                'Content-Length' => strlen($json),
+                'projectKey'     => $params[ 'projectKey' ],
+                'sessionId'      => $params[ 'sessionId' ],
+                'email'          => isset($params[ 'generic_email' ]) ? $params[ 'generic_email' ] : null,
+            ],
+            'json'  => json_decode($json),
         ]);
 
-        if ($response->getStatusCode() === StatusCode::CREATED) {
+        if ($response->getStatusCode() === StatusCode::OK or $response->getStatusCode() === StatusCode::CREATED) {
             return $this->decodeResponse($response);
         }
     }

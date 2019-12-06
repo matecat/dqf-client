@@ -25,7 +25,6 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
         $data = self::assignDefaultValues($row);
 
         if (self::didTheUserModifyTheSegment($row)) {
-
             $suggestion_position  = $row[ 'suggestion_position' ];
             $suggestions = json_decode($row[ 'suggestions_array' ], true);
 
@@ -56,7 +55,7 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
      *
      * @return array
      */
-    private static function assignDefaultValues( $row)
+    private static function assignDefaultValues($row)
     {
         if ((strpos($row['match_type'], '100%') === 0) or $row['match_type'] === 'ICE') {
             return [
@@ -75,7 +74,7 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
         if ($row['match_type'] === 'REPETITIONS') {
             $suggestionSource = $row['suggestion_source'];
 
-            if($suggestionSource === 'MT'){
+            if ($suggestionSource === 'MT') {
                 return [
                     'segment_origin' => 'MT',
                     'suggestion_match' => null
@@ -122,7 +121,7 @@ class MatecatSegmentOriginAnalyser implements SegmentOriginAnalyserInterface
      */
     private static function didTheUserChooseASuggestion($suggestions, $suggestion_position = null)
     {
-        if(null !== $suggestion_position){
+        if (null !== $suggestion_position) {
             return isset($suggestions[$suggestion_position]);
         }
 

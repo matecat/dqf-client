@@ -15,6 +15,8 @@ class ClientLogsFormatter implements FormatterInterface
      */
     public function format(array $record)
     {
+        $record['message'] = str_replace(['"[', ']"'], ['[', ']'], $record['message']); // remove surrounding " from JSON arrays
+        $record['message'] = str_replace(['"{', '}"'], ['{', '}'], $record['message']); // remove surrounding " from JSON objects
         $message = json_decode(str_replace("\r\n", " ", $record['message']), true);
         unset($record['message']);
         $record['message'] = $message;
