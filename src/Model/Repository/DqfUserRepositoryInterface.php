@@ -21,6 +21,13 @@ interface DqfUserRepositoryInterface
     public function getByExternalId($id);
 
     /**
+     * @param string $username
+     *
+     * @return DqfUser
+     */
+    public function getByUsername($username);
+
+    /**
      * @param string $genericEmail
      *
      * @return DqfUser

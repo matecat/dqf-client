@@ -43,6 +43,24 @@ class PDODqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
+     * @param string $username
+     *
+     * @return DqfUser|mixed
+     */
+    public function getByUsername( $username )
+    {
+        $sql  = "SELECT * FROM " . self::TABLE_NAME . " WHERE username = :username";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+                'username' => $username
+        ]);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, DqfUser::class);
+
+        return $stmt->fetch();
+    }
+
+
+    /**
      * @param string $genericEmail
      *
      * @return DqfUser|mixed

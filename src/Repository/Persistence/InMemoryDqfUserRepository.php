@@ -54,6 +54,20 @@ class InMemoryDqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
+     * @param string $username
+     *
+     * @return DqfUser
+     */
+    public function getByUsername($username)
+    {
+        foreach ($this->users as $dqfUser) {
+            if ($dqfUser->getUsername() === $username) {
+                return $dqfUser;
+            }
+        }
+    }
+
+    /**
      * @return int
      */
     public function getNextGenericExternalId()

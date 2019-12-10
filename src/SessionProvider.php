@@ -90,7 +90,7 @@ class SessionProvider
     private function validate($params)
     {
         if (false === isset($params['username']) and false === isset($params['password'])) {
-            throw new SessionProviderException('Username and password are mandatary');
+            throw new SessionProviderException('Username and password are mandatory');
         }
 
         if (isset($params['isGeneric']) and true === $params['isGeneric'] and false === isset($params['genericEmail'])) {
@@ -237,5 +237,42 @@ class SessionProvider
     public function hasId($externalReferenceId)
     {
         return ($this->dqfUserRepository->getByExternalId($externalReferenceId) instanceof DqfUser);
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return mixed|void
+     * @throws SessionProviderException
+     */
+    public function getByUsername($username)
+    {
+        if (false === $this->hasUsername($username)) {
+            throw new SessionProviderException("User with username " . $username . " does not exists");
+        }
+
+        $dqfUser = $this->dqfUserRepository->getByUsername($this->dataEncryptor->encrypt($username));
+        $dqfUser->setUsername($this->dataEncryptor->decrypt($dqfUser->getUsername()));
+        $dqfUser->setPassword($this->dataEncryptor->decrypt($dqfUser->getPassword()));
+
+        if ($dqfUser->isSessionStillValid()) {
+            return $dqfUser->getSessionId();
+        }
+
+        return $this->create([
+                'externalReferenceId' => $dqfUser->getExternalReferenceId(),
+                'username'            => $dqfUser->getUsername(),
+                'password'            => $dqfUser->getPassword(),
+        ]);
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return bool
+     */
+    public function hasUsername($username)
+    {
+        return ($this->dqfUserRepository->getByUsername($this->dataEncryptor->encrypt($username)) instanceof DqfUser);
     }
 }

@@ -62,6 +62,22 @@ class RedisDqfUserRepository implements DqfUserRepositoryInterface
     }
 
     /**
+     * @param string $username
+     *
+     * @return DqfUser|mixed
+     */
+    public function getByUsername( $username )
+    {
+        $users = $this->redis->hgetall(self::DQF_USER_HASHSET);
+        foreach ($users as $user) {
+            $dqfUser = unserialize($user);
+            if ($dqfUser->getUsername() === $username) {
+                return $dqfUser;
+            }
+        }
+    }
+
+    /**
      * @return int
      */
     public function getNextGenericExternalId()

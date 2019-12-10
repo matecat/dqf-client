@@ -57,6 +57,9 @@ class SessionProviderWithRedisTest extends \PHPUnit_Framework_TestCase
         $sessionId = $this->sessionProvider->getByGenericEmail($email);
         $this->assertInternalType('string', $sessionId);
 
+        $sessionId = $this->sessionProvider->getByUsername($this->config[ 'dqf' ][ 'DQF_GENERIC_USERNAME' ]);
+        $this->assertInternalType('string', $sessionId);
+
         $destroy = $this->sessionProvider->destroyAnonymous($email);
         $this->assertEquals($destroy, 1);
     }
@@ -75,6 +78,9 @@ class SessionProviderWithRedisTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $sessionId);
 
         $sessionId = $this->sessionProvider->getById($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);
+        $this->assertInternalType('string', $sessionId);
+
+        $sessionId = $this->sessionProvider->getByUsername($this->config[ 'dqf' ][ 'USERNAME' ]);
         $this->assertInternalType('string', $sessionId);
 
         $destroy = $this->sessionProvider->destroy($this->config[ 'dqf' ][ 'EXTERNAL_ID' ]);

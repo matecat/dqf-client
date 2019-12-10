@@ -587,7 +587,8 @@ class CompleteDQFWorkflowWithGenericSessionTest extends BaseTest
                 'body'           => [],
         ]);
 
-        $this->assertNull($updateReviewInBatch);
+        $this->assertEquals('OK', $updateReviewInBatch->status);
+        $this->assertEquals('All segment revisions cleared', $updateReviewInBatch->message);
 
         /**
          ****************************************************************************
